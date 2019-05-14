@@ -1,0 +1,24 @@
+{
+  "name": "projekt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joel Palgi",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "ejs-lint": "^0.3.0",
+    "express": "^4.16.4",
+    "express-basic-auth": "^1.1.6",
+    "express-flash-notification": "^0.5.0",
+    "express-session": "^1.15.6",
+    "morgan": "^1.9.1",
+    "mysql": "^2.16.0",
+    "rc522": "^0.2.0",
+    "request-ip": "^2.1.3",
+    "rpio": "^1.0.13"
+  }
+}

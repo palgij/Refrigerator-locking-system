@@ -1,0 +1,24 @@
+<% include partials/headerAdmin %>
+
+<div class="container text-center mt-5">
+
+    <div class="row justify-content-around text-center">
+        <div class="col-5 pt-3 pb-3"> <strong style="font-size: 20px;"> TOP 10 Ostjad </strong>
+	    <ul class="list-group pt-2 text-left mt-3">
+		<% ostjad.forEach(function(ostja, i) { %>
+		    <li class="list-group-item" id="ostja"> <%= i + 1 %>. <%= ostja.eesnimi %> <%= ostja.perenimi %> - <%= ostja.volg.toFixed(1) %>€  </li>
+		<% }) %>
+	    </ul>  
+    	</div>
+    	<div class="col-5 pt-3 pb-3"> <strong style="font-size: 20px;"> TOP 10 Populaarsed tooted </strong>
+	    <ul class="list-group pt-2 text-left mt-3">
+		<% tooted.forEach(function(toode, i) { %>
+		    <li class="list-group-item" id="toode"> <%= i + 1 %>. <%= toode.nimetus %> - <%= toode.arv %>x </li>
+		<% }) %>
+	    </ul>
+    	</div>
+    </div>
+
+</div>
+
+<% include partials/footer %>

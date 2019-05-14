@@ -1,0 +1,83 @@
+#ostja {
+    padding: 6px 0px 6px 20px;
+    font-size: 20px;
+}
+
+#toode {
+    padding: 6px 0px 6px 70px;
+    font-size: 20px;
+}
+
+td {
+    font-size: 20px;
+}
+
+.table > tbody > tr > td {
+     vertical-align: middle;
+}
+
+.table > tbody > tr > th {
+     vertical-align: middle;
+}
+
+tbody tr:nth-child(odd) {
+    background: #DFDCE3;
+}
+
+tbody tr:nth-child(even) {
+    background: #BEBEBE;
+}
+
+thead tr {
+    background: #BEBEBE;
+}
+
+#volg {
+    margin-left: 14px;
+}
+
+#kogus {
+    margin-left: 22px;
+    width:130px;
+}
+
+#hind {
+    margin-left: 22px;
+    width:130px;
+} 
+
+.kast1 {
+    font-size: 20px;
+    margin-top: 20px;
+    margin-right: 40px;
+}
+
+.kast2 {
+    font-size: 20px;
+    margin-top: 14px;
+}
+
+#aktiivne {
+    width:22px;
+    height:22px;
+}
+
+#admin {
+    width:22px;
+    height:22px;
+}
+
+#btnBuy {
+    font-size: 30px;
+    padding: 16px 24px;
+}
+
+#btnBack {
+    font-size: 30px;
+    padding: 16px 24px;
+}
+
+#btnLisa {
+    font-size: 22px;
+    padding: 16px 24px;
+}

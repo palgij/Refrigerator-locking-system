@@ -1,0 +1,82 @@
+<% include partials/headerAdmin %>
+
+<div class="container text-center mt-5">
+
+    <h1 class="mb-4"> Muuda kasutajat <strong><%= kasutaja.eesnimi + " " +  kasutaja.perenimi %></strong> </h1>
+    
+    <form class="needs-validation" action="/admin/kasutajad/<%= kasutaja.kasutaja_id%>/" method="POST" novalidate>
+  	<div class="form-row justify-content-center">
+    	    <div class="col-4">
+		<label for="eesnimi" class="col-form-label col-form-label-lg">Eesnimi</label>
+      		<input type="text" name="eesnimi" pattern=".{2,50}" class="form-control form-control-lg" id="eesnimi" value="<%= kasutaja.eesnimi %>" placeholder="Eesnimi" required>
+    	    </div>
+    	    <div class="col-4">
+		<label for="perenimi" class="col-form-label col-form-label-lg">Perenimi</label>
+      		<input type="text" name="perenimi" pattern=".{2,50}" class="form-control form-control-lg" id="perenimi" value="<%= kasutaja.perenimi %>" placeholder="Perenimi" required>
+    	    </div>
+	    <div class="col-2">
+		<label for="volg" class="col-form-label col-form-label-lg">Kasutaja Võlg</label>
+      		<input type="number" name="volg" class="form-control form-control-lg text-center" id="volg" value="<%= kasutaja.volg.toFixed(1) %>" placeholder="Volg" style="width:150px;" step="0.1" min="0" max="9999.99" required>
+	    </div>
+  	</div>
+	<div class="form-group mb-5">
+	    <div class="form-check form-check-inline kast1">
+  		<input class="form-check-input" name="check[]" type="checkbox" value="aktiivne" id="aktiivne">
+  		<label class="form-check-label pl-2" for="aktiivne">Aktiivne</label>
+	    </div>
+	    <div class="form-check form-check-inline kast2">
+  		<input class="form-check-input" name="check[]" type="checkbox" value="admin" id="admin">
+  		<label class="form-check-label pl-2" for="admin">Admin</label>
+	    </div>
+	</div>
+
+	<div class="row justify-content-around">
+    	    <div class="col-4">
+		<div class="row justify-content-end">
+      		    <a href="/admin/kasutajad/" class="btn btn-lg btn-outline-primary shadow" id="btnBack">&laquo; Tagasi</a>
+              	</div>
+            </div>
+	    <div class="col-4">
+		<div class="row justify-content-start"">
+      		    <button class="btn btn-outline-success btn-lg shadow" id="btnBuy">Muuda &raquo;</button>
+              	</div>
+            </div>
+        </div>
+    </form>
+    
+</div>
+
+<script>
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+
+if (<%= kasutaja.on_admin %>) {
+    $("#admin").prop("checked", true);
+} else {
+    $("#admin").prop("checked", false);
+}
+
+if (<%= kasutaja.nimetus === "Aktiivne" %>) {
+    $("#aktiivne").prop("checked", true);
+} else {
+    $("#checkbox").prop("checked", false);
+}
+
+</script>
+
+<% include partials/footer %>

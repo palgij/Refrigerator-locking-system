@@ -1,0 +1,73 @@
+<% include partials/headerAdmin %>
+
+<div class="container text-center mt-5">
+
+    <h1 class="mb-4"> Lisa toode </h1>
+    
+    <form class="needs-validation" action="/admin/tooted/" method="POST" novalidate>
+  	<div class="form-row justify-content-center mb-5">
+    	    <div class="col-3">
+		<label for="eesnimi" class="col-form-label col-form-label-lg">Toote Kategooria</label>
+                <select id="kategooria" name="kategooria" class="form-control form-control-lg" required="required">
+  		    <option value="">Vali Kategooria</option>	    
+		</select>
+    	    </div>
+    	    <div class="col-3">
+		<label for="nimetus" class="col-form-label col-form-label-lg">Toote nimetus</label>
+      		<input type="text" name="nimetus" pattern=".{2,70}" class="form-control form-control-lg" id="nimetus" placeholder="Nimetus" required>
+    	    </div>
+	    <div class="col-2">
+		<label for="kogus" class="col-form-label col-form-label-lg">Kogus</label>
+      		<input type="number" name="kogus" class="form-control form-control-lg text-center" id="kogus" placeholder="Kogus" step="0.1" min="0" max="9999.9" required>
+	    </div>
+	    <div class="col-2">
+		<label for="hind" class="col-form-label col-form-label-lg">Hind</label>
+      		<input type="number" name="hind" class="form-control form-control-lg text-center" id="hind" placeholder="Hind" step="0.1" min="0" max="999.9" required>
+    	    </div>
+  	</div>
+	
+	<div class="row justify-content-around">
+    	    <div class="col-4">
+		<div class="row justify-content-end">
+      		    <a href="/admin/tooted/" class="btn btn-lg btn-outline-primary shadow" id="btnBack">&laquo; Tagasi</a>
+              	</div>
+            </div>
+	    <div class="col-4">
+		<div class="row justify-content-start"">
+      		    <button class="btn btn-outline-success btn-lg shadow" id="btnBuy">Lisa toode &raquo;</button>
+              	</div>
+            </div>
+        </div>
+	
+    </form>
+    
+</div>
+
+<script> 
+    $('#kategooria').append($('<option>', { value: 1, text: 'Õlu'})); 
+    $('#kategooria').append($('<option>', { value: 2, text: 'Alkoholivaba'})); 
+    $('#kategooria').append($('<option>', { value: 3, text: 'Kange'})); 
+    $('#kategooria').append($('<option>', { value: 4, text: 'Muu' }));
+    $('#kategooria').append($('<option>', { value: 5, text: 'Snäk' }));
+    $('#kategooria').append($('<option>', { value: 6, text: 'Valmistoit' }));
+
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+</script>
+
+<% include partials/footer %>

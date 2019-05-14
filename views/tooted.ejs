@@ -1,0 +1,87 @@
+<% include partials/header %>
+
+<div class="container p-5 text-center shadow">
+    <h1> Hei<strong> <%= nimi %></strong>! Vali toode: </h1>
+	
+    <a href="/" class="btn btn-lg btn-outline-primary back">&laquo; Tagasi</a>
+
+    <div class="row justify-content-around text-center">
+        <div class="col-4"> <strong style="font-size: 18px;"> Joogid </strong>
+	    <div class="list-group">      	    
+		<% if (jook1.length > 0 && jook1.some(jook => jook.hetke_kogus > 0)) { %>
+		    <li class="list-group-item list-group-item-secondary p-1"><strong style="font-size: 18px;"> Õlu </strong></li>
+		    <% jook1.forEach(function(jook){ %>
+			<% if (jook.hetke_kogus > 0) { %>	  	
+			    <a href="/tooted/<%=id%>/<%=jook.nimetus%>" class="list-group-item list-group-item-action p-2"> 
+				<%= jook.nimetus %> 
+				<span class="badge badge-dark mt-1"> <%= jook.hind.toFixed(2) %>€ </span>
+			    </a>
+			<% } %>
+		    <% }); %>	    
+		<% } %>
+		<% if (jook2.length > 0 && jook2.some(jook => jook.hetke_kogus > 0)) { %>
+		    <li class="list-group-item list-group-item-secondary p-1"><strong style="font-size: 18px;"> Alkoholivaba </strong></li>
+		    <% jook2.forEach(function(jook){ %>
+		    	<% if (jook.hetke_kogus > 0) { %>
+			    <a href="/tooted/<%=id%>/<%=jook.nimetus%>" class="list-group-item list-group-item-action p-2"> 
+			  	<%= jook.nimetus %> 
+			   	<span class="badge badge-dark mt-1"> <%= jook.hind.toFixed(2) %>€ </span>
+			    </a>
+			<% } %>
+		    <% }); %>	    
+		<% } %>
+		<% if (jook3.length > 0 && jook3.some(jook => jook.hetke_kogus > 0)) { %>
+		    <li class="list-group-item list-group-item-secondary p-1"><strong style="font-size: 18px;"> Kange alkohol </strong></li>
+		    <% jook3.forEach(function(jook){ %>
+		   	<% if (jook.hetke_kogus > 0) { %>
+			    <a href="/tooted/<%=id%>/<%=jook.nimetus%>" class="list-group-item list-group-item-action p-2"> 
+			    	<%= jook.nimetus %> 
+				<span class="badge badge-dark mt-1"> <%= jook.hind.toFixed(2) %>€ </span>
+			    </a>
+			<% } %>
+		    <% }); %>    
+		<% } %>
+		<% if (jook4.length > 0 && jook4.some(jook => jook.hetke_kogus > 0)) { %>
+		    <li class="list-group-item list-group-item-secondary p-1"><strong style="font-size: 18px;"> Muu </strong></li>
+		    <% jook4.forEach(function(jook){ %>
+			<% if (jook.hetke_kogus > 0) { %>
+		    	    <a href="/tooted/<%=id%>/<%=jook.nimetus%>" class="list-group-item list-group-item-action p-2"> 
+			        <%= jook.nimetus %> 
+			        <span class="badge badge-dark mt-1"> <%= jook.hind.toFixed(2) %>€ </span>
+			    </a>
+			<% } %>
+		    <% }); %>	    
+		<% } %>
+	    </div>
+    	</div>
+    	<div class="col-4"> <strong style="font-size: 18px;"> Söögid </strong>
+      	    <div class="list-group">      	    
+		<% if (sook5.length > 0 && sook5.some(sook => sook.hetke_kogus > 0)) { %>
+		    <li class="list-group-item list-group-item-secondary p-1"><strong style="font-size: 18px;"> Snäk </strong></li>
+		    <% sook5.forEach(function(sook){ %>
+			<% if (sook.hetke_kogus > 0) { %>
+		    	    <a href="/tooted/<%=id%>/<%=sook.nimetus%>" class="list-group-item list-group-item-action p-2"> 
+				<%= sook.nimetus %> 
+				<span class="badge badge-dark mt-1"> <%= sook.hind.toFixed(2) %>€ </span>
+			    </a>
+			<% } %>
+		    <% }); %>	    
+		<% } %>
+		<% if (sook6.length > 0 && sook6.some(sook => sook.hetke_kogus > 0)) { %>
+		    <li class="list-group-item list-group-item-secondary p-1"><strong style="font-size: 18px;"> Valmistoit </strong></li>
+		    <% sook6.forEach(function(sook){ %>
+			<% if (sook.hetke_kogus > 0) { %>
+		    	    <a href="/tooted/<%=id%>/<%=sook.nimetus%>" class="list-group-item list-group-item-action p-2"> 
+			    	<%= sook.nimetus %> 
+			    	<span class="badge badge-dark mt-1"> <%= sook.hind.toFixed(2) %>€ </span>
+			    </a>
+			<% } %>
+		    <% }); %>	    
+		<% } %>
+	    </div>
+    	</div>
+    </div>
+
+</div>
+
+<% include partials/footer %>

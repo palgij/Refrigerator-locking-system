@@ -1,0 +1,1 @@
+cmd_Release/obj.target/rc522.node := g++ -shared -pthread -rdynamic  -Wl,-soname=rc522.node -o Release/obj.target/rc522.node -Wl,--start-group Release/obj.target/rc522/src/rc522.o Release/obj.target/rc522/src/rfid.o Release/obj.target/rc522/src/accessor.o -Wl,--end-group -lbcm2835

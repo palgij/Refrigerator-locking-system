@@ -1,0 +1,82 @@
+.list-group a {
+    font-size: 20px;
+    color: black;
+}
+
+.list-group a span{
+    float: right; 
+    font-size: 15px;
+}
+
+.back {
+    margin: 10px auto;
+}
+
+.btnTable {
+    font-size: 35px;
+    width: 75px; 
+    height: 75px;
+    margin: 2px;
+    color: #000080;
+    border: 1px solid #000080;
+    border-radius: 5px;
+    background: white;
+    transition-duration: 0.05s;
+    outline:none;
+}
+
+.btnTable:active {
+    background-color: #000080;
+    color: white;
+    transform: translateY(2px);
+}
+
+.calcTable {
+    margin: 5px auto 0px auto;
+}
+
+.btnBuy {
+    font-size: 30px;
+    padding: 16px 24px;
+}
+
+.btnBack {
+    font-size: 30px;
+    padding: 16px 24px;
+}
+
+.resultDisplay{
+    font-size: 30px;
+    text-align: center;
+    width: 237px;
+    color: #000080;
+    border: 2px solid #000080;
+    border-radius: 5px;
+    margin-top: 25px;
+}
+
+.alert {
+    display: inline-block;
+    padding: 15px 30px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-success {
+    color: #FFF;
+    background-color: #5DB865;
+    border-color: #5DB865;
+}
+
+.alert-danger {
+    color: #FFF;
+    background-color: #D85452;
+    border-color: #D85452;
+}
+
+#pass {
+    
+}
+
+

@@ -1,0 +1,26 @@
+<% include partials/header %>
+
+<div class="container text-center mt-5">
+
+    <div class="jumbotron shadow">
+  	<h1 class="display-3">Kapi Administraatori leht!</h1>
+  	<p class="lead">Sellel lehel on võimalik muuta kapilukustus süsteemi andmeid.</p>
+  	<hr class="my-4">
+  	<p>Alustamiseks vajuta all olevale nupule!</p>
+  	<form action="/admin/kaartAdmin" method="GET">
+    	    <button class="btn btn-primary btn-lg pb-3 pt-3 pr-4 pl-4 shadow">Skanneeri kaart</button>
+   	</form>
+    </div>
+
+    <% if (locals.flash) { %>
+	<%- locals.flash %>
+	<script>
+	setTimeout(function() {
+    	    $('.alert').fadeOut("fast")
+	}, 10000)
+	</script>
+    <% } %>
+
+</div>
+
+<% include partials/footer %>
