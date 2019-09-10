@@ -4,7 +4,8 @@ var express = require("express"),
     middleware = require("../middleware/adminAuth"),
     mysql = require("mysql"),
     router  = express.Router(),
-    rpio = require('rpio');
+    rpio = require('rpio'),
+    stringify = require('csv-stringify');
 
 var password = "admin"
 
@@ -165,6 +166,19 @@ router.get("/kaartAdmin", function(req, res){
     });
 });
 
+router.get("/csv", middleware.checkIpSessionValid, async function(req, res){
+    var ostud = await getVolad();
+
+    console.log(ostud);
+
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename=\"' + 'download-' + Date.now() + '.csv\"');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Pragma', 'no-cache');
+
+    stringify(ostud, { header: true }).pipe(res);
+});
+
 module.exports = router;
 
 // =====================================================
@@ -269,6 +283,18 @@ async function getOstud() {
     } catch(err) {
 	throw new Error(err)
 	req.flash("ERROR", "Andmebaasist söökide saamisega tekkis viga", "/admin");
+    }
+    return result;
+}
+
+async function getVolad() {
+    var sql = "SELECT eesnimi, perenimi, volg FROM Kasutaja WHERE volg > 0";
+    	
+    try {
+	var result = await database.query(sql)
+    } catch(err) {
+	throw new Error(err)
+	req.flash("ERROR", "Andmebaasist võlgade saamisega tekkis viga", "/admin");
     }
     return result;
 }
