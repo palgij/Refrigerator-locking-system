@@ -1,35 +1,39 @@
 <% include partials/headerAdmin %>
 
 <div class="container text-center mt-5">
-
     <h1> Kasutajad </h1>
-
     <table class="table table-hover table-bordered mt-4">
-  	<thead>
-    	    <tr>
-      		<th scope="col">#</th>
-      		<th scope="col">Seis</th>
-      		<th scope="col">Nimi</th>
-      		<th scope="col">Võlg</th>
-      		<th scope="col">Admin</th>
-		<th scope="col">Muuda</th>
-    	    </tr>
-  	</thead>
-  	<tbody>
-	    <% kasutajad.forEach(function(kasutaja, i) { %>
-	    	<tr>
-      		    <th scope="row"> <%= i + 1 %> </th>
-      		    <td><%= kasutaja.nimetus.replace(/\s+/g, '') %></td>
-      		    <td><%= kasutaja.perenimi + ", " + kasutaja.eesnimi %></td>
-      		    <td><%= kasutaja.volg.toFixed(1) %>€</td>
-		    <td><%= kasutaja.on_admin ? "True" : "False" %></td>
- 		    <td><a href="/admin/kasutajad/muuda/<%= kasutaja.kasutaja_id %>">Muuda</a></td>
-           	</tr>
-    	    <% }) %>
-  	</tbody>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Seis</th>
+                <th scope="col">Nimi</th>
+                <th scope="col">Võlg</th>
+                <th scope="col">Kinnitatud</th>
+                <th scope="col">Muuda</th>
+            </tr>
+        </thead>
+        <tbody>
+        <% var aasta = "" %>
+        <% kasutajad.forEach((kasutaja, i) => { %>
+            <% if (aasta !== kasutaja.coetus) { %>
+                <% if (i !== 0) { %>
+                    <br>
+                <% } %>
+                <div><%= kasutaja.coetus %></div>
+                <br>
+                <% aasta = kasutaja.coetus %>
+            <% } %>
+            <tr>
+                <td><%= kasutaja.seisuNim %></td>
+                <td><%= kasutaja.staatus + " " + kasutaja.eesnimi + " " + kasutaja.perenimi %></td>
+                <td><%= kasutaja.volg.toFixed(1) %>€</td>
+                <td><%= kasutaja.admin_on_kinnitanud ? "True" : "False" %></td>
+                <td><a href="/admin/kasutajad/muuda/<%= kasutaja.kasutaja_id %>">Muuda</a></td>
+            </tr>
+        <% }) %>
+        </tbody>
     </table>
-
-    
 </div>
 
 <% include partials/footer %>

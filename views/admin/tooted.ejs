@@ -1,73 +1,68 @@
 <% include partials/headerAdmin %>
 
 <div class="container text-center mt-5">
-
-    <a class="btn btn-outline-primary btn-lg shadow mb-5" id="btnLisa" href="/admin/tooted/uus"> Lisa uus Toode</a>	
-
-    <h2>Joogid</h2>       
-
+    <a class="btn btn-outline-primary btn-lg shadow mb-5" id="btnLisa" href="/admin/tooted/uus"> Lisa uus Toode</a>
+    <h2>Joogid</h2>
     <table class="table table-hover table-bordered mt-4">
-  	<thead>
-    	    <tr>
-      		<th scope="col">#</th>
-      		<th scope="col">Toote Kategooria</th>
-      		<th scope="col">Nimetus</th>
-      		<th scope="col">Kogus</th>
-      		<th scope="col">Hind</th>
-		<th scope="col">Muuda</th>
-    	    </tr>
-  	</thead>
-  	<tbody>
-	    <% joogid.forEach(function(jook, i) { %>
-	    	<tr>
-      		    <th scope="row"> <%= i + 1 %> </th>
-      		    <td><%= jook.kategooria_nimetus %></td>
-      		    <td><%= jook.nimetus %></td>
-      		    <td><%= jook.hetke_kogus %></td>
-		    <td><%= jook.hind.toFixed(1) %>€</td>
- 		    <td><a href="/admin/tooted/muuda/<%= jook.toote_id %>">Muuda</a></td>
-           	</tr>
-    	    <% }) %>
-  	</tbody>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Toote Kategooria</th>
+                <th scope="col">Nimetus</th>
+                <th scope="col">Kogus</th>
+                <th scope="col">Hind</th>
+                <th scope="col">Muuda</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% joogid.forEach((jook, i) => { %>
+                <tr>
+                    <th scope="row"> <%= i + 1 %> </th>
+                    <td><%= jook.kategooria_nimetus %></td>
+                    <td><%= jook.nimetus %></td>
+                    <td><%= jook.hetke_kogus %></td>
+                    <td><%= jook.myygi_hind.toFixed(1) %>€</td>
+                    <td><a href="/admin/tooted/muuda/<%= jook.toote_id %>">Muuda</a></td>
+                </tr>
+            <% }) %>
+        </tbody>
     </table>
-
-    <h2 class="mt-5">Söögid</h2>       
-
+    <h2 class="mt-5">Söögid</h2>
     <table class="table table-hover table-bordered mt-4 mb-5">
-  	<thead>
-    	    <tr>
-      		<th scope="col">#</th>
-      		<th scope="col">Toote Kategooria</th>
-      		<th scope="col">Nimetus</th>
-      		<th scope="col">Kogus</th>
-      		<th scope="col">Hind</th>
-		<th scope="col">Muuda</th>
-    	    </tr>
-  	</thead>
-  	<tbody>
-	    <% soogid.forEach(function(sook, i) { %>
-	    	<tr>
-      		    <th scope="row"> <%= i + 1 %> </th>
-      		    <td><%= sook.kategooria_nimetus %></td>
-      		    <td><%= sook.nimetus %></td>
-      		    <td><%= sook.hetke_kogus %></td>
-		    <td><%= sook.hind.toFixed(1) %>€</td>
- 		    <td><a href="/admin/tooted/muuda/<%= sook.toote_id %>">Muuda</a></td>
-           	</tr>
-    	    <% }) %>
-  	</tbody>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Toote Kategooria</th>
+                <th scope="col">Nimetus</th>
+                <th scope="col">Kogus</th>
+                <th scope="col">Hind</th>
+                <th scope="col">Muuda</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% soogid.forEach((sook, i) => { %>
+                <tr>
+                    <th scope="row"> <%= i + 1 %> </th>
+                    <td><%= sook.kategooria_nimetus %></td>
+                    <td><%= sook.nimetus %></td>
+                    <td><%= sook.hetke_kogus %></td>
+                    <td><%= sook.myygi_hind.toFixed(1) %>€</td>
+                    <td><a href="/admin/tooted/muuda/<%= sook.toote_id %>">Muuda</a></td>
+                </tr>
+            <% }) %>
+        </tbody>
     </table>
-    
+
 </div>
 
 <script>
-    window.onload = function() {
-    	$("td").each(function() {
-            if(parseFloat($(this).text()) <= 0){ 
-           	$(this).parent().css("background-color","#FF4141");
+    window.onload = () => {
+        $("td").each(() => {
+            if(parseFloat($(this).text()) <= 0){
+                $(this).parent().css("background-color","#FF4141");
             }
-    	})  
-    } 
+        })
+    }
 </script>
 
 <% include partials/footer %>

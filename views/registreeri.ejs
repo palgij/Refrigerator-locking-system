@@ -1,60 +1,70 @@
 <% include partials/header %>
 
 <div class="container mt-4">
-
     <h1 style="text-align: center;"> Registreeri ennast kasutajaks! </h1>
-
     <form class="needs-validation" action="/registreeri/<%= id %>" method="POST" style="width: 40%; margin: 30px auto;" novalidate>
-  	<div class="form-group">
-            <input type="text" pattern=".{2,50}" class="form-control form-control-lg" name="eesnimi" placeholder="Sisesta eesnimi" required>
-  	    <div class="invalid-feedback">
-          	Palun sisesta eesnimi, tähemärke maksimaalselt 50 ja minimaalselt 2
-            </div>
-	</div>
-  	<div class="form-group">
-    	    <input type="text" pattern=".{2,50}" class="form-control form-control-lg" name="perenimi" placeholder="Sisesta perenimi" required>
-  	    <div class="invalid-feedback">
-          	Palun sisesta perenimi, tähemärke maksimaalselt 50 ja minimaalselt 2
-            </div>
-	</div>
-
-	<div class="row justify-content-around">
-    	    <div class="col-5" style="margin-right: 35px;">
-		<div class="row justify-content-end">
-      		    <a href="/" class="btn btn-lg btn-outline-primary shadow btnBack">&laquo; Tagasi</a>
-              	</div>
-            </div>
-	    <div class="col-6" style="margin-right: 4px;">
-		<div class="row justify-content-start"">
-      		    <button class="btn btn-outline-success btn-lg shadow btnBuy"> Registreeri &raquo;</button>
-              	</div>
+        <div class="form-group">
+            <label for="staatus" class="col-form-label col-form-label-lg">Staatus</label>
+            <select id="staatus" name="staatuse_id" class="form-control form-control-lg" required="required">
+                <option value="">Vali Staatus</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="text" pattern=".{6,10}" class="form-control form-control-lg" name="coetus" placeholder="Sisesta coetus" required>
+            <div class="invalid-feedback">
+                Palun sisesta coetus, tähemärke maksimaalselt 10 ja minimaalselt 6
             </div>
         </div>
-	<%= // TODO: make registreeri button not filled after tap%>
-
+        <div class="form-group">
+            <input type="text" pattern=".{2,50}" class="form-control form-control-lg" name="eesnimi" placeholder="Sisesta eesnimi" required>
+            <div class="invalid-feedback">
+                Palun sisesta eesnimi, tähemärke maksimaalselt 50 ja minimaalselt 2
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="text" pattern=".{2,50}" class="form-control form-control-lg" name="perenimi" placeholder="Sisesta perenimi" required>
+            <div class="invalid-feedback">
+                Palun sisesta perenimi, tähemärke maksimaalselt 50 ja minimaalselt 2
+            </div>
+        </div>
+        <div class="row justify-content-around">
+            <div class="col-5" style="margin-right: 35px;">
+                <div class="row justify-content-end">
+                    <a href="/" class="btn btn-lg btn-outline-primary shadow btnBack">&laquo; Tagasi</a>
+                </div>
+            </div>
+            <div class="col-6" style="margin-right: 4px;">
+                <div class="row justify-content-start">
+                    <button class="btn btn-outline-success btn-lg shadow btnBuy"> Registreeri &raquo;</button>
+                </div>
+            </div>
+        </div>
     </form>
-	
 </div>
 
 <script>
-// Example starter JavaScript for disabling form submissions if there are invalid fields
-(function() {
-  'use strict';
-  window.addEventListener('load', function() {
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.getElementsByClassName('needs-validation');
-    // Loop over them and prevent submission
-    var validation = Array.prototype.filter.call(forms, function(form) {
-      form.addEventListener('submit', function(event) {
-        if (form.checkValidity() === false) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-        form.classList.add('was-validated');
-      }, false);
-    });
-  }, false);
-})();
+    $('#staatus').append($('<option>', { value: 1, text: 'reb!'}));
+    $('#staatus').append($('<option>', { value: 2, text: 'sv!'}));
+    $('#staatus').append($('<option>', { value: 3, text: 'b!vil!'}));
+    $('#staatus').append($('<option>', { value: 4, text: 'vil!'}));
+
+    (() => {
+        'use strict';
+        window.addEventListener('load', () => {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            let forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            let validation = Array.prototype.filter.call(forms, (form) => {
+                form.addEventListener('submit', (event) => {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
 </script>
 
 <% include partials/footer %>

@@ -3,22 +3,22 @@
 <div class="container text-center mt-5">
 
     <div class="jumbotron shadow">
-  	<h1 class="display-3">Tere Tulemast!</h1>
-  	<p class="lead">Sellel lehel on võimalik osta kapis olevaid tooteid.</p>
-  	<hr class="my-4">
-  	<p>Alustamiseks vajuta all olevale nupule!</p>
-  	<form action="/kaart" method="GET">
-    	    <button class="btn btn-primary btn-lg pb-3 pt-3 pr-4 pl-4 shadow">Skanneeri kaart</button>
-   	</form>
+        <h1 class="display-3">Tere Tulemast!</h1>
+        <p class="lead">Sellel lehel on võimalik osta kapis olevaid tooteid.</p>
+        <hr class="my-4">
+        <p>Alustamiseks vajuta all olevale nupule!</p>
+        <form action="/kaart" method="GET">
+            <button class="btn btn-primary btn-lg pb-3 pt-3 pr-4 pl-4 shadow">Skanneeri kaart</button>
+        </form>
     </div>
 
     <% if (locals.flash) { %>
-	<%- locals.flash %>
-	<script>
-	setTimeout(function() {
-    	    $('.alert').fadeOut("fast")
-	}, 10000)
-	</script>
+        <%- locals.flash %>
+        <script>
+            setTimeout(() => {
+                $('.alert').fadeOut("fast")
+            }, 10000)
+        </script>
     <% } %>
 
 </div>

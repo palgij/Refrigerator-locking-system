@@ -1,13 +1,13 @@
-var mysql = require("mysql");
-var util = require('util');
+let mysql   = require("mysql"),
+    util    = require("util");
 
-var pool = mysql.createPool({
+let pool = mysql.createPool({
     connectionLimit: 10,
-    host     : 'localhost',
-    user     : 'root',
-    password : '8kti6c',
-    database : "mydb",
-    timezone : 'EET'
+    host: 'localhost',
+    user: 'root',
+    password: '8kti6c',
+    database: "mydb",
+    timezone: 'EET'
 });
 
 pool.getConnection((err, connection) => {
@@ -23,7 +23,7 @@ pool.getConnection((err, connection) => {
         }
     }
     if (connection) connection.release();
-    return
+    // võtsin returni ära
 });
 
 // Promisify for Node.js async/await.
