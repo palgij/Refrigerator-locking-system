@@ -5,7 +5,7 @@
     <table class="table table-hover table-bordered mt-4">
         <thead>
             <tr>
-                <th scope="col">#</th>
+		<th scope="col">Coetus</th>
                 <th scope="col">Seis</th>
                 <th scope="col">Nimi</th>
                 <th scope="col">Võlg</th>
@@ -14,20 +14,12 @@
             </tr>
         </thead>
         <tbody>
-        <% var aasta = "" %>
         <% kasutajad.forEach((kasutaja, i) => { %>
-            <% if (aasta !== kasutaja.coetus) { %>
-                <% if (i !== 0) { %>
-                    <br>
-                <% } %>
-                <div><%= kasutaja.coetus %></div>
-                <br>
-                <% aasta = kasutaja.coetus %>
-            <% } %>
             <tr>
+		<td><%= kasutaja.coetus %></td>
                 <td><%= kasutaja.seisuNim %></td>
                 <td><%= kasutaja.staatus + " " + kasutaja.eesnimi + " " + kasutaja.perenimi %></td>
-                <td><%= kasutaja.volg.toFixed(1) %>€</td>
+                <td><%= kasutaja.volg.toFixed(2) %>€</td>
                 <td><%= kasutaja.admin_on_kinnitanud ? "True" : "False" %></td>
                 <td><a href="/admin/kasutajad/muuda/<%= kasutaja.kasutaja_id %>">Muuda</a></td>
             </tr>

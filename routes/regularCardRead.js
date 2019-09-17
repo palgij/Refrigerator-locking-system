@@ -13,8 +13,8 @@ router.get("/", (req, res) => {
 
 router.get("/kaart", (req, res) => {
     rc522.init();
-    rc522.read(async (serial) => {
-        buzzer.ring();
+    rc522.read(async (serial) => {       
+	buzzer.ring();
         rc522.child();
         let sql = mysql.format(sqlString.kasutajaSeis, [serial]);
 

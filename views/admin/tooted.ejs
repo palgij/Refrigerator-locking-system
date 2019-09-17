@@ -21,7 +21,7 @@
                     <td><%= jook.kategooria_nimetus %></td>
                     <td><%= jook.nimetus %></td>
                     <td><%= jook.hetke_kogus %></td>
-                    <td><%= jook.myygi_hind.toFixed(1) %>€</td>
+                    <td><%= jook.myygi_hind.toFixed(2) %>€</td>
                     <td><a href="/admin/tooted/muuda/<%= jook.toote_id %>">Muuda</a></td>
                 </tr>
             <% }) %>
@@ -46,7 +46,7 @@
                     <td><%= sook.kategooria_nimetus %></td>
                     <td><%= sook.nimetus %></td>
                     <td><%= sook.hetke_kogus %></td>
-                    <td><%= sook.myygi_hind.toFixed(1) %>€</td>
+                    <td><%= sook.myygi_hind.toFixed(2) %>€</td>
                     <td><a href="/admin/tooted/muuda/<%= sook.toote_id %>">Muuda</a></td>
                 </tr>
             <% }) %>
@@ -56,13 +56,13 @@
 </div>
 
 <script>
-    window.onload = () => {
-        $("td").each(() => {
-            if(parseFloat($(this).text()) <= 0){
-                $(this).parent().css("background-color","#FF4141");
+    window.onload = function() {
+    	$("td").each(function() {
+            if(parseFloat($(this).text()) <= 0) { 
+           	$(this).parent().css("background-color","#FF4141");
             }
-        })
-    }
+    	})  
+    } 
 </script>
 
 <% include partials/footer %>

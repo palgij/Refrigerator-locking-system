@@ -61,8 +61,10 @@ function addIpWithTimeout(ip, log) {
 }
 
 function getIndexOfIp(ip) {
-    middlewareObj.IPs.forEach((index) => {
-        if (middlewareObj.IPs[index].ip === ip) return index;
-    });
+    for (let i = 0; i < middlewareObj.IPs.length; i++) {
+	if (middlewareObj.IPs[i].ip === ip) {
+	    return i;
+	} 
+    }
     return -1;
 }

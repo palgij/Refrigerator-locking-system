@@ -37,11 +37,11 @@ router.post("/kasutajad/:id", middleware.checkIpSessionValid, async (req, res) =
     let volg = parseFloat(req.body.volg).toFixed(2);
     let checkbox = req.body.check;
     let kinnitatud;
-    let seisus = parseFloat(req.body.seisus);
+    let seisus = parseFloat(req.body.seis);
     let staatus = parseFloat(req.body.staatus);
 
-    checkbox.includes("kinnitatud") ? kinnitatud = true : kinnitatud = false;
-    let sql = mysql.format(sqlString.updateKasutaja, [seisus, staatus, req.body.eesnimi, req.body.perenimi, volg, kinnitatud]);
+    kinnitatud = checkbox ? true : false;
+    let sql = mysql.format(sqlString.updateKasutaja, [seisus, staatus, req.body.eesnimi, req.body.perenimi, volg, kinnitatud, req.params.id]);
     try {
         var result = await database.query(sql)
     } catch(err) {
@@ -66,9 +66,9 @@ router.get("/tooted", middleware.checkIpSessionValid, async (req, res) => {
 
 router.post("/tooted/:id", middleware.checkIpSessionValid, async (req, res) => {
     let kategooria = parseFloat(req.body.kategooria);
-    let kogus = parseFloat(req.body.kogus).toFixed(1);
-    let myygi_hind = parseFloat(req.body.myygi_hind).toFixed(1);
-    let oma_hind = parseFloat(req.body.oma_hind).toFixed(1);
+    let kogus = parseFloat(req.body.kogus).toFixed(2);
+    let myygi_hind = parseFloat(req.body.myygi_hind).toFixed(2);
+    let oma_hind = parseFloat(req.body.oma_hind).toFixed(2);
     let sql = mysql.format(sqlString.updateToode, [kategooria, req.body.nimetus, kogus, myygi_hind, oma_hind, req.params.id]);
 
     try {
@@ -93,9 +93,9 @@ router.get("/tooted/uus", middleware.checkIpSessionValid, (req, res) => {
 
 router.post("/tooted", middleware.checkIpSessionValid, async (req, res) => {
     let kategooria = parseFloat(req.body.kategooria);
-    let kogus = parseFloat(req.body.kogus).toFixed(1);
-    let myygi_hind = parseFloat(req.body.myygi_hind).toFixed(1);
-    let oma_hind = parseFloat(req.body.oma_hind).toFixed(1);
+    let kogus = parseFloat(req.body.kogus).toFixed(2);
+    let myygi_hind = parseFloat(req.body.myygi_hind).toFixed(2);
+    let oma_hind = parseFloat(req.body.oma_hind).toFixed(2);
     let sql = mysql.format(sqlString.insertToode, [kategooria, req.body.nimetus, kogus, myygi_hind, oma_hind]);
 
     console.log("========== LISA TOODE ANDMEBAASI ==========");

@@ -6,14 +6,15 @@ let bodyParser  = require("body-parser"),
     auth        = require("./middleware/basicAuth"),
     morgan      = require("morgan"),
     requestIp   = require("request-ip"),
+    helmet	= require("helmet"),
     app         = express();
 
 //This line add the authentication requirement to all pages starting with localhost:3000/
 //app.all("/*", auth);
 
 //app.use(morgan('tiny'));
-
 app.use(requestIp.mw());
+app.use(helmet());
 
 // ============ ROUTES ============
 

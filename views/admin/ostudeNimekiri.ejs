@@ -20,8 +20,8 @@
                     <td> <%= ost.ostja_nimi %> </td>
                     <td> <%= ost.toote_nimi %> </td>
                     <td> <%= ost.kogus %> </td>
-                    <td> <%= ost.summa.toFixed(1) %>€ </td>
-                    <td> <% if (ost.on_tasuta) { %>Tasuta<%	} %><% else { %>Makse<% } %></td>
+                    <td> <%= ost.summa.toFixed(2) %>€ </td>
+                    <td> <% if (ost.on_tasuta) { %>Tasuta<% } %><% if (!(ost.on_tasuta)) { %>Makse<% } %></td>
                 </tr>
             <% }) %>
         </tbody>

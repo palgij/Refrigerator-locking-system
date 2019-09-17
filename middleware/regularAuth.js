@@ -1,4 +1,4 @@
-let middlewareObj = {};
+var middlewareObj = {};
 
 middlewareObj.users = [];
 
@@ -9,7 +9,7 @@ middlewareObj.getUsers = id => {
 middlewareObj.addUserCard = id => {
     let pos = getIndexOfId(id);
     if (pos === -1) {
-	    addUserWithTimeout(id);
+	addUserWithTimeout(id);
     } else {
 	    clearTimeout(middlewareObj.users[pos].timeout);
 	    removeAndLog(id);
@@ -53,8 +53,10 @@ function addUserWithTimeout(id) {
 }
 
 function getIndexOfId(id) {
-    middlewareObj.users.forEach((index) => {
-        if (middlewareObj.users[index].id === id) return index;
-    });
+    for (let i = 0; i < middlewareObj.users.length; i++) {
+	if (middlewareObj.users[i].id === id) {
+	    return i;
+	} 
+    }
     return -1;
 }

@@ -5,33 +5,35 @@
     <form class="needs-validation" action="/admin/kasutajad/<%= kasutaja.kasutaja_id%>/" method="POST" novalidate>
         <div class="form-row justify-content-center">
             <div class="col-2">
-                <label for="seis" class="col-form-label col-form-label-lg">Kasutaja Seis</label>
+                <label for="seis" class="col-form-label col-form-label-lg">Seis</label>
                 <select id="seis" name="seis" class="form-control form-control-lg" required="required">
                     <option value="" disabled="disabled">Vali Seis</option>
                 </select>
             </div>
-            <div class="col-1">
-                <label for="staatus" class="col-form-label col-form-label-lg">Kasutaja Staatus</label>
-                <select id="staatus" name="staatus" class="form-control form-control-lg" required="required">
-                    <option value="" disabled="disabled">Vali Staatus</option>
-                </select>
-            </div>
-            <div class="col-4">
-                <label for="eesnimi" class="col-form-label col-form-label-lg">Eesnimi</label>
-                <input type="text" name="eesnimi" pattern=".{2,50}" class="form-control form-control-lg" id="eesnimi" value="<%= kasutaja.eesnimi %>" placeholder="Eesnimi" required>
-            </div>
-            <div class="col-4">
-                <label for="perenimi" class="col-form-label col-form-label-lg">Perenimi</label>
-                <input type="text" name="perenimi" pattern=".{2,50}" class="form-control form-control-lg" id="perenimi" value="<%= kasutaja.perenimi %>" placeholder="Perenimi" required>
-            </div>
-            <div class="col-1">
-                <label for="volg" class="col-form-label col-form-label-lg">Kasutaja Võlg</label>
-                <input type="number" name="volg" class="form-control form-control-lg text-center" id="volg" value="<%= kasutaja.volg.toFixed(1) %>" placeholder="Volg" style="width:150px;" step="0.1" min="0" max="9999.99" required>
+	    <div class="col-8 form-row">
+            	<div class="col-2">
+                    <label for="staatus" class="col-form-label col-form-label-lg">Staatus</label>
+                    <select id="staatus" name="staatus" class="form-control form-control-lg" required="required">
+                    	<option value="" disabled="disabled">Vali Staatus</option>
+                    </select>
+            	</div>
+            	<div class="col-5">
+                    <label for="eesnimi" class="col-form-label col-form-label-lg">Eesnimi</label>
+                    <input type="text" name="eesnimi" pattern=".{2,50}" class="form-control form-control-lg" id="eesnimi" value="<%= kasutaja.eesnimi %>" placeholder="Eesnimi" required>
+            	</div>
+            	<div class="col-5">
+                    <label for="perenimi" class="col-form-label col-form-label-lg">Perenimi</label>
+                    <input type="text" name="perenimi" pattern=".{2,50}" class="form-control form-control-lg" id="perenimi" value="<%= kasutaja.perenimi %>" placeholder="Perenimi" required>
+            	</div>
+	    </div>
+            <div class="col-2">
+                <label for="volg" class="col-form-label col-form-label-lg">Võlg</label>
+                <input type="number" name="volg" class="form-control form-control-lg text-center" id="volg" value="<%= kasutaja.volg.toFixed(2) %>" placeholder="Volg" style="width:150px;" step="0.01" min="0" max="9999.99" required>
             </div>
         </div>
         <div class="form-group mb-5">
             <div class="form-check form-check-inline kast1">
-                <input class="form-check-input" name="check[]" type="checkbox" value="kinnitatud" id="kinnitatud">
+                <input class="form-check-input" name="check" type="checkbox" value="kinnitatud" id="kinnitatud">
                 <label class="form-check-label pl-2" for="kinnitatud">Kinnitatud</label>
             </div>
         </div>
