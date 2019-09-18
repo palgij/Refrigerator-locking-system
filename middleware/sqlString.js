@@ -12,6 +12,7 @@ module.exports.joogid = "SELECT * FROM (Toode INNER JOIN Toote_Kategooria ON Too
 module.exports.soogid = "SELECT * FROM (Toode INNER JOIN Toote_Kategooria ON Toode.toote_kategooria_id = Toote_Kategooria.toote_kategooria_id) INNER JOIN Toote_Kategooria_Klass ON Toote_Kategooria.toote_kategooria_klassi_id = Toote_Kategooria_Klass.toote_kategooria_klassi_id WHERE Toote_Kategooria.toote_kategooria_klassi_id = 2 ORDER BY Toode.toote_kategooria_id, Toode.nimetus";
 module.exports.ostud = "SELECT DATE_FORMAT(aeg, '%d.%m.%Y %H:%i') aeg, ostja_nimi, toote_nimi, kogus, summa, on_tasuta FROM Ost ORDER BY DATE(aeg) DESC";
 module.exports.volad = "SELECT Kasutaja_Staatus.nimetus as staatus, eesnimi, perenimi, volg FROM Kasutaja INNER JOIN Kasutaja_Staatus ON Kasutaja.kasutaja_staatuse_id = Kasutaja_Staatus.kasutaja_staatuse_id WHERE volg > 0";
+module.exports.nulliVolad = "UPDATE Kasutaja SET volg = 0 WHERE volg <> 0";
 
 // ostmine.js
 module.exports.toode1 = "SELECT * FROM Toode WHERE toote_kategooria_id = 1";

@@ -20,6 +20,10 @@ td {
      vertical-align: middle;
 }
 
+td input[type="checkbox"] {
+    margin: 0 auto;
+}
+
 tbody tr:nth-child(odd) {
     background: #DFDCE3;
 }

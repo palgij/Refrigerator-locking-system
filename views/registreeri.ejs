@@ -2,33 +2,36 @@
 
 <div class="container mt-4">
     <h1 style="text-align: center;"> Registreeri ennast kasutajaks! </h1>
-    <form class="needs-validation" action="/registreeri/<%= id %>" method="POST" style="width: 40%; margin: 30px auto;" novalidate>
-        <div class="form-group">
-            <label for="staatus" class="col-form-label col-form-label-lg">Staatus</label>
-            <select id="staatus" name="staatuse_id" class="form-control form-control-lg" required="required">
-                <option value="">Vali Staatus</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <input type="text" pattern=".{6,10}" class="form-control form-control-lg" name="coetus" placeholder="Sisesta coetus" required>
-            <div class="invalid-feedback">
-                Palun sisesta coetus, tähemärke maksimaalselt 10 ja minimaalselt 6
-            </div>
-        </div>
-        <div class="form-group">
-            <input type="text" pattern=".{2,50}" class="form-control form-control-lg" name="eesnimi" placeholder="Sisesta eesnimi" required>
-            <div class="invalid-feedback">
-                Palun sisesta eesnimi, tähemärke maksimaalselt 50 ja minimaalselt 2
-            </div>
-        </div>
-        <div class="form-group">
-            <input type="text" pattern=".{2,50}" class="form-control form-control-lg" name="perenimi" placeholder="Sisesta perenimi" required>
-            <div class="invalid-feedback">
-                Palun sisesta perenimi, tähemärke maksimaalselt 50 ja minimaalselt 2
-            </div>
-        </div>
-        <div class="row justify-content-around">
-            <div class="col-5" style="margin-right: 35px;">
+    <form class="needs-validation mt-5" action="/registreeri/<%= id %>" method="POST" novalidate>
+  	<div class="form-row justify-content-center mb-3">
+    	    <div class="col-5 form-group">
+      		<select id="staatus" name="staatuse_id" class="form-control form-control-lg" required="required">
+                    <option value="">Vali Staatus</option>
+            	</select>
+    	    </div>
+    	    <div class="col-5 form-group">
+      	    	<input type="text" pattern=".{6,10}" class="form-control form-control-lg" name="coetus" placeholder="Sisesta coetus" required>
+            	<div class="invalid-feedback">
+                    Palun sisesta coetus, tähemärke maksimaalselt 10 ja minimaalselt 6
+            	</div>
+    	    </div>
+    	</div>
+	<div class="form-row justify-content-center">
+    	    <div class="col-5 form-group">
+      		<input type="text" pattern=".{2,50}" class="form-control form-control-lg" name="eesnimi" placeholder="Sisesta eesnimi" required>
+            	<div class="invalid-feedback">
+                    Palun sisesta eesnimi, tähemärke maksimaalselt 50 ja minimaalselt 2
+            	</div>
+    	    </div>
+    	    <div class="col-5 form-group">
+      	    	<input type="text" pattern=".{2,50}" class="form-control form-control-lg" name="perenimi" placeholder="Sisesta perenimi" required>
+            	<div class="invalid-feedback">
+                    Palun sisesta perenimi, tähemärke maksimaalselt 50 ja minimaalselt 2
+            	</div>
+    	    </div>
+    	</div>
+	<div class="form-row justify-content-around mt-4">
+    	    <div class="col-5" style="margin-right: 35px;">
                 <div class="row justify-content-end">
                     <a href="/" class="btn btn-lg btn-outline-primary shadow btnBack">&laquo; Tagasi</a>
                 </div>
@@ -39,6 +42,7 @@
                 </div>
             </div>
         </div>
+    	</div>
     </form>
 </div>
 

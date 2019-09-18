@@ -33,6 +33,11 @@ router.get("/kasutajad", middleware.checkIpSessionValid, async (req, res) => {
     res.render("admin/kasutajad", {kasutajad: kasutajad});
 });
 
+router.post("/kasutajad", middleware.checkIpSessionValid, async (req, res) => {
+    await sqlFun.nulliVolad(req);
+    res.redirect("/admin/kasutajad");
+});
+
 router.post("/kasutajad/:id", middleware.checkIpSessionValid, async (req, res) => {
     let volg = parseFloat(req.body.volg).toFixed(2);
     let checkbox = req.body.check;
@@ -56,6 +61,18 @@ router.post("/kasutajad/:id", middleware.checkIpSessionValid, async (req, res) =
 router.get("/kasutajad/muuda/:id", middleware.checkIpSessionValid, async (req, res) => {
     let kasutaja = await sqlFun.getKasutaja(req.params.id, req);
     res.render("admin/muuda", {kasutaja: kasutaja[0]});
+});
+
+router.post("/kasutajad/:id/kustuta", middleware.checkIpSessionValid, async (req, res) => {
+    let sql = mysql.format("DELETE FROM Kasutaja WHERE kasutaja_id = ?", [req.params.id]);
+    try {
+        var result = await database.query(sql)
+    } catch(err) {
+        req.flash("ERROR", "Kasutaja kustutamisega tekkis viga", "/admin");
+        throw new Error(err);
+    }
+    console.log("========== Kasutaja kustutatud ==========");
+    res.redirect("/admin/kasutajad");
 });
 
 router.get("/tooted", middleware.checkIpSessionValid, async (req, res) => {
@@ -111,6 +128,18 @@ router.post("/tooted", middleware.checkIpSessionValid, async (req, res) => {
     console.log("myygi hind - " + myygi_hind);
     console.log("oma hind - " + oma_hind);
     console.log("nimetus - " + req.body.nimetus);
+    res.redirect("/admin/tooted");
+});
+
+router.post("/tooted/:id/kustuta", middleware.checkIpSessionValid, async (req, res) => {
+    let sql = mysql.format("DELETE FROM Toode WHERE toote_id = ?", [req.params.id]);
+    try {
+        var result = await database.query(sql)
+    } catch(err) {
+        req.flash("ERROR", "Toote kustutamisega tekkis viga", "/admin");
+        throw new Error(err);
+    }
+    console.log("========== Kasutaja kustutatud ==========");
     res.redirect("/admin/tooted");
 });
 

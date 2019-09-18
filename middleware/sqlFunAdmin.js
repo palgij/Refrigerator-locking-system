@@ -4,7 +4,7 @@ let database    = require("../middleware/database"),
 
 module.exports.getOstjadTop = async (req) => {
     try {
-        var result = await database.query(sqlString.topOstjad)
+        var result = await database.query(sqlString.topOstjad);
     } catch(err) {
         req.flash("ERROR", "Andmebaasist kasutajate saamisega tekkis viga", "/admin");
         throw new Error(err);
@@ -14,7 +14,7 @@ module.exports.getOstjadTop = async (req) => {
 
 module.exports.getTootedTop = async (req) => {
     try {
-        var result = await database.query(sqlString.topTooted)
+        var result = await database.query(sqlString.topTooted);
     } catch(err) {
         req.flash("ERROR", "Andmebaasist toodete saamisega tekkis viga", "/admin");
         throw new Error(err)
@@ -56,7 +56,7 @@ module.exports.getToode = async (id, req) => {
 
 module.exports.getJoogid = async (req) => {
     try {
-        var result = await database.query(sqlString.joogid)
+        var result = await database.query(sqlString.joogid);
     } catch(err) {
         req.flash("ERROR", "Andmebaasist jookide saamisega tekkis viga", "/admin");
         throw new Error(err);
@@ -66,7 +66,7 @@ module.exports.getJoogid = async (req) => {
 
 module.exports.getSoogid = async (req) => {
     try {
-        var result = await database.query(sqlString.soogid)
+        var result = await database.query(sqlString.soogid);
     } catch(err) {
         req.flash("ERROR", "Andmebaasist söökide saamisega tekkis viga", "/admin");
         throw new Error(err);
@@ -77,9 +77,9 @@ module.exports.getSoogid = async (req) => {
 module.exports.getOstud = async (req) => {
     let sql = mysql.format(sqlString.ostud);
     try {
-        var result = await database.query(sql)
+        var result = await database.query(sql);
     } catch(err) {
-        req.flash("ERROR", "Andmebaasist söökide saamisega tekkis viga", "/admin");
+        req.flash("ERROR", "Andmebaasist ostude saamisega tekkis viga", "/admin");
         throw new Error(err);
     }
     return result;
@@ -87,10 +87,22 @@ module.exports.getOstud = async (req) => {
 
 module.exports.getVolad = async (req) => {
     try {
-        var result = await database.query(sqlString.volad)
+        var result = await database.query(sqlString.volad);
     } catch(err) {
         req.flash("ERROR", "Andmebaasist võlgade saamisega tekkis viga", "/admin");
         throw new Error(err);
     }
+    return result;
+};
+
+module.exports.nulliVolad = async (req) => {
+    try {
+        var result = await database.query(sqlString.nulliVolad);
+    } catch(err) {
+        req.flash("ERROR", "Andmebaasist võlgade nullimisega tekkis viga", "/admin");
+        throw new Error(err);
+    }
+    console.log("========== NULLI VÕLAD ==========");
+    console.log(result.message);
     return result;
 };

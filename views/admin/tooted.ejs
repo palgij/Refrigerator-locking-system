@@ -1,6 +1,27 @@
 <% include partials/headerAdmin %>
 
 <div class="container text-center mt-5">
+
+    <!-- Kustuta kasutaja Modal -->
+    <div class="modal fade" id="kustuta" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+      		<div class="modal-header">
+        	    <h4 class="modal-title" id="exampleModalCenterTitle">Oled kindel, et tahad toote kustutada?</h5>
+        	    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          		<span aria-hidden="true">&times;</span>
+        	    </button>
+     		</div>
+      		<div class="modal-footer">
+             	    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tagasi</button>
+		    <form id="form2" action="" method="POST">
+         	    	<button type="submit" class="btn btn-danger">Jah, kustuta toode</button>
+      		    </form>
+       		</div>
+    	    </div>
+  	</div>
+    </div>
+
     <a class="btn btn-outline-primary btn-lg shadow mb-5" id="btnLisa" href="/admin/tooted/uus"> Lisa uus Toode</a>
     <h2>Joogid</h2>
     <table class="table table-hover table-bordered mt-4">
@@ -12,6 +33,7 @@
                 <th scope="col">Kogus</th>
                 <th scope="col">Hind</th>
                 <th scope="col">Muuda</th>
+		<th><i class="fas fa-trash-alt"></i></th>
             </tr>
         </thead>
         <tbody>
@@ -23,6 +45,11 @@
                     <td><%= jook.hetke_kogus %></td>
                     <td><%= jook.myygi_hind.toFixed(2) %>€</td>
                     <td><a href="/admin/tooted/muuda/<%= jook.toote_id %>">Muuda</a></td>
+		    <td>
+		    	<a data-toggle="modal" data-target="#kustuta" id="kustutaModal" data-id="<%= jook.toote_id %>">
+			    <i class="fas fa-trash-alt" style="color: #cc2900;"></i>
+		    	</a>
+		    </td>
                 </tr>
             <% }) %>
         </tbody>
@@ -37,6 +64,7 @@
                 <th scope="col">Kogus</th>
                 <th scope="col">Hind</th>
                 <th scope="col">Muuda</th>
+		<th><i class="fas fa-trash-alt"></i></th>
             </tr>
         </thead>
         <tbody>
@@ -48,6 +76,11 @@
                     <td><%= sook.hetke_kogus %></td>
                     <td><%= sook.myygi_hind.toFixed(2) %>€</td>
                     <td><a href="/admin/tooted/muuda/<%= sook.toote_id %>">Muuda</a></td>
+		    <td>
+		    	<a data-toggle="modal" data-target="#kustuta" id="kustutaModal" data-id="<%= sook.toote_id %>">
+			    <i class="fas fa-trash-alt" style="color: #cc2900;"></i>
+		    	</a>
+		    </td>
                 </tr>
             <% }) %>
         </tbody>
@@ -62,7 +95,13 @@
            	$(this).parent().css("background-color","#FF4141");
             }
     	})  
-    } 
+    }
+
+    
+    $(document).on("click", "#kustutaModal", function () {
+     	let id = $(this).data('id');
+	$('#form2').attr('action', '/admin/tooted/' + id + '/kustuta');
+    });
 </script>
 
 <% include partials/footer %>

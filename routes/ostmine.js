@@ -54,23 +54,26 @@ router.post("/:toode", middleware.checkUserSessionValid, async (req) => {
     let tasuta = false;
     let volg;
     let sql1 = mysql.format(sqlString.volgStaatusID, [id]);
-    let sql3 = mysql.format(sqlString.hetke_kogusNIMETUS, [toode]);
+    let sql3 = mysql.format("SELECT toote_kategooria_id FROM Toode WHERE nimetus = ?", [toode]);
 
     try {
+	let result = await database.query(sql3);
+	let kategooria = result[0].toote_kategooria_id;
+	sql3 = mysql.format(sqlString.hetke_kogusNIMETUS, [toode]);
         console.log("========== LISA SUMMA KASUTAJA VÕLGA ==========");
-        let result = await database.query(sql1);
+        result = await database.query(sql1);
         console.log("Kogus: " + kogus + " | hind: " + hind + "  |  kokku: " + summa + " | (1 == reb!) " + result[0].kasutaja_staatuse_id);
         console.log("Võlg enne: " + parseFloat(result[0].volg));
         volg = parseFloat(result[0].volg);
-        if (result[0].kasutaja_staatuse_id !== 1) {
-            volg += summa;
+        if (result[0].kasutaja_staatuse_id === 1 && (kategooria === 1 || kategooria === 2)) {
+            tasuta = true;
+            console.log("Võlg uus: " + volg + " !reb");
+        } else {
+	    volg += summa;
             console.log("Võlg uus: " + volg);
             sql1 = mysql.format(sqlString.updateVolgID, [volg, id]);
             var update = await database.query(sql1);
             console.log(update.message);
-        } else {
-            tasuta = true;
-            console.log("Võlg uus: " + volg + " !reb");
         }
 
         console.log("========== MUUDA TOOTE KOGUST ==========");
