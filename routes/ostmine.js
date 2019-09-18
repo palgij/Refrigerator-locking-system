@@ -54,7 +54,7 @@ router.post("/:toode", middleware.checkUserSessionValid, async (req) => {
     let tasuta = false;
     let volg;
     let sql1 = mysql.format(sqlString.volgStaatusID, [id]);
-    let sql3 = mysql.format("SELECT toote_kategooria_id FROM Toode WHERE nimetus = ?", [toode]);
+    let sql3 = mysql.format(sqlString.tooteKategooriaID, [toode]);
 
     try {
 	let result = await database.query(sql3);

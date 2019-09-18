@@ -28,8 +28,11 @@ module.exports.hetke_kogusNIMETUS = "SELECT hetke_kogus FROM Toode WHERE nimetus
 module.exports.updateVolgID = "UPDATE Kasutaja SET volg =? WHERE kaardi_id =?";
 module.exports.updateKogusNIMETUS = "UPDATE Toode SET hetke_kogus =? WHERE nimetus =?";
 module.exports.lisaOst = "INSERT INTO Ost (ostja_nimi, toote_nimi, kogus, summa, on_tasuta) VALUES (?, ?, ?, ?, ?)";
+module.exports.tooteKategooriaID = "SELECT toote_kategooria_id FROM Toode WHERE nimetus = ?";
 
 // admin.js
 module.exports.updateKasutaja = "UPDATE Kasutaja SET kasutaja_seisu_id = ?, kasutaja_staatuse_id = ?, eesnimi = ?, perenimi = ?, volg = ?, admin_on_kinnitanud = ? WHERE kasutaja_id = ?";
 module.exports.updateToode = "UPDATE Toode SET toote_kategooria_id = ?, nimetus = ?, hetke_kogus = ?, myygi_hind = ?, oma_hind = ? WHERE toote_id = ?";
 module.exports.insertToode = "INSERT INTO Toode (toote_kategooria_id, nimetus, hetke_kogus, myygi_hind, oma_hind) VALUES (?, ?, ?, ?, ?)";
+module.exports.deleteKasutajaID = "DELETE FROM Kasutaja WHERE kasutaja_id = ?";
+module.exports.deleteToodeID = "DELETE FROM Toode WHERE toote_id = ?";
