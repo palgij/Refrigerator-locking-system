@@ -75,7 +75,9 @@ module.exports.getSoogid = async (req) => {
 };
 
 module.exports.getOstud = async (req) => {
-    let sql = mysql.format(sqlString.ostud);
+    let sql;
+    if (req.params.page) sql = sqlString.ostud + ' LIMIT ' + (req.params.page * 50);
+    else sql = sqlString.ostud;
     try {
         var result = await database.query(sql);
     } catch(err) {

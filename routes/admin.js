@@ -129,9 +129,47 @@ router.post("/tooted/:id/kustuta", middleware.checkIpSessionValid, async (req, r
     res.redirect("/admin/tooted");
 });
 
+
+let ostudeArv;
+
+function getLenght(obj) {
+    let i = 0;
+    for (num in obj) {
+    	i++;
+    }
+    return i;
+}
+
+
 router.get("/ostud", middleware.checkIpSessionValid, async (req, res) => {
     let ostud = await sqlFun.getOstud(req);
-    res.render("admin/ostudeNimekiri", {ostud: ostud});
+    ostudeArv = getLenght(ostud);
+    let page = 1;
+    var uuedOstud = [];
+    start = 0;
+    let k = 0;
+    for (let i = start; i < start + 49; i++) {
+	if (ostud[i]) {
+	    uuedOstud[k] = ostud[i];
+	    k++;
+	} else break;
+    }
+    res.render("admin/ostudeNimekiri", {ostud: uuedOstud, numberOfPages: Math.ceil(ostudeArv / 50), currentPage: page});
+});
+
+router.get("/ostud/:page", middleware.checkIpSessionValid, async (req, res) => {
+    let ostud = await sqlFun.getOstud(req);
+    let page = parseInt(req.params.page, 10);
+    var uuedOstud = [];
+    start = (req.params.page - 1) * 50;
+    let k = 0;
+    for (let i = start; i < start + 49; i++) {
+	if (ostud[i]) {
+	    uuedOstud[k] = ostud[i];
+	    k++;
+	} else break;
+    }
+    res.render("admin/ostudeNimekiri", {ostud: uuedOstud, numberOfPages: Math.ceil(ostudeArv / 50), currentPage: page});
 });
 
 router.get("/csv", middleware.checkIpSessionValid, async (req, res) => {

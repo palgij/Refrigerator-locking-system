@@ -24,7 +24,7 @@
 
     <a class="btn btn-outline-primary btn-lg shadow mb-5" id="btnLisa" href="/admin/tooted/uus"> Lisa uus Toode</a>
     <h2>Joogid</h2>
-    <table class="table table-hover table-bordered mt-4">
+    <table class="table table-hover table-bordered mt-4 shadow">
         <thead>
             <tr>
                 <th scope="col">#</th>
@@ -33,7 +33,7 @@
                 <th scope="col">Kogus</th>
                 <th scope="col">Hind</th>
                 <th scope="col">Muuda</th>
-	        	<th><i class="fas fa-trash-alt"></i></th>
+	        <th><i class="fas fa-trash-alt"></i></th>
             </tr>
         </thead>
         <tbody>
@@ -45,17 +45,17 @@
                     <td><%= jook.hetke_kogus %></td>
                     <td><%= jook.myygi_hind.toFixed(2) %>€</td>
                     <td><a href="/admin/tooted/muuda/<%= jook.toote_id %>">Muuda</a></td>
-		            <td>
+		    <td>
                         <a data-toggle="modal" data-target="#kustuta" id="kustutaModal" data-id="<%= jook.toote_id %>">
                             <i class="fas fa-trash-alt" style="color: #cc2900;"></i>
                         </a>
-		            </td>
+		    </td>
                 </tr>
             <% }) %>
         </tbody>
     </table>
     <h2 class="mt-5">Söögid</h2>
-    <table class="table table-hover table-bordered mt-4 mb-5">
+    <table class="table table-hover table-bordered mt-4 mb-5 shadow">
         <thead>
             <tr>
                 <th scope="col">#</th>
@@ -64,7 +64,7 @@
                 <th scope="col">Kogus</th>
                 <th scope="col">Hind</th>
                 <th scope="col">Muuda</th>
-		        <th><i class="fas fa-trash-alt"></i></th>
+		<th><i class="fas fa-trash-alt"></i></th>
             </tr>
         </thead>
         <tbody>
@@ -99,7 +99,7 @@
     
     $(document).on("click", "#kustutaModal", function () {
      	let id = $(this).data('id');
-	    $('#delModal').attr('action', '/admin/tooted/' + id + '/kustuta');
+	$('#delModal').attr('action', '/admin/tooted/' + id + '/kustuta');
     });
 </script>
 
