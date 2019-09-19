@@ -64,14 +64,7 @@ router.get("/kasutajad/muuda/:id", middleware.checkIpSessionValid, async (req, r
 });
 
 router.post("/kasutajad/:id/kustuta", middleware.checkIpSessionValid, async (req, res) => {
-    let sql = mysql.format(sqlString.deleteKasutajaID, [req.params.id]);
-    try {
-        await database.query(sql)
-    } catch(err) {
-        req.flash("ERROR", "Kasutaja kustutamisega tekkis viga", "/admin");
-        throw new Error(err);
-    }
-    console.log("========== Kasutaja kustutatud ==========");
+    await sqlFun.deleteKasutaja(req);
     res.redirect("/admin/kasutajad");
 });
 
@@ -132,14 +125,7 @@ router.post("/tooted", middleware.checkIpSessionValid, async (req, res) => {
 });
 
 router.post("/tooted/:id/kustuta", middleware.checkIpSessionValid, async (req, res) => {
-    let sql = mysql.format(sqlString.deleteToodeID, [req.params.id]);
-    try {
-        await database.query(sql)
-    } catch(err) {
-        req.flash("ERROR", "Toote kustutamisega tekkis viga", "/admin");
-        throw new Error(err);
-    }
-    console.log("========== Kasutaja kustutatud ==========");
+    await sqlFun.deleteToode(req);
     res.redirect("/admin/tooted");
 });
 

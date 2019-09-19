@@ -106,3 +106,24 @@ module.exports.nulliVolad = async (req) => {
     console.log(result.message);
     return result;
 };
+module.exports.deleteKasutaja = async (req) => {
+    let sql = mysql.format(sqlString.deleteKasutajaID, [req.params.id]);
+    try {
+        await database.query(sql)
+    } catch(err) {
+        req.flash("ERROR", "Kasutaja kustutamisega tekkis viga", "/admin");
+        throw new Error(err);
+    }
+    console.log("========== Kasutaja kustutatud ==========");
+};
+
+module.exports.deleteToode = async (req) => {
+    let sql = mysql.format(sqlString.deleteToodeID, [req.params.id]);
+    try {
+        await database.query(sql)
+    } catch(err) {
+        req.flash("ERROR", "Toote kustutamisega tekkis viga", "/admin");
+        throw new Error(err);
+    }
+    console.log("========== Kasutaja kustutatud ==========");
+};
