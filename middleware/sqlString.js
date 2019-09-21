@@ -1,5 +1,5 @@
 // regularCardRead.js
-module.exports.kasutajaSeis = "SELECT kasutaja_seisu_id FROM Kasutaja WHERE kaardi_id =?";
+module.exports.kasutajaSeisKinn = "SELECT kasutaja_seisu_id, admin_on_kinnitanud FROM Kasutaja WHERE kaardi_id =?";
 module.exports.insertKasutaja = "INSERT INTO Kasutaja (kasutaja_staatuse_id, kaardi_id, eesnimi, perenimi, coetus) VALUES (?, ?, ?, ?, ?)";
 
 // sqlFunAdmin.js
