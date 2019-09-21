@@ -1,13 +1,13 @@
 let express     = require("express"),
-    database    = require("../middleware/database"),
     middleware  = require("../middleware/adminAuth"),
-    sqlFun      = require("../middleware/sqlFunAdmin"),
+    sqlFun      = require("../middleware/sqlFun"),
     sqlString   = require("../middleware/sqlString"),
     mysql       = require("mysql"),
     stringify   = require("csv-stringify"),
     router      = express.Router();
 
 let password = "admin";
+let ostudeArv;
 
 router.get("/", middleware.removeIp, (req, res) => {
     res.render("admin/adminSplash");
@@ -44,16 +44,10 @@ router.post("/kasutajad/:id", middleware.checkIpSessionValid, async (req, res) =
     let kinnitatud;
     let seisus = parseFloat(req.body.seis);
     let staatus = parseFloat(req.body.staatus);
-
     kinnitatud = !!checkbox;
     let sql = mysql.format(sqlString.updateKasutaja, [seisus, staatus, req.body.eesnimi, req.body.perenimi, volg, kinnitatud, req.params.id]);
-    try {
-        var result = await database.query(sql)
-    } catch(err) {
-        req.flash("ERROR", "Kasutaja andmete uuendamisega tekkis viga", "/admin");
-        throw new Error(err);
-    }
     console.log("========== MUUDA KASUTAJA ANDMEID ==========");
+    let result = await sqlFun.makeSqlQuery(sql, "/admin", "Kasutaja andmete uuendamisega tekkis viga", req);
     console.log(result.message);
     res.redirect("/admin/kasutajad");
 });
@@ -80,14 +74,8 @@ router.post("/tooted/:id", middleware.checkIpSessionValid, async (req, res) => {
     let myygi_hind = parseFloat(req.body.myygi_hind).toFixed(2);
     let oma_hind = parseFloat(req.body.oma_hind).toFixed(2);
     let sql = mysql.format(sqlString.updateToode, [kategooria, req.body.nimetus, kogus, myygi_hind, oma_hind, req.params.id]);
-
-    try {
-        var result = await database.query(sql)
-    } catch(err) {
-        req.flash("ERROR", "Toote andmete uuendamisega tekkis viga", "/admin");
-        throw new Error(err);
-    }
     console.log("========== MUUDA TOOTE ANDMEID ==========");
+    let result = await sqlFun.makeSqlQuery(sql, "/admin", "Toote andmete uuendamisega tekkis viga", req);
     console.log(result.message);
     res.redirect("/admin/tooted");
 });
@@ -107,14 +95,9 @@ router.post("/tooted", middleware.checkIpSessionValid, async (req, res) => {
     let myygi_hind = parseFloat(req.body.myygi_hind).toFixed(2);
     let oma_hind = parseFloat(req.body.oma_hind).toFixed(2);
     let sql = mysql.format(sqlString.insertToode, [kategooria, req.body.nimetus, kogus, myygi_hind, oma_hind]);
-
     console.log("========== LISA TOODE ANDMEBAASI ==========");
-    try {
-        await database.query(sql)
-    } catch(err) {
-        req.flash("ERROR", "Toote andmete uuendamisega tekkis viga", "/admin");
-        throw new Error(err);
-    }
+    await sqlFun.makeSqlQuery(sql, "/admin", "Toote lisamisega tekkis viga", req);
+
     console.log("Uus toode lisatud: ");
     console.log("kategooria - " + kategooria);
     console.log("kogus - " + kogus);
@@ -129,24 +112,12 @@ router.post("/tooted/:id/kustuta", middleware.checkIpSessionValid, async (req, r
     res.redirect("/admin/tooted");
 });
 
-
-let ostudeArv;
-
-function getLenght(obj) {
-    let i = 0;
-    for (num in obj) {
-    	i++;
-    }
-    return i;
-}
-
-
 router.get("/ostud", middleware.checkIpSessionValid, async (req, res) => {
     let ostud = await sqlFun.getOstud(req);
-    ostudeArv = getLenght(ostud);
+    ostudeArv = getLength(ostud);
     let page = 1;
-    var uuedOstud = [];
-    start = 0;
+    let uuedOstud = [];
+    let start = 0;
     let k = 0;
     for (let i = start; i < start + 49; i++) {
 	if (ostud[i]) {
@@ -160,8 +131,8 @@ router.get("/ostud", middleware.checkIpSessionValid, async (req, res) => {
 router.get("/ostud/:page", middleware.checkIpSessionValid, async (req, res) => {
     let ostud = await sqlFun.getOstud(req);
     let page = parseInt(req.params.page, 10);
-    var uuedOstud = [];
-    start = (req.params.page - 1) * 50;
+    let uuedOstud = [];
+    let start = (req.params.page - 1) * 50;
     let k = 0;
     for (let i = start; i < start + 49; i++) {
 	if (ostud[i]) {
@@ -183,3 +154,11 @@ router.get("/csv", middleware.checkIpSessionValid, async (req, res) => {
 });
 
 module.exports = router;
+
+function getLength(obj) {
+    let i = 0;
+    for (num in obj) {
+        i++;
+    }
+    return i;
+}

@@ -1,7 +1,7 @@
 let nodemailer	= require("nodemailer");
 
 module.exports.sendMail = (subject, req, html) => {
-    var transporter = nodemailer.createTransport({
+    let transporter = nodemailer.createTransport({
  	service: 'gmail',
  	auth: {
             user: "ollesusteem@gmail.com",
@@ -24,4 +24,4 @@ module.exports.sendMail = (subject, req, html) => {
 	    req.flash("SUCCESS", "Registreerimine õnnestus. Oota Bibendi kinnitust.", "/");
 	}
     });	
-}
+};

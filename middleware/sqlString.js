@@ -1,8 +1,9 @@
 // regularCardRead.js
 module.exports.kasutajaSeisKinn = "SELECT kasutaja_seisu_id, admin_on_kinnitanud FROM Kasutaja WHERE kaardi_id =?";
 module.exports.insertKasutaja = "INSERT INTO Kasutaja (kasutaja_staatuse_id, kaardi_id, eesnimi, perenimi, coetus) VALUES (?, ?, ?, ?, ?)";
+module.exports.updateKinnitatudKAARDIID = "UPDATE Kasutaja SET admin_on_kinnitanud = 1 WHERE kaardi_id = ?";
 
-// sqlFunAdmin.js
+// sqlFun.js
 module.exports.topOstjad = "SELECT nimetus, eesnimi, perenimi, volg FROM Kasutaja INNER JOIN Kasutaja_Staatus ON Kasutaja.kasutaja_staatuse_id = Kasutaja_Staatus.kasutaja_staatuse_id ORDER BY volg DESC LIMIT 10";
 module.exports.topTooted = "SELECT toote_nimi, COUNT(toote_nimi) AS arv FROM Ost WHERE aeg BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW() GROUP BY toote_nimi ORDER BY COUNT(toote_nimi) DESC, toote_nimi LIMIT 10";
 module.exports.kasutajad = "SELECT kasutaja_id, eesnimi, perenimi, volg, coetus, admin_on_kinnitanud, Kasutaja_Staatus.nimetus AS staatus, Kasutaja_Seis.nimetus AS seisuNim FROM Kasutaja INNER JOIN Kasutaja_Seis ON Kasutaja.kasutaja_seisu_id = Kasutaja_Seis.kasutaja_seisu_id INNER JOIN Kasutaja_Staatus ON Kasutaja.kasutaja_staatuse_id = Kasutaja_Staatus.kasutaja_staatuse_id ORDER BY coetus DESC";
