@@ -61,7 +61,7 @@ module.exports.deleteToode = async (req) => {
     console.log("========== Toode kustutatud ==========");
 };
 
-module.exports.makeSqlQuery = async (sql, errorUrl, message, req) => {
+async function makeSqlQuery (sql, errorUrl, message, req) {
     let result;
     try {
         result = await database.query(sql)
@@ -70,4 +70,6 @@ module.exports.makeSqlQuery = async (sql, errorUrl, message, req) => {
         throw new Error(err);
     }
     return result;
-};
+}
+
+module.exports.makeSqlQuery = makeSqlQuery;
