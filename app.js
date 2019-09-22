@@ -46,7 +46,7 @@ const flashNotificationOptions = {
                     item.alertClass = 'alert-success';
                     break;
                 case 'SUCCESS2':
-                    item.type = 'Operatsioon õnnestus!';
+                    item.type = 'Registreerimine õnnestus!';
                     item.alertClass = 'alert-success';
                     break;
                 case 'WARN':
