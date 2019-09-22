@@ -32,7 +32,7 @@
 }
 
 .calcTable {
-    margin: 5px auto 0px auto;
+    margin: 5px auto 0 auto;
 }
 
 .btnBuy {
@@ -75,8 +75,8 @@
     border-color: #D85452;
 }
 
-#pass {
-    
+.alert-warning {
+    color: #FFF;
+    background-color: #FFBB33;
+    border-color: #FFBB33;
 }
-
-

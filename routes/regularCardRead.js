@@ -26,9 +26,9 @@ router.get("/kaart", (req, res) => {
                 res.redirect("/tooted/" + serial);
             } else {
                 if (result[0].admin_on_kinnitanud === 0)
-		    req.flash("ERROR", "Bibendi ei ole sind kinnitanud! Võta Bibendiga ühendust.", "/");
+		    req.flash("WARN", "Bibendi ei ole sind kinnitanud! Võta Bibendiga ühendust.", "/");
 		else
-		    req.flash("ERROR", "Väljalangenu!", "/");
+		    req.flash("WARN", "Väljalangenu!", "/");
             }
         } else {
             res.redirect("/registreeri/" + serial);
@@ -47,7 +47,7 @@ router.post("/kinnitaKasutaja/:id", async (req) => {
 
     await sqlFun.makeSqlQuery(sql, "/", "Kasutaja uuendamisega tekkis viga", req);
     console.log("Kasutaja kinnitatud, kaardiId: " + id);
-    req.flash("SUCCESS", "Kasutaja on kinnitatud!", "/");
+    req.flash("SUCCESS2", "Kasutaja on kinnitatud!", "/");
 });
 
 router.post("/registreeri/:id", async (req) => {

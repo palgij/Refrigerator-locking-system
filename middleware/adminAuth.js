@@ -16,7 +16,7 @@ middlewareObj.addIp = ip => {
 middlewareObj.checkIpSessionValid = (req, res, next) => {
     let ip = req.clientIp;
     if (getIndexOfIp(ip) === -1) {
-        req.flash("ERROR", "Selle IP sessioon on aegunud!", "/admin");
+        req.flash("WARN", "Selle IP sessioon on aegunud!", "/admin");
     } else {
 	    clearTimeout(middlewareObj.IPs[getIndexOfIp(ip)].timeout);
 	    removeAndLog(ip, false);

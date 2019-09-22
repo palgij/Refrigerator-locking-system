@@ -17,11 +17,11 @@ module.exports.sendMail = (subject, req, html) => {
     transporter.sendMail(mailOptions, (err, info) => {
    	if(err) {
      	    console.log(err);
-	    req.flash("ERROR", "Meili saatmine ebaõnnestus. Võta Bibendiga ühendust.", "/");
+	    req.flash("WARN", "Meili saatmine ebaõnnestus. Võta Bibendiga ühendust.", "/");
 	}
    	else {
      	    console.log(info);
-	    req.flash("SUCCESS", "Registreerimine õnnestus. Oota Bibendi kinnitust.", "/");
+	    req.flash("SUCCESS2", "Registreerimine õnnestus. Oota Bibendi kinnitust.", "/");
 	}
     });	
 };

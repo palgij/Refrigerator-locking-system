@@ -45,6 +45,14 @@ const flashNotificationOptions = {
                     item.type = 'Edukas ost!';
                     item.alertClass = 'alert-success';
                     break;
+                case 'SUCCESS2':
+                    item.type = 'Operatsioon õnnestus!';
+                    item.alertClass = 'alert-success';
+                    break;
+                case 'WARN':
+                    item.type = 'Tähelepanu!';
+                    item.alertClass = 'alert-warning';
+                    break;
                 case 'ERROR':
                     item.type = 'Tekkis viga';
                     item.alertClass = 'alert-danger';
