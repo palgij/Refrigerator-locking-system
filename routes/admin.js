@@ -4,6 +4,7 @@ let express     = require("express"),
     sqlString   = require("../middleware/sqlString"),
     mysql       = require("mysql"),
     stringify   = require("csv-stringify"),
+    gpio	= require("../middleware/gpio"),
     router      = express.Router();
 
 let password = "admin";
@@ -20,6 +21,13 @@ router.post("/", (req, res) => {
     } else {
 	    req.flash("ERROR", "Vale salasõna või kasutaja", "/admin");
     }
+});
+
+router.get("/toggleLukk", middleware.checkIpSessionValid, async (req, res) => {
+    // TODO tee loogika uuesti kui läheb päriselt laivi!
+    gpio.toggleLock();
+    let splitted = req.headers.referer.split("3000");
+    res.redirect(splitted[1]);
 });
 
 router.get("/kodu", middleware.checkIpSessionValid, async (req, res) => {
@@ -147,10 +155,20 @@ router.get("/csv", middleware.checkIpSessionValid, async (req, res) => {
     let ostud = await sqlFun.getVolad(req);
     console.log(ostud);
     res.setHeader('Content-Type', 'text/csv');
-    res.setHeader('Content-Disposition', 'attachment; filename=\"' + 'download-' + Date.now() + '.csv\"');
+    res.setHeader('Content-Disposition', 'attachment; filename=\"' + 'võlad-' + Date.now() + '.csv\"');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Pragma', 'no-cache');
     stringify(ostud, { header: true }).pipe(res);
+});
+
+router.post("/ostudeCSV", middleware.checkIpSessionValid, async (req, res) => {
+    let tooted = await sqlFun.getTooted(req);
+    console.log(tooted);
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename=\"' + 'ostud-' + req.body.start + '-' + req.body.end + '.csv\"');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Pragma', 'no-cache');
+    stringify(tooted, { header: true }).pipe(res);
 });
 
 module.exports = router;

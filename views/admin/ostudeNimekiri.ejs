@@ -3,6 +3,33 @@
 <div class="container text-center mt-5">
     <h1> Ostud </h1>
 
+    <form class="mt-4 mb-4" action="/admin/ostudeCSV" method="POST">
+	<div class="form-row justify-content-center">
+	    <div class="col-2">
+		<div class="row justify-content-end mr-3 mt-1">
+		    <div class="col-1">
+			<button type="button" class="btn btn-outline-dark btn-sm" data-toggle="tooltip" data-placement="top" id="pops" title="Kuupäeva formaat yyyy/mm/dd">
+			    <i class="fas fa-info-circle"></i>
+			</button>
+		    </div>
+		</div>
+	    </div>
+       	    <div class="col-2">
+		<input type="text" class="form-control shadow-sm" name="start" id="start" placeholder="Alguse kuupäev" />
+	    </div>
+	    <div class="col-2">
+    		<input type="text" class="form-control shadow-sm" name="end" id="end" placeholder="Lõpu kuupäev" />
+	    </div>
+	    <div class="col-2">
+		<div class="row">
+		    <div class="col-8">
+	    	    	<button type="submit" class="btn btn-outline-primary btn-md shadow-sm">Ostud CSV</button>
+		    </div>
+		</div>
+	    </div>
+    	</div>
+    </form>
+
     <% if (numberOfPages) { %>
 	<form id="pageForm" action="" method="GET"> 
     	    <div class="btn-group mt-3 shadow" role="group">
@@ -51,6 +78,12 @@
 	$("#pageForm").attr("action", "/admin/ostud/" + page);
 	$("#pageForm").submit();
     }
+
+    $(function () {
+  	$('#pops').tooltip({
+    	container: 'body'
+    })
+})
 
 </script>
 

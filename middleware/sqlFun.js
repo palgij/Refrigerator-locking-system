@@ -61,6 +61,11 @@ module.exports.deleteToode = async (req) => {
     console.log("========== Toode kustutatud ==========");
 };
 
+module.exports.getTooted = async (req) => {
+    let sql = mysql.format(sqlString.tootedAEG, [req.body.start, req.body.end]);
+    return await makeSqlQuery(sql, "/admin", "Andmebaasist toodete saamisega tekkis viga", req);
+};
+
 async function makeSqlQuery (sql, errorUrl, message, req) {
     let result;
     try {

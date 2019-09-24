@@ -20,7 +20,6 @@ module.exports.sendMail = (subject, req, html) => {
 	    req.flash("WARN", "Meili saatmine ebaõnnestus. Võta Bibendiga ühendust.", "/");
 	}
    	else {
-     	    console.log(info);
 	    req.flash("SUCCESS2", "Oota Bibendi kinnitust.", "/");
 	}
     });	

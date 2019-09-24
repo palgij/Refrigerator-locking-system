@@ -10,33 +10,44 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     </head>
     <body>
-        <nav class="navbar navbar-expand navbar-light bg-light" style="font-size: 20px;">
-	        <div class="container">
-                <a class="navbar-brand mr-4" href="/admin/kodu">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="font-size: 20px;">
+	    <div class="container">
+            	<a class="navbar-brand mr-4" href="/admin/kodu">
                     <i class="fas fa-home "></i>
                     Admin
                 </a>
-                <ul class="navbar-nav mr-auto">
-		            <li class="nav-item mr-4">
-                        <a class="nav-link" href="/admin/kasutajad">Kasutajad</a>
-		            </li>
-		            <li class="nav-item mr-4">
-                        <a class="nav-link" href="/admin/tooted">Tooted</a>
-		            </li>
-		            <li class="nav-item mr-4">
-                        <a class="nav-link" href="/admin/ostud">Ostude Nimekiri</a>
-		            </li>
-                    <li class="nav-item mr-4">
-                        <a class="nav-link" href="/admin/csv">Võlad</a>
-		            </li>
-                </ul>
-                <ul class="navbar-nav mr-right">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin">
-                            Välju
-                            <i class="fas fa-sign-out-alt"></i>
-                        </a>
-		            </li>
-                </ul>
- 	        </div>
-	    </nav>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    		    <span class="navbar-toggler-icon"></span>
+  		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+		    	<li class="nav-item mr-4">
+                    	    <a class="nav-link" href="/admin/kasutajad">Kasutajad</a>
+		    	</li>
+		    	<li class="nav-item mr-4">
+                    	    <a class="nav-link" href="/admin/tooted">Tooted</a>
+		    	</li>
+		    	<li class="nav-item mr-4">
+                    	    <a class="nav-link" href="/admin/ostud">Ostude Nimekiri</a>
+		    	</li>
+                    	<li class="nav-item mr-4">
+                    	    <a class="nav-link" href="/admin/csv">Võlad</a>
+		    	</li>
+                    </ul>
+                    <ul class="navbar-nav mr-right">
+		    	<li class="nav-item mr-4">
+                    	    <a class="nav-link" href="/admin/toggleLukk">
+			    	<i class="fas fa-lock"></i>
+			    	Lukk
+			    </a>
+		    	</li>
+                    	<li class="nav-item">
+                    	    <a class="nav-link" href="/admin">
+                            	Välju
+                            	<i class="fas fa-sign-out-alt"></i>
+                            </a>
+		    	</li>
+                    </ul>
+		</div>
+	    </div>
+	</nav>
