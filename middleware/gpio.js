@@ -25,4 +25,4 @@ module.exports.toggleLock = () => {
 	rpio.close(7);
 	opened = false;
     }
-}
+};

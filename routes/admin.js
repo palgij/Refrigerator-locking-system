@@ -23,11 +23,11 @@ router.post("/", (req, res) => {
     }
 });
 
-router.get("/toggleLukk", middleware.checkIpSessionValid, async (req, res) => {
+router.get("/toggleLukk", middleware.checkIpSessionValid, (req, res) => {
     // TODO tee loogika uuesti kui läheb päriselt laivi!
     gpio.toggleLock();
-    let splitted = req.headers.referer.split("3000");
-    res.redirect(splitted[1]);
+    let split = req.headers.referer.split("3000");
+    res.redirect(split[1]);
 });
 
 router.get("/kodu", middleware.checkIpSessionValid, async (req, res) => {

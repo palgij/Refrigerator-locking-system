@@ -2,17 +2,15 @@ let database    = require("../middleware/database"),
     mysql       = require("mysql"),
     sqlString   = require("../middleware/sqlString");
 
-module.exports.getOstjadTop = async (req) => {
-    return await makeSqlQuery(sqlString.topOstjad, "/admin", "Andmebaasist kasutajate saamisega tekkis viga", req);
-};
+module.exports.getOstjadTop = async (req) =>
+    await makeSqlQuery(sqlString.topOstjad, "/admin", "Andmebaasist kasutajate saamisega tekkis viga", req);
 
-module.exports.getTootedTop = async (req) => {
-    return await makeSqlQuery(sqlString.topTooted, "/admin", "Andmebaasist toodete saamisega tekkis viga", req);
-};
+module.exports.getTootedTop = async (req) =>
+    await makeSqlQuery(sqlString.topTooted, "/admin", "Andmebaasist toodete saamisega tekkis viga", req);
 
-module.exports.getKasutajad = async (req) => {
-    return await makeSqlQuery(sqlString.kasutajad, "/admin", "Andmebaasist kasutajate saamisega tekkis viga", req);
-};
+module.exports.getKasutajad = async (req) =>
+    await makeSqlQuery(sqlString.kasutajad, "/admin", "Andmebaasist kasutajate saamisega tekkis viga", req);
+
 
 module.exports.getKasutaja = async (id, req) => {
     let sql = mysql.format(sqlString.kasutajaID, [id]);
@@ -24,13 +22,11 @@ module.exports.getToode = async (id, req) => {
     return await makeSqlQuery(sql, "/admin", "Andmebaasist toote saamisega tekkis viga", req);
 };
 
-module.exports.getJoogid = async (req) => {
-    return await makeSqlQuery(sqlString.joogid, "/admin", "Andmebaasist jookide saamisega tekkis viga", req);
-};
+module.exports.getJoogid = async (req) =>
+    await makeSqlQuery(sqlString.joogid, "/admin", "Andmebaasist jookide saamisega tekkis viga", req);
 
-module.exports.getSoogid = async (req) => {
-    return await makeSqlQuery(sqlString.soogid, "/admin", "Andmebaasist söökide saamisega tekkis viga", req);
-};
+module.exports.getSoogid = async (req) =>
+    await makeSqlQuery(sqlString.soogid, "/admin", "Andmebaasist söökide saamisega tekkis viga", req);
 
 module.exports.getOstud = async (req) => {
     let sql;
@@ -39,9 +35,9 @@ module.exports.getOstud = async (req) => {
     return await makeSqlQuery(sql, "/admin", "Andmebaasist ostude saamisega tekkis viga", req);
 };
 
-module.exports.getVolad = async (req) => {
-    return await makeSqlQuery(sqlString.volad, "/admin", "Andmebaasist võlgade saamisega tekkis viga", req);
-};
+module.exports.getVolad = async (req) =>
+    await makeSqlQuery(sqlString.volad, "/admin", "Andmebaasist võlgade saamisega tekkis viga", req);
+
 
 module.exports.nulliVolad = async (req) => {
     console.log("========== NULLI VÕLAD ==========");
@@ -49,6 +45,7 @@ module.exports.nulliVolad = async (req) => {
     console.log(result.message);
     return result;
 };
+
 module.exports.deleteKasutaja = async (req) => {
     let sql = mysql.format(sqlString.deleteKasutajaID, [req.params.id]);
     await makeSqlQuery(sql, "/admin", "Kasutaja kustutamisega tekkis viga", req);
