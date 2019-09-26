@@ -8,7 +8,7 @@
 	    <div class="col-2">
 		<div class="row justify-content-end mr-3 mt-1">
 		    <div class="col-1">
-			<button type="button" class="btn btn-outline-dark btn-sm" data-toggle="tooltip" data-placement="top" id="pops" title="Kuupäeva formaat yyyy/mm/dd">
+			<button type="button" class="btn btn-sm" data-toggle="tooltip" data-placement="top" id="pops" title="Kuupäeva formaat yyyy/mm/dd">
 			    <i class="fas fa-info-circle"></i>
 			</button>
 		    </div>
@@ -30,7 +30,7 @@
     	</div>
     </form>
 
-    <% if (numberOfPages) { %>
+    <% if (numberOfPages > 1) { %>
 	<form id="pageForm" action="" method="GET"> 
     	    <div class="btn-group mt-3 shadow" role="group">
 	    	<% for (let i = 0; i < numberOfPages; i++) { %>

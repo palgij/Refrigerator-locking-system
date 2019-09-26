@@ -1,0 +1,51 @@
+<% include partials/headerAdmin %>
+
+<div class="container text-center mt-5">
+    <h1>Lao Muutused</h1>
+
+    <% if (numberOfPages > 1) { %>
+	<form id="pageForm" action="" method="GET"> 
+    	    <div class="btn-group mt-3 shadow" role="group">
+	    	<% for (let i = 0; i < numberOfPages; i++) { %>
+		    <% if (i + 1 === currentPage) {%>
+		    	<button type="button" onClick="submitForm('<%= i + 1 %>')" class="btn btn-secondary" style="background: #596269;"><%= i + 1 %></button>
+		    <% } else { %>
+		    	<button type="button" onClick="submitForm('<%= i + 1 %>')" class="btn btn-secondary"><%= i + 1 %></button>
+		    <% } %>
+	    	<% } %>
+    	    </div>
+	</form>
+    <% } %>
+
+    <table class="table table-hover table-bordered mt-4 mb-5 shadow">
+        <thead>
+            <tr>
+                <th scope="col">Aeg</th>
+                <th scope="col">Toote nimetus</th>
+                <th scope="col">Koguse muutus</th>
+                <th scope="col">Tegevus</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% muutused.forEach((muutus) => { %>
+                <tr>
+                    <td> <%= muutus.aeg %> </td>
+                    <td> <%= muutus.toote_nimi %> </td>
+                    <td> <%= muutus.kogus %> </td>
+                    <td> <%= muutus.tegevus %> </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>
+
+<script>
+
+    function submitForm(page) {
+	$("#pageForm").attr("action", "/admin/muutused/ladu/" + page);
+	$("#pageForm").submit();
+    }
+
+</script>
+
+<% include partials/footer %>

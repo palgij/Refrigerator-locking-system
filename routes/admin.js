@@ -9,6 +9,8 @@ let express     = require("express"),
 
 let password = "admin";
 let ostudeArv;
+let muutusteArvKasutajad;
+let muutusteArvLadu;
 
 router.get("/", middleware.removeIp, (req, res) => {
     res.render("admin/adminSplash");
@@ -123,17 +125,15 @@ router.post("/tooted/:id/kustuta", middleware.checkIpSessionValid, async (req, r
 router.get("/ostud", middleware.checkIpSessionValid, async (req, res) => {
     let ostud = await sqlFun.getOstud(req);
     ostudeArv = getLength(ostud);
-    let page = 1;
     let uuedOstud = [];
-    let start = 0;
     let k = 0;
-    for (let i = start; i < start + 49; i++) {
+    for (let i = 0; i <= 49; i++) {
 	if (ostud[i]) {
 	    uuedOstud[k] = ostud[i];
 	    k++;
 	} else break;
     }
-    res.render("admin/ostudeNimekiri", {ostud: uuedOstud, numberOfPages: Math.ceil(ostudeArv / 50), currentPage: page});
+    res.render("admin/ostudeNimekiri", {ostud: uuedOstud, numberOfPages: Math.ceil(ostudeArv / 50), currentPage: 1});
 });
 
 router.get("/ostud/:page", middleware.checkIpSessionValid, async (req, res) => {
@@ -169,6 +169,64 @@ router.post("/ostudeCSV", middleware.checkIpSessionValid, async (req, res) => {
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Pragma', 'no-cache');
     stringify(tooted, { header: true }).pipe(res);
+});
+
+router.get("/muutused/ladu", middleware.checkIpSessionValid, async (req, res) => {
+    let muutused = await sqlFun.getToodeteMuutused(req); // LISA SEE SQLSTRINGI
+    muutusteArvLadu = getLength(muutused);
+    let uuedMuutused = [];
+    let k = 0;
+    for (let i = 0; i <= 49; i++) {
+	if (muutused[i]) {
+	    uuedMuutused[k] = muutused[i];
+	    k++;
+	} else break;
+    }
+    res.render("admin/laoMuutused", {muutused: uuedMuutused, numberOfPages: Math.ceil(muutusteArvLadu / 50), currentPage: 1});
+});
+
+router.get("/muutused/ladu/:page", middleware.checkIpSessionValid, async (req, res) => {
+    let muutused = await sqlFun.getToodeteMuutused(req);
+    let page = parseInt(req.params.page, 10);
+    let uuedMuutused = [];
+    let start = (req.params.page - 1) * 50;
+    let k = 0;
+    for (let i = start; i < start + 49; i++) {
+	if (muutused[i]) {
+	    uuedMuutused[k] = muutused[i];
+	    k++;
+	} else break;
+    }
+    res.render("admin/laoMuutused", {muutused: uuedMuutused, numberOfPages: Math.ceil(muutusteArvLadu / 50), currentPage: page});
+});
+
+router.get("/muutused/kasutajad", middleware.checkIpSessionValid, async (req, res) => {
+    let muutused = await sqlFun.getKasutajateMuutused(req);
+    muutusteArvKasutajad = getLength(muutused);
+    let uuedMuutused = [];
+    let k = 0;
+    for (let i = 0; i <= 49; i++) {
+	if (muutused[i]) {
+	    uuedMuutused[k] = muutused[i];
+	    k++;
+	} else break;
+    }
+    res.render("admin/kasutajateMuutused", {muutused: uuedMuutused, numberOfPages: Math.ceil(muutusteArvKasutajad / 50), currentPage: 1});
+});
+
+router.get("/muutused/kasutajad/:page", middleware.checkIpSessionValid, async (req, res) => {
+    let muutused = await sqlFun.getKasutajateMuutused(req); // LISA SEE SQLSTRINGI
+    let page = parseInt(req.params.page, 10);
+    let uuedMuutused = [];
+    let start = (req.params.page - 1) * 50;
+    let k = 0;
+    for (let i = start; i < start + 49; i++) {
+	if (muutused[i]) {
+	    uuedMuutused[k] = muutused[i];
+	    k++;
+	} else break;
+    }
+    res.render("admin/kasutajateMuutused", {muutused: uuedMuutused, numberOfPages: Math.ceil(muutusteArvKasutajad / 50), currentPage: page});
 });
 
 module.exports = router;

@@ -74,4 +74,18 @@ async function makeSqlQuery (sql, errorUrl, message, req) {
     return result;
 }
 
+module.exports.getToodeteMuutused = async (req) => {
+    let sql;
+    if (req.params.page) sql = sqlString.toodeteMuutused + ' LIMIT ' + (req.params.page * 50);
+    else sql = sqlString.toodeteMuutused;
+    return await makeSqlQuery(sql, "/admin", "Andmebaasist toodete muutuste saamisega tekkis viga", req);
+};
+
+module.exports.getKasutajateMuutused = async (req) => {
+    let sql;
+    if (req.params.page) sql = sqlString.kasutajateMuutused + ' LIMIT ' + (req.params.page * 50);
+    else sql = sqlString.kasutajateMuutused;
+    return await makeSqlQuery(sql, "/admin", "Andmebaasist kasutajate muutuste saamisega tekkis viga", req);
+};
+
 module.exports.makeSqlQuery = makeSqlQuery;
