@@ -31,7 +31,7 @@
                 <tr>
                     <td> <%= muutus.aeg %> </td>
                     <td> <%= muutus.toote_nimi %> </td>
-                    <td> <%= muutus.kogus %> </td>
+                    <td> <% if (muutus.kogus > 0) { %>+<% } %><%= muutus.kogus %></td>
                     <td> <%= muutus.tegevus %> </td>
                 </tr>
             <% }) %>

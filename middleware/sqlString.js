@@ -11,12 +11,12 @@ module.exports.kasutajaID = "SELECT * FROM Kasutaja WHERE kasutaja_id =?";
 module.exports.toodeID = "SELECT * FROM (Toode INNER JOIN Toote_Kategooria ON Toode.toote_kategooria_id = Toote_Kategooria.toote_kategooria_id) INNER JOIN Toote_Kategooria_Klass ON Toote_Kategooria.toote_kategooria_klassi_id = Toote_Kategooria_Klass.toote_kategooria_klassi_id WHERE Toode.toote_id = ?";
 module.exports.joogid = "SELECT * FROM (Toode INNER JOIN Toote_Kategooria ON Toode.toote_kategooria_id = Toote_Kategooria.toote_kategooria_id) INNER JOIN Toote_Kategooria_Klass ON Toote_Kategooria.toote_kategooria_klassi_id = Toote_Kategooria_Klass.toote_kategooria_klassi_id WHERE Toote_Kategooria.toote_kategooria_klassi_id = 1 ORDER BY Toode.toote_kategooria_id, Toode.nimetus";
 module.exports.soogid = "SELECT * FROM (Toode INNER JOIN Toote_Kategooria ON Toode.toote_kategooria_id = Toote_Kategooria.toote_kategooria_id) INNER JOIN Toote_Kategooria_Klass ON Toote_Kategooria.toote_kategooria_klassi_id = Toote_Kategooria_Klass.toote_kategooria_klassi_id WHERE Toote_Kategooria.toote_kategooria_klassi_id = 2 ORDER BY Toode.toote_kategooria_id, Toode.nimetus";
-module.exports.ostud = "SELECT DATE_FORMAT(aeg, '%d.%m.%Y %H:%i') aeg, ostja_nimi, toote_nimi, kogus, summa, on_tasuta FROM Ost ORDER BY DATE(aeg) DESC";
+module.exports.ostud = "SELECT DATE_FORMAT(aeg, '%d.%m.%Y %H:%i') aeg, ostja_nimi, toote_nimi, kogus, summa, on_tasuta FROM Ost ORDER BY aeg DESC";
 module.exports.volad = "SELECT Kasutaja_Staatus.nimetus as staatus, eesnimi, perenimi, volg FROM Kasutaja INNER JOIN Kasutaja_Staatus ON Kasutaja.kasutaja_staatuse_id = Kasutaja_Staatus.kasutaja_staatuse_id WHERE volg > 0";
 module.exports.nulliVolad = "UPDATE Kasutaja SET volg = 0 WHERE volg <> 0";
 module.exports.tootedAEG = "SELECT aeg, ostja_nimi, toote_nimi, kogus, summa, on_tasuta FROM Ost WHERE aeg BETWEEN ? and ?";
-module.exports.toodeteMuutused = "SELECT DATE_FORMAT(aeg, '%d.%m.%Y %H:%i') aeg, toote_nimi, kogus, tegevus FROM Toodete_Muutused ORDER BY DATE(aeg) DESC";
-module.exports.kasutajateMuutused = "SELECT DATE_FORMAT(aeg, '%d.%m.%Y %H:%i') aeg, kasutaja_nimi, tegevus, muudetud FROM Kasutajate_Muutused ORDER BY DATE(aeg) DESC";
+module.exports.toodeteMuutused = "SELECT DATE_FORMAT(aeg, '%d.%m.%Y %H:%i') aeg, toote_nimi, kogus, tegevus FROM Toodete_Muutused ORDER BY aeg DESC";
+module.exports.kasutajateMuutused = "SELECT DATE_FORMAT(aeg, '%d.%m.%Y %H:%i') aeg, kasutaja_nimi, tegevus, muudetud FROM Kasutajate_Muutused ORDER BY aeg DESC";
 
 // ostmine.js
 module.exports.toode1 = "SELECT * FROM Toode WHERE toote_kategooria_id = 1";
@@ -33,6 +33,7 @@ module.exports.updateVolgID = "UPDATE Kasutaja SET volg =? WHERE kaardi_id =?";
 module.exports.updateKogusNIMETUS = "UPDATE Toode SET hetke_kogus =? WHERE nimetus =?";
 module.exports.lisaOst = "INSERT INTO Ost (ostja_nimi, toote_nimi, kogus, summa, on_tasuta) VALUES (?, ?, ?, ?, ?)";
 module.exports.tooteKategooriaID = "SELECT toote_kategooria_id FROM Toode WHERE nimetus = ?";
+module.exports.kasutajaInfID = "SELECT nimetus, eesnimi, perenimi FROM Kasutaja INNER JOIN Kasutaja_Staatus ON Kasutaja.kasutaja_staatuse_id = Kasutaja_Staatus.kasutaja_staatuse_id WHERE kaardi_id = ?";
 
 // admin.js
 module.exports.updateKasutaja = "UPDATE Kasutaja SET kasutaja_seisu_id = ?, kasutaja_staatuse_id = ?, eesnimi = ?, perenimi = ?, volg = ?, admin_on_kinnitanud = ? WHERE kasutaja_id = ?";
@@ -40,3 +41,8 @@ module.exports.updateToode = "UPDATE Toode SET toote_kategooria_id = ?, nimetus 
 module.exports.insertToode = "INSERT INTO Toode (toote_kategooria_id, nimetus, hetke_kogus, myygi_hind, oma_hind) VALUES (?, ?, ?, ?, ?)";
 module.exports.deleteKasutajaID = "DELETE FROM Kasutaja WHERE kasutaja_id = ?";
 module.exports.deleteToodeID = "DELETE FROM Toode WHERE toote_id = ?";
+module.exports.insertTooteMuutus = "INSERT INTO Toodete_Muutused (toote_nimi, kogus, tegevus) VALUES (?, ?, ?)";
+module.exports.insertKasutajaMuutus = "INSERT INTO Kasutajate_Muutused (kasutaja_nimi, tegevus, muudetud) VALUES (?, ?, ?)";
+module.exports.kasutajaNimiID = "SELECT nimetus, eesnimi, perenimi FROM Kasutaja INNER JOIN Kasutaja_Staatus ON Kasutaja.kasutaja_staatuse_id = Kasutaja_Staatus.kasutaja_staatuse_id WHERE kasutaja_id = ?";
+module.exports.staatusNimetusID = "SELECT nimetus FROM Kasutaja_Staatus WHERE kasutaja_staatuse_id = ?";
+module.exports.tooteNimetusID = "SELECT nimetus, hetke_kogus FROM Toode WHERE toote_id = ?";
