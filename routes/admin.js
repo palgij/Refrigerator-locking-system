@@ -172,7 +172,7 @@ router.post("/ostudeCSV", middleware.checkIpSessionValid, async (req, res) => {
 });
 
 router.get("/muutused/ladu", middleware.checkIpSessionValid, async (req, res) => {
-    let muutused = await sqlFun.getToodeteMuutused(req); // LISA SEE SQLSTRINGI
+    let muutused = await sqlFun.getToodeteMuutused(req);
     muutusteArvLadu = getLength(muutused);
     let uuedMuutused = [];
     let k = 0;
@@ -187,7 +187,7 @@ router.get("/muutused/ladu", middleware.checkIpSessionValid, async (req, res) =>
 
 router.get("/muutused/ladu/:page", middleware.checkIpSessionValid, async (req, res) => {
     let muutused = await sqlFun.getToodeteMuutused(req);
-    let page = parseInt(req.params.page, 10);
+    let page = parseInt(req.params.page, 10); //TODO mitmes kohas kasutatakse, tee FUNIKS
     let uuedMuutused = [];
     let start = (req.params.page - 1) * 50;
     let k = 0;
@@ -215,7 +215,7 @@ router.get("/muutused/kasutajad", middleware.checkIpSessionValid, async (req, re
 });
 
 router.get("/muutused/kasutajad/:page", middleware.checkIpSessionValid, async (req, res) => {
-    let muutused = await sqlFun.getKasutajateMuutused(req); // LISA SEE SQLSTRINGI
+    let muutused = await sqlFun.getKasutajateMuutused(req);
     let page = parseInt(req.params.page, 10);
     let uuedMuutused = [];
     let start = (req.params.page - 1) * 50;
