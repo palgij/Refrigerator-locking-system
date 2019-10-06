@@ -46,12 +46,12 @@ router.post("/kinnitaKasutaja/:id", async (req) => {
     let sql = mysql.format(sqlString.updateKinnitatudKAARDIID, [id]);
 
     await sqlFun.makeSqlQuery(sql, "/", "Kasutaja uuendamisega tekkis viga", req);
-    console.log("Kasutaja kinnitatud, kaardiId: " + id);
+    console.log(`========== KASUTAJA KINNITATUD ==========\nkaardi Id: ${id}`);
 
     sql = mysql.format(sqlString.kasutajaInfID, [id]);
     let kasutaja = await sqlFun.makeSqlQuery(sql, "/", "Kasutaja nime saamisega tekkis viga", req);
 
-    sql = mysql.format(sqlString.insertKasutajaMuutus, [kasutaja[0].nimetus + " " + kasutaja[0].eesnimi + " " + kasutaja[0].perenimi, "muutmine", "kinnitanud"]);
+    sql = mysql.format(sqlString.insertKasutajaMuutus, [`${kasutaja[0].nimetus} ${kasutaja[0].eesnimi} ${kasutaja[0].perenimi}`, "muutmine", "kinnitanud"]);
     await sqlFun.makeSqlQuery(sql, "/admin", "Kasutajate muutuste tabelisse lisamine ebaõnnestus", req);
 
     req.flash("SUCCESS2", "Kasutaja on kinnitatud!", "/");
@@ -66,24 +66,23 @@ router.post("/registreeri/:id", async (req) => {
     let sql = mysql.format(sqlString.insertKasutaja, [staatuse_id, id, eesnimi, perenimi, coetus]);
 
     console.log("========== LISA UUS KASUTAJA ANDMEBAASI ==========");
-    let result = await sqlFun.makeSqlQuery(sql, "/", "Kasutaja registreerimisega tekkis viga", req);
-    console.log("Affected Rows: "+ result.affectedRows + " | Added: " + eesnimi + " " + perenimi + " " + staatuse_id + " " + coetus);
+    await sqlFun.makeSqlQuery(sql, "/", "Kasutaja registreerimisega tekkis viga", req);
+    console.log(`Lisatud: ${eesnimi} ${perenimi} ${staatuse_id} ${coetus}`);
     middleware.addUserCard(id);
 
     sql = mysql.format(sqlString.staatusNimetusID, [staatuse_id]);
     let staatus1 = await sqlFun.makeSqlQuery(sql, "/", "Kasutaja staatuse saamisega tekkis viga", req);
 
-    sql = mysql.format(sqlString.insertKasutajaMuutus, [staatus1[0].nimetus + " " + eesnimi + " " + perenimi, "lisamine", "kõik"]);
+    sql = mysql.format(sqlString.insertKasutajaMuutus, [`${staatus1[0].nimetus} ${eesnimi} ${perenimi}`, "lisamine", "kõik"]);
     await sqlFun.makeSqlQuery(sql, "/admin", "Kasutajate muutuste tabelisse lisamine ebaõnnestus", req);
 
     // Anna bibendile teada uue kasutaja registreerimisest
-    let nimi = "Nimi - " + eesnimi + " " + perenimi;
-    let staatus = "Staatus - " + staatus1[0].nimetus;
-    let coetusTxt = "Coetus - " + coetus;
-    let link = "http://192.168.1.243:3000/kinnitaKasutaja/" + id;
-    let html = '<h1>Uus kasutaja vajab kinnitamist!</h1><ul><li>' + nimi + '</li><li>' + staatus + '</li>' + 
-	'<li>' + coetusTxt + '</li></ul><form action=' + link + ' method="POST">' + 
-	'<button type="submit">Kinnita kasutaja, vajuta siia</button></form>';
+    let nimi = `Nimi ${eesnimi} ${perenimi}`;
+    let staatus = `Staatus ${staatus1[0].nimetus}`;
+    let coetusTxt = `Coetus - ${coetus}`;
+    let link = `http://192.168.1.243:3000/kinnitaKasutaja/${id}`;
+    let html = `<p><h1>Uus kasutaja vajab kinnitamist!</h1><ul><li>${nimi}</li><li>${staatus}</li><li>${coetusTxt}</li>
+    </ul><form action="${link}" method="POST"><button type="submit">Kinnita kasutaja, vajuta siia</button></form></p>`;
     await email.sendMail("Uus Kasutaja registreeris ennast süsteemi", req, html);
 });
 

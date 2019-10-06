@@ -53,34 +53,31 @@ router.post("/:toode", middleware.checkUserSessionValid, async (req) => {
     console.log("========== LISA SUMMA KASUTAJA VÕLGA ==========");
 
     result = await sqlFun.makeSqlQuery(sql1, "/", "Ostu sooritamisega tekkis viga", req);
-    console.log("Kogus: " + kogus + " | hind: " + hind + "  |  kokku: " + summa + " | (1 == reb!) " + result[0].kasutaja_staatuse_id);
-    console.log("Võlg enne: " + parseFloat(result[0].volg));
+    console.log(`Kogus: ${kogus} | hind: ${hind} | kokku: ${summa} | (1 == reb!) ${result[0].kasutaja_staatuse_id}`);
+    console.log(`Võlg enne: ${parseFloat(result[0].volg)}`);
     volg = parseFloat(result[0].volg);
     if (result[0].kasutaja_staatuse_id === 1 && (kategooria === 1 || kategooria === 2)) {
         tasuta = true;
-        console.log("Võlg uus: " + volg + " !reb");
+        console.log("Võlg sama mis enne - !reb");
     } else {
         volg += summa;
-        console.log("Võlg uus: " + volg);
+        console.log(`Võlg uus: ${volg}`);
         sql1 = mysql.format(sqlString.updateVolgID, [volg, id]);
-        var update = await sqlFun.makeSqlQuery(sql1, "/", "Ostu sooritamisega tekkis viga", req);
-        console.log(update.message);
+        await sqlFun.makeSqlQuery(sql1, "/", "Ostu sooritamisega tekkis viga", req);
     }
 
     console.log("========== MUUDA TOOTE KOGUST ==========");
     result = await sqlFun.makeSqlQuery(sql3, "/", "Ostu sooritamisega tekkis viga", req);
     let total = parseFloat(result[0].hetke_kogus) - kogus;
-    console.log("Vana kogus: " + result[0].hetke_kogus + " | Uus kogus: " + total);
+    console.log(`Vana kogus: ${result[0].hetke_kogus} | Uus kogus: ${total}`);
 
     sql1 = mysql.format(sqlString.updateKogusNIMETUS, [total, toode]);
-    update = await sqlFun.makeSqlQuery(sql1, "/", "Ostu sooritamisega tekkis viga", req);
-    console.log(update.message);
+    await sqlFun.makeSqlQuery(sql1, "/", "Ostu sooritamisega tekkis viga", req);
 
     console.log("========== LISA OST ANDMEBAASI ==========");
-    console.log("Toode: " + toode + " | Ostja: " + nimi);
+    console.log(`Toode: ${toode} | Ostja: ${nimi}`);
     sql1 = mysql.format(sqlString.lisaOst, [nimi, toode, kogus, summa, tasuta]);
-    result = await sqlFun.makeSqlQuery(sql1, "/", "Ostu sooritamisega tekkis viga", req);
-    console.log(result.message);
+    await sqlFun.makeSqlQuery(sql1, "/", "Ostu sooritamisega tekkis viga", req);
     rpio.lockOpen();
     middleware.removeUser(id);
     req.flash("SUCCESS", "Kapp on avatud 10s", "/");

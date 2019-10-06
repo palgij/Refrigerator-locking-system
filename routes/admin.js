@@ -4,7 +4,7 @@ let express     = require("express"),
     sqlString   = require("../middleware/sqlString"),
     mysql       = require("mysql"),
     stringify   = require("csv-stringify"),
-    gpio	= require("../middleware/gpio"),
+    gpio        = require("../middleware/gpio"),
     router      = express.Router();
 
 let password = "admin";
@@ -61,9 +61,7 @@ router.post("/kasutajad/:id", middleware.checkIpSessionValid, async (req, res) =
     let staatus = parseFloat(req.body.staatus);
     kinnitatud = !!checkbox;
     let sql = mysql.format(sqlString.updateKasutaja, [seisus, staatus, req.body.eesnimi, req.body.perenimi, volg, kinnitatud, req.params.id]);
-    console.log("========== MUUDA KASUTAJA ANDMEID ==========");
-    let result = await sqlFun.makeSqlQuery(sql, "/admin", "Kasutaja andmete uuendamisega tekkis viga", req);
-    console.log(result.message);
+    await sqlFun.makeSqlQuery(sql, "/admin", "Kasutaja andmete uuendamisega tekkis viga", req);
 
     if (seisus !== kasutaja[0].kasutaja_seisu_id) arr.push("seisus");
     if (staatus !== kasutaja[0].kasutaja_staatuse_id) arr.push("staatus");
@@ -72,15 +70,14 @@ router.post("/kasutajad/:id", middleware.checkIpSessionValid, async (req, res) =
     if (volg !== parseFloat(kasutaja[0].volg).toFixed(2)) arr.push("volg");
     if (kinnitatud != kasutaja[0].admin_on_kinnitanud) arr.push("kinnitanud");
 
-    console.log(arr);
     if (arr.length !== 0 && arr.length !== undefined) {
-	console.log("YEAH");
     	sql = mysql.format(sqlString.staatusNimetusID, [staatus]);
     	staatus = await sqlFun.makeSqlQuery(sql, "/admin", "Staatuse saamisega tekkis viga", req);
 
-    	sql = mysql.format(sqlString.insertKasutajaMuutus, [staatus[0].nimetus + " " + req.body.eesnimi + " " + req.body.perenimi, "muutmine", arr.join(", ")]);
+    	sql = mysql.format(sqlString.insertKasutajaMuutus, [`${staatus[0].nimetus} ${req.body.eesnimi} ${req.body.perenimi}`, "muutmine", arr.join(", ")]);
     	await sqlFun.makeSqlQuery(sql, "/admin", "Kasutajate muutuste tabelisse lisamine ebaõnnestus", req);
     }
+    console.log(`========== ${staatus[0].nimetus} ${req.body.eesnimi} ${req.body.perenimi} andmeid muudetud ==========`);
     res.redirect("/admin/kasutajad");
 });
 
@@ -116,12 +113,11 @@ router.post("/tooted/:id", middleware.checkIpSessionValid, async (req, res) => {
     let myygi_hind = parseFloat(req.body.myygi_hind).toFixed(2);
     let oma_hind = parseFloat(req.body.oma_hind).toFixed(2);
     sql = mysql.format(sqlString.updateToode, [kategooria, req.body.nimetus, kogus, myygi_hind, oma_hind, req.params.id]);
-    console.log("========== MUUDA TOOTE ANDMEID ==========");
-    let result = await sqlFun.makeSqlQuery(sql, "/admin", "Toote andmete uuendamisega tekkis viga", req);
-    console.log(result.message);
+    console.log(`========== TOOTE ${req.body.nimetus} ANDMEID MUUDETUD ==========`);
+    await sqlFun.makeSqlQuery(sql, "/admin", "Toote andmete uuendamisega tekkis viga", req);
 
     if (kogus - kogus2[0].hetke_kogus !== 0) {
-	sql = mysql.format(sqlString.insertTooteMuutus, [req.body.nimetus, kogus - kogus2[0].hetke_kogus, "muutmine"]);
+        sql = mysql.format(sqlString.insertTooteMuutus, [req.body.nimetus, kogus - kogus2[0].hetke_kogus, "muutmine"]);
     	await sqlFun.makeSqlQuery(sql, "/admin", "Kasutajate muutuste tabelisse lisamine ebaõnnestus", req);
     }
 
@@ -146,12 +142,8 @@ router.post("/tooted", middleware.checkIpSessionValid, async (req, res) => {
     console.log("========== LISA TOODE ANDMEBAASI ==========");
     await sqlFun.makeSqlQuery(sql, "/admin", "Toote lisamisega tekkis viga", req);
 
-    console.log("Uus toode lisatud: ");
-    console.log("kategooria - " + kategooria);
-    console.log("kogus - " + kogus);
-    console.log("myygi hind - " + myygi_hind);
-    console.log("oma hind - " + oma_hind);
-    console.log("nimetus - " + req.body.nimetus);
+    console.log(`Uus toode lisatud:\nkategooria - ${kategooria}\nkogus - ${kogus}\nmüügi hind - ${myygi_hind}\n`);
+    console.log(`oma hind - ${oma_hind}\nnimetus${req.body.nimetus}`);
 
     sql = mysql.format(sqlString.insertTooteMuutus, [req.body.nimetus, kogus, "lisamine"]);
     await sqlFun.makeSqlQuery(sql, "/admin", "Toote muutuste tabelisse lisamine ebaõnnestus", req);
@@ -220,7 +212,7 @@ router.post("/ostudeCSV", middleware.checkIpSessionValid, async (req, res) => {
 });
 
 router.get("/muutused/ladu", middleware.checkIpSessionValid, async (req, res) => {
-    let muutused = await sqlFun.getToodeteMuutused(req); // LISA SEE SQLSTRINGI
+    let muutused = await sqlFun.getToodeteMuutused(req);
     muutusteArvLadu = getLength(muutused);
     let uuedMuutused = [];
     let k = 0;
@@ -263,7 +255,7 @@ router.get("/muutused/kasutajad", middleware.checkIpSessionValid, async (req, re
 });
 
 router.get("/muutused/kasutajad/:page", middleware.checkIpSessionValid, async (req, res) => {
-    let muutused = await sqlFun.getKasutajateMuutused(req); // LISA SEE SQLSTRINGI
+    let muutused = await sqlFun.getKasutajateMuutused(req);
     let page = parseInt(req.params.page, 10);
     let uuedMuutused = [];
     let start = (req.params.page - 1) * 50;

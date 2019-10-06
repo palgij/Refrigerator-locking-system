@@ -21,8 +21,10 @@ module.exports.toggleLock = () => {
     if (!opened) {
 	rpio.open(7, rpio.OUTPUT, rpio.LOW);
 	opened = true;
+	console.log("========== LUKK AVATUD ==========");
     } else {
 	rpio.close(7);
 	opened = false;
+	console.log("========== LUKK SULETUD ==========")
     }
 };
