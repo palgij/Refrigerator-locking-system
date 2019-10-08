@@ -1,7 +1,10 @@
 <% include partials/header %>
 
 <div class="container text-center shadow p-5">
-    <h1> <%= toode %> - <%= hind %> €. <%= nimi %> sisesta kogus: </h1>
+    <% if (reb) { %>
+    	<h1> <%= toode %> - <%= hind %> €. Rebane sisesta kogus: </h1>
+    <% } else { %> <h1> <%= toode %> - <%= hind %> €. <%= nimi %> sisesta kogus: </h1> <% } %>
+
     <form action="/tooted/<%= id %>/<%= toode %>" method="POST">
         <input id="result" data-container="body" data-toggle="popover" data-placement="right" data-content="Peab olema vahemikus 1.00 - 99.99" class="resultDisplay" name="kogus" value="1" readonly>
         <table class="calcTable">
@@ -31,7 +34,9 @@
         <div class="row justify-content-around">
             <div class="col-4">
                 <div class="row justify-content-end">
-                    <a href="/tooted/<%= id %>" class="btn btn-lg btn-outline-primary shadow btnBack">&laquo; Tagasi</a>
+		    <% if (reb) { %>
+    			<h1> <a href='/tooted/<%= id %>"<%= newId %>' class="btn btn-lg btn-outline-primary shadow btnBack">&laquo; Tagasi</a>
+    		    <% } else { %> <a href="/tooted/<%= id %>" class="btn btn-lg btn-outline-primary shadow btnBack">&laquo; Tagasi</a> <% } %>
                 </div>
             </div>
             <div class="col-4">

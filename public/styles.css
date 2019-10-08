@@ -12,6 +12,21 @@
     margin: 10px auto;
 }
 
+.tdId {
+    font-size: 20px;
+}
+
+.tableId tr:nth-child(odd) {
+    background: #DFDCE3;
+}
+
+.tableId tr:nth-child(even) {
+    background: #BEBEBE;
+}
+
+.trId {
+    background: #BEBEBE;
+}
 .btnTable {
     font-size: 35px;
     width: 75px; 

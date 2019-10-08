@@ -179,21 +179,12 @@ router.get("/ostud", middleware.checkIpSessionValid, async (req, res) => {
 router.get("/ostud/:page", middleware.checkIpSessionValid, async (req, res) => {
     let ostud = await sqlFun.getOstud(req);
     let page = parseInt(req.params.page, 10);
-    let uuedOstud = [];
-    let start = (req.params.page - 1) * 50;
-    let k = 0;
-    for (let i = start; i < start + 49; i++) {
-	if (ostud[i]) {
-	    uuedOstud[k] = ostud[i];
-	    k++;
-	} else break;
-    }
-    res.render("admin/ostudeNimekiri", {ostud: uuedOstud, numberOfPages: Math.ceil(ostudeArv / 50), currentPage: page});
+    res.render("admin/ostudeNimekiri", {ostud: ostud, numberOfPages: Math.ceil(ostudeArv / 50), currentPage: page});
 });
 
 router.get("/csv", middleware.checkIpSessionValid, async (req, res) => {
     let ostud = await sqlFun.getVolad(req);
-    console.log(ostud);
+    console.log("Võlgade CSV päriti");
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader('Content-Disposition', 'attachment; filename=\"' + 'võlad-' + Date.now() + '.csv\"');
     res.setHeader('Cache-Control', 'no-cache');
@@ -203,7 +194,7 @@ router.get("/csv", middleware.checkIpSessionValid, async (req, res) => {
 
 router.post("/ostudeCSV", middleware.checkIpSessionValid, async (req, res) => {
     let tooted = await sqlFun.getTooted(req);
-    console.log(tooted);
+    console.log("Ostude CSV päriti");
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader('Content-Disposition', 'attachment; filename=\"' + 'ostud-' + req.body.start + '-' + req.body.end + '.csv\"');
     res.setHeader('Cache-Control', 'no-cache');
@@ -228,16 +219,7 @@ router.get("/muutused/ladu", middleware.checkIpSessionValid, async (req, res) =>
 router.get("/muutused/ladu/:page", middleware.checkIpSessionValid, async (req, res) => {
     let muutused = await sqlFun.getToodeteMuutused(req);
     let page = parseInt(req.params.page, 10);
-    let uuedMuutused = [];
-    let start = (req.params.page - 1) * 50;
-    let k = 0;
-    for (let i = start; i < start + 49; i++) {
-	if (muutused[i]) {
-	    uuedMuutused[k] = muutused[i];
-	    k++;
-	} else break;
-    }
-    res.render("admin/laoMuutused", {muutused: uuedMuutused, numberOfPages: Math.ceil(muutusteArvLadu / 50), currentPage: page});
+    res.render("admin/laoMuutused", {muutused: muutused, numberOfPages: Math.ceil(muutusteArvLadu / 50), currentPage: page});
 });
 
 router.get("/muutused/kasutajad", middleware.checkIpSessionValid, async (req, res) => {
@@ -257,16 +239,7 @@ router.get("/muutused/kasutajad", middleware.checkIpSessionValid, async (req, re
 router.get("/muutused/kasutajad/:page", middleware.checkIpSessionValid, async (req, res) => {
     let muutused = await sqlFun.getKasutajateMuutused(req);
     let page = parseInt(req.params.page, 10);
-    let uuedMuutused = [];
-    let start = (req.params.page - 1) * 50;
-    let k = 0;
-    for (let i = start; i < start + 49; i++) {
-	if (muutused[i]) {
-	    uuedMuutused[k] = muutused[i];
-	    k++;
-	} else break;
-    }
-    res.render("admin/kasutajateMuutused", {muutused: uuedMuutused, numberOfPages: Math.ceil(muutusteArvKasutajad / 50), currentPage: page});
+    res.render("admin/kasutajateMuutused", {muutused: muutused, numberOfPages: Math.ceil(muutusteArvKasutajad / 50), currentPage: page});
 });
 
 module.exports = router;

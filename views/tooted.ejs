@@ -1,8 +1,13 @@
 <% include partials/header %>
 
 <div class="container p-5 text-center shadow">
-    <h1> Hei<strong> <%= nimi %></strong>! Vali toode: </h1>
-    <a href="/" class="btn btn-lg btn-outline-primary back">&laquo; Tagasi</a>
+    <% if (reb) { %>
+    	<h1> <strong> <%= nimi %></strong>! Rebane vali toode: </h1>
+    <% } else { %> <h1> Hei<strong> <%= nimi %></strong>! Vali toode: </h1> <% } %>
+
+    <% if (reb || nimi.charAt(0) === 'r') { %>
+    	<a href="/tooted/<%= id %>/paneKirja" class="btn btn-lg btn-outline-primary back">&laquo; Tagasi</a>
+    <% } else { %> <a href="/" class="btn btn-lg btn-outline-primary back">&laquo; Tagasi</a> <% } %>
     <div class="row justify-content-around text-center">
         <div class="col-4"> <strong style="font-size: 18px;"> Joogid </strong>
             <div class="list-group">

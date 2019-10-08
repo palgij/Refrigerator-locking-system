@@ -1,0 +1,49 @@
+<% include partials/header %>
+
+<div class="container text-center shadow p-5">
+        
+    <div class="row justify-content-around">
+    	<div class="col-4">
+            <div class="row justify-content-end">
+                <a href="/" class="btn btn-md btn-outline-primary shadow btnBack">&laquo; Tagasi</a>
+            </div>
+        </div>
+	<div class="col-4">
+	    <form id="osta" action="/tooted/<%=rebId%>" method="GET">
+                <div class="row justify-content-start">
+                    <button class="btn btn-outline-success btn-md shadow btnBuy">Osta endale &raquo;</button>
+                </div>
+	    </form>
+        </div>
+    </div>
+
+    <h1 class="mt-4">Osta sõbrale</h1>
+
+    <table class="table table-hover table-bordered mt-4 shadow">
+        <thead>
+            <tr class="trId">
+		<th scope="col">Nimi</th>
+                <th scope="col">Coetus</th>
+	    </tr>
+        </thead>
+        <tbody class="tableId">
+	    <% kasutajad.forEach((kasutaja) => { %>
+		<tr onclick="clicked('<%= kasutaja.kaardi_id %>')">
+		    <td class="tdId"><%= kasutaja.nimetus %> <%= kasutaja.eesnimi %> <%= kasutaja.perenimi %></td>
+		    <td class="tdId"><%= kasutaja.coetus %></td>
+		</tr>
+	    <% }) %>
+        </tbody>
+    </table>
+</div>
+
+<script>
+
+    function clicked(id) {
+	$('#osta').attr('action', '/tooted/' + '<%= rebId %>"' + id);
+	$("#osta").submit();
+    }
+
+</script>
+
+<% include partials/footer %>

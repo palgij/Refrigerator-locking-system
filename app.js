@@ -72,7 +72,18 @@ app.use("/tooted/:id", ostmineRoutes);
 app.use(regularCardRead);
 app.use("/admin", adminRoutes);
 
-app.listen(3000, function(){
+let server = app.listen(3000, function(){
     console.log("Server is listening to port 3000! (ip:3000)");
 });
+
+// ============ ERRORS ============
+
+process
+  .on('unhandledRejection', (reason, p) => {
+    console.error(reason, 'Unhandled Rejection at Promise', p);
+  })
+  .on('uncaughtException', err => {
+    console.error(err, 'Uncaught Exception thrown');
+    process.exit(1);
+  });
 

@@ -18,11 +18,16 @@ middlewareObj.addUserCard = id => {
 };
 
 middlewareObj.checkUserSessionValid = (req, res, next) => {
-    let id = req.params.id;
+    let id;
+    if (req.params.id.includes('"')) {
+	let arr = req.params.id.split('"');
+	id = arr[0];
+    } else id = req.params.id;
+
     if (getIndexOfId(id) === -1) {
         req.flash("WARN", "Selle kaardi sessioon on aegunud!", "/");
     } else {
-	    next();
+	next();
     }
 };
 

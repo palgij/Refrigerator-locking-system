@@ -8,7 +8,15 @@ let rpio       = require("../middleware/gpio"),
 
 router.get("/", middleware.checkUserSessionValid, async (req, res) => {
     let id = req.params.id;
-    let sql7 = mysql.format(sqlString.kasutaja_seisID, [id]);
+    let sql7;
+    if (id.includes('"')) {
+	let arr = id.split('"');
+	// rebase id
+	id = arr[0]
+	middleware.getUsers(id).newId = arr[1];
+    	sql7 = mysql.format(sqlString.kasutaja_seisID, [arr[1]]);
+	middleware.getUsers(id).reb = true;
+    } else sql7 = mysql.format(sqlString.kasutaja_seisID, [id]);
 
     let jook1 = await sqlFun.makeSqlQuery(sqlString.toode1, "/", "Andmebaasist toodete saamisega tekkis viga", req);
     let jook2 = await sqlFun.makeSqlQuery(sqlString.toode2, "/", "Andmebaasist toodete saamisega tekkis viga", req);
@@ -19,9 +27,17 @@ router.get("/", middleware.checkUserSessionValid, async (req, res) => {
     let kasutaja = await sqlFun.makeSqlQuery(sql7, "/", "Andmebaasist kasutaja saamisega tekkis viga", req);
 
     let nimi = kasutaja[0].nimetus + " " + kasutaja[0].eesnimi + " " + kasutaja[0].perenimi;
-    middleware.getUsers(id).nimi = nimi;
-    res.render("tooted", {id: id, jook1: jook1, jook2: jook2, jook3: jook3, jook4: jook4,
+    middleware.getUsers(id).nimi = nimi; 
+    res.render("tooted", {id: id, reb: middleware.getUsers(id).reb, jook1: jook1, jook2: jook2, jook3: jook3, jook4: jook4,
 				sook5: sook5, sook6: sook6, nimi: nimi, seis: kasutaja[0].kasutaja_seisu_id});
+});
+
+router.get("/paneKirja", middleware.checkUserSessionValid, async (req, res) => {
+    let id = req.params.id;  
+    let sql = mysql.format(sqlString.kasutajadPaneKirja, [id]);
+    let kasutajad = await sqlFun.makeSqlQuery(sql, "/", "Andmebaasist kasutajate saamisega tekkis viga", req);
+   
+    res.render("paneKirja", {kasutajad: kasutajad, rebId: id});
 });
 
 router.get("/:toode/", middleware.checkUserSessionValid, async (req, res) => {
@@ -32,7 +48,8 @@ router.get("/:toode/", middleware.checkUserSessionValid, async (req, res) => {
     let hind = await sqlFun.makeSqlQuery(sql, "/", "Hinna saamisega andmebaasist tekkis viga", req);
     let nimi = middleware.getUsers(id).nimi;
     middleware.getUsers(id).hind = hind[0].myygi_hind;
-    res.render("kogus", {id: id, toode: toode, hind: hind[0].myygi_hind, nimi: nimi});
+    res.render("kogus", {id: id, reb: middleware.getUsers(id).reb, newId: middleware.getUsers(id).newId, toode: toode, 
+				hind: hind[0].myygi_hind, nimi: nimi});
 });
 
 router.post("/:toode", middleware.checkUserSessionValid, async (req) => {
@@ -43,8 +60,10 @@ router.post("/:toode", middleware.checkUserSessionValid, async (req) => {
     let summa = hind * kogus;
     let nimi = middleware.getUsers(id).nimi;
     let tasuta = false;
-    let volg;
-    let sql1 = mysql.format(sqlString.volgStaatusID, [id]);
+    let volg;    
+    let sql1;
+    if (middleware.getUsers(id).reb) sql1 = mysql.format(sqlString.volgStaatusID, [middleware.getUsers(id).newId]);
+    else sql1 = mysql.format(sqlString.volgStaatusID, [id]);
     let sql3 = mysql.format(sqlString.tooteKategooriaID, [toode]);
 
     let result = await sqlFun.makeSqlQuery(sql3, "/", "Ostu sooritamisega tekkis viga", req);
@@ -62,7 +81,8 @@ router.post("/:toode", middleware.checkUserSessionValid, async (req) => {
     } else {
         volg += summa;
         console.log(`Võlg uus: ${volg}`);
-        sql1 = mysql.format(sqlString.updateVolgID, [volg, id]);
+    	if (middleware.getUsers(id).reb) sql1 = mysql.format(sqlString.updateVolgID, [volg, middleware.getUsers(id).newId]);
+        else sql1 = mysql.format(sqlString.updateVolgID, [volg, id]);
         await sqlFun.makeSqlQuery(sql1, "/", "Ostu sooritamisega tekkis viga", req);
     }
 
@@ -75,8 +95,10 @@ router.post("/:toode", middleware.checkUserSessionValid, async (req) => {
     await sqlFun.makeSqlQuery(sql1, "/", "Ostu sooritamisega tekkis viga", req);
 
     console.log("========== LISA OST ANDMEBAASI ==========");
-    console.log(`Toode: ${toode} | Ostja: ${nimi}`);
-    sql1 = mysql.format(sqlString.lisaOst, [nimi, toode, kogus, summa, tasuta]);
+    if (middleware.getUsers(id).reb) console.log(`Toode: ${toode} | Ostja: reb! -> ${nimi}`);
+    else console.log(`Toode: ${toode} | Ostja: ${nimi}`);
+    if (middleware.getUsers(id).reb) sql1 = mysql.format(sqlString.lisaOst, ["reb! -> " + nimi, toode, kogus, summa, tasuta]);
+    else sql1 = mysql.format(sqlString.lisaOst, [nimi, toode, kogus, summa, tasuta]);
     await sqlFun.makeSqlQuery(sql1, "/", "Ostu sooritamisega tekkis viga", req);
     rpio.lockOpen();
     middleware.removeUser(id);

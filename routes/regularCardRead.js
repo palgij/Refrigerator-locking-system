@@ -23,7 +23,8 @@ router.get("/kaart", (req, res) => {
         if (result.length > 0) {
             if (result[0].admin_on_kinnitanud === 1 && (result[0].kasutaja_seisu_id === 1 || result[0].kasutaja_seisu_id === 2)) {
                 middleware.addUserCard(serial);
-                res.redirect("/tooted/" + serial);
+		if (result[0].kasutaja_staatuse_id === 1) res.redirect("/tooted/" + serial + "/paneKirja");
+		else res.redirect("/tooted/" + serial);
             } else {
                 if (result[0].admin_on_kinnitanud === 0)
 		    req.flash("WARN", "Bibendi ei ole sind kinnitanud! Võta Bibendiga ühendust.", "/");
