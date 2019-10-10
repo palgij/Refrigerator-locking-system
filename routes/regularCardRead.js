@@ -78,8 +78,8 @@ router.post("/registreeri/:id", async (req) => {
     await sqlFun.makeSqlQuery(sql, "/admin", "Kasutajate muutuste tabelisse lisamine ebaõnnestus", req);
 
     // Anna bibendile teada uue kasutaja registreerimisest
-    let nimi = `Nimi ${eesnimi} ${perenimi}`;
-    let staatus = `Staatus ${staatus1[0].nimetus}`;
+    let nimi = `Nimi - ${eesnimi} ${perenimi}`;
+    let staatus = `Staatus - ${staatus1[0].nimetus}`;
     let coetusTxt = `Coetus - ${coetus}`;
     let link = `http://192.168.1.243:3000/kinnitaKasutaja/${id}`;
     let html = `<p><h1>Uus kasutaja vajab kinnitamist!</h1><ul><li>${nimi}</li><li>${staatus}</li><li>${coetusTxt}</li>

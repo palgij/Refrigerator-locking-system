@@ -1,7 +1,20 @@
 <% include partials/headerAdmin %>
 
+<%  
+    // Func for name
+    function staatuseNim(num) {
+	switch (num) {
+  	    case 1: return "reb!";
+  	    case 2: return "sv!";
+  	    case 3: return "b!vil!";
+  	    case 4: return "vil!";
+  	    case 5: return "üritus";
+	}
+    }
+%>
+
 <div class="container text-center mt-5">
-    <h1 class="mb-4"> Muuda kasutajat <strong><%= kasutaja.eesnimi + " " +  kasutaja.perenimi %></strong> </h1>
+    <h1 class="mb-4"> Muuda kasutajat <strong><%= staatuseNim(kasutaja.kasutaja_staatuse_id) + " " + kasutaja.eesnimi + " " +  kasutaja.perenimi %></strong> </h1>
     <form class="needs-validation" action="/admin/kasutajad/<%= kasutaja.kasutaja_id%>/" method="POST" novalidate>
         <div class="form-row justify-content-center">
             <div class="col-2">
@@ -58,6 +71,7 @@
     $('#staatus').append($('<option>', { value: 2, text: 'sv!'}));
     $('#staatus').append($('<option>', { value: 3, text: 'b!vil!'}));
     $('#staatus').append($('<option>', { value: 4, text: 'vil!' }));
+    $('#staatus').append($('<option>', { value: 5, text: 'üritus' }));
     $("#staatus").val("<%= kasutaja.kasutaja_staatuse_id %>");
 
     $('#seis').append($('<option>', { value: 1, text: 'Tavaline'}));

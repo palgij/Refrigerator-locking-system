@@ -165,15 +165,8 @@ router.post("/tooted/:id/kustuta", middleware.checkIpSessionValid, async (req, r
 router.get("/ostud", middleware.checkIpSessionValid, async (req, res) => {
     let ostud = await sqlFun.getOstud(req);
     ostudeArv = getLength(ostud);
-    let uuedOstud = [];
-    let k = 0;
-    for (let i = 0; i <= 49; i++) {
-	if (ostud[i]) {
-	    uuedOstud[k] = ostud[i];
-	    k++;
-	} else break;
-    }
-    res.render("admin/ostudeNimekiri", {ostud: uuedOstud, numberOfPages: Math.ceil(ostudeArv / 50), currentPage: 1});
+
+    res.render("admin/ostudeNimekiri", {ostud: ostud.slice(0, 50), numberOfPages: Math.ceil(ostudeArv / 50), currentPage: 1});
 });
 
 router.get("/ostud/:page", middleware.checkIpSessionValid, async (req, res) => {
@@ -205,15 +198,8 @@ router.post("/ostudeCSV", middleware.checkIpSessionValid, async (req, res) => {
 router.get("/muutused/ladu", middleware.checkIpSessionValid, async (req, res) => {
     let muutused = await sqlFun.getToodeteMuutused(req);
     muutusteArvLadu = getLength(muutused);
-    let uuedMuutused = [];
-    let k = 0;
-    for (let i = 0; i <= 49; i++) {
-	if (muutused[i]) {
-	    uuedMuutused[k] = muutused[i];
-	    k++;
-	} else break;
-    }
-    res.render("admin/laoMuutused", {muutused: uuedMuutused, numberOfPages: Math.ceil(muutusteArvLadu / 50), currentPage: 1});
+
+    res.render("admin/laoMuutused", {muutused: muutused.slice(0, 50), numberOfPages: Math.ceil(muutusteArvLadu / 50), currentPage: 1});
 });
 
 router.get("/muutused/ladu/:page", middleware.checkIpSessionValid, async (req, res) => {
@@ -225,15 +211,8 @@ router.get("/muutused/ladu/:page", middleware.checkIpSessionValid, async (req, r
 router.get("/muutused/kasutajad", middleware.checkIpSessionValid, async (req, res) => {
     let muutused = await sqlFun.getKasutajateMuutused(req);
     muutusteArvKasutajad = getLength(muutused);
-    let uuedMuutused = [];
-    let k = 0;
-    for (let i = 0; i <= 49; i++) {
-	if (muutused[i]) {
-	    uuedMuutused[k] = muutused[i];
-	    k++;
-	} else break;
-    }
-    res.render("admin/kasutajateMuutused", {muutused: uuedMuutused, numberOfPages: Math.ceil(muutusteArvKasutajad / 50), currentPage: 1});
+
+    res.render("admin/kasutajateMuutused", {muutused: muutused.slice(0, 50), numberOfPages: Math.ceil(muutusteArvKasutajad / 50), currentPage: 1});
 });
 
 router.get("/muutused/kasutajad/:page", middleware.checkIpSessionValid, async (req, res) => {
