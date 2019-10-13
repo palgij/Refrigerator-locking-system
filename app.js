@@ -95,7 +95,7 @@ app.use(function(err, req, res, next) {
     	res.status(err.statusCode).send(err.message);
     }
 });
-/*
+/* //
 process
   .on('unhandledRejection', (reason, p) => {
     console.error(reason, 'Unhandled Rejection at Promise', p);
