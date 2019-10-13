@@ -3,6 +3,7 @@
 <div class="container text-center mt-5">
     <h1>Kasutajate Muutused</h1>
 
+    <% let num = 1 %>
     <% if (numberOfPages > 1) { %>
 	<form id="pageForm" action="" method="GET"> 
     	    <div class="btn-group mt-3 shadow" role="group">
@@ -11,6 +12,11 @@
 		    	<button type="button" onClick="submitForm('<%= i + 1 %>')" class="btn btn-secondary" style="background: #596269;"><%= i + 1 %></button>
 		    <% } else { %>
 		    	<button type="button" onClick="submitForm('<%= i + 1 %>')" class="btn btn-secondary"><%= i + 1 %></button>
+		    <% } %>
+		    <% if (i === num * 27 && i + 1 < numberOfPages) { %>
+		    	<% num++ %>
+			</div>
+			<div class="btn-group shadow" role="group">
 		    <% } %>
 	    	<% } %>
     	    </div>

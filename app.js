@@ -78,6 +78,24 @@ let server = app.listen(3000, function(){
 
 // ============ ERRORS ============
 
+app.get("*", function(req, res, next) {
+    let err = new Error(`${req.ip} tried to reach ${req.originalUrl}`);
+    err.statusCode = 404;
+    //err.shouldRedirect = true;
+    next(err);
+});
+
+app.use(function(err, req, res, next) {
+    console.error(`ERROR: "${err.message}"`);
+    if (!err.statusCode) err.statusCode = 500;
+
+    if (err.shouldRedirect) {
+    	//res.render("PANE SIIA OMA ERROR HANDLING!! vms");
+    } else {
+    	res.status(err.statusCode).send(err.message);
+    }
+});
+/*
 process
   .on('unhandledRejection', (reason, p) => {
     console.error(reason, 'Unhandled Rejection at Promise', p);
@@ -86,4 +104,4 @@ process
     console.error(err, 'Uncaught Exception thrown');
     process.exit(1);
   });
-
+*/

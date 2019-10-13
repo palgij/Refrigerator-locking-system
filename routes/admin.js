@@ -21,7 +21,7 @@ router.post("/", (req, res) => {
         middleware.addIp(req.clientIp);
 	    res.redirect("/admin/kodu");
     } else {
-	    req.flash("ERROR", "Vale salasõna või kasutaja", "/admin");
+	    req.flash("ERROR", "Vale salasõna", "/admin");
     }
 });
 
@@ -166,13 +166,19 @@ router.get("/ostud", middleware.checkIpSessionValid, async (req, res) => {
     let ostud = await sqlFun.getOstud(req);
     ostudeArv = getLength(ostud);
 
-    res.render("admin/ostudeNimekiri", {ostud: ostud.slice(0, 50), numberOfPages: Math.ceil(ostudeArv / 50), currentPage: 1});
+    res.render("admin/ostudeNimekiri", {ostud: ostud.slice(0, 50), numberOfPages: 100, currentPage: 1});
 });
 
-router.get("/ostud/:page", middleware.checkIpSessionValid, async (req, res) => {
+router.get("/ostud/:page", middleware.checkIpSessionValid, async (req, res, next) => {
     let ostud = await sqlFun.getOstud(req);
     let page = parseInt(req.params.page, 10);
-    res.render("admin/ostudeNimekiri", {ostud: ostud, numberOfPages: Math.ceil(ostudeArv / 50), currentPage: page});
+    if (page > Math.ceil(ostudeArv / 50) || page < 1) {
+	let err = new Error(`${page} lehekülg ostudes ei eksisteeri`);
+  	err.statusCode = 600;
+  	next(err);
+    } else {
+    	res.render("admin/ostudeNimekiri", {ostud: ostud, numberOfPages: Math.ceil(ostudeArv / 50), currentPage: page});
+    }
 });
 
 router.get("/csv", middleware.checkIpSessionValid, async (req, res) => {
@@ -202,10 +208,16 @@ router.get("/muutused/ladu", middleware.checkIpSessionValid, async (req, res) =>
     res.render("admin/laoMuutused", {muutused: muutused.slice(0, 50), numberOfPages: Math.ceil(muutusteArvLadu / 50), currentPage: 1});
 });
 
-router.get("/muutused/ladu/:page", middleware.checkIpSessionValid, async (req, res) => {
+router.get("/muutused/ladu/:page", middleware.checkIpSessionValid, async (req, res, next) => {
     let muutused = await sqlFun.getToodeteMuutused(req);
     let page = parseInt(req.params.page, 10);
-    res.render("admin/laoMuutused", {muutused: muutused, numberOfPages: Math.ceil(muutusteArvLadu / 50), currentPage: page});
+    if (page > Math.ceil(muutusteArvLadu / 50) || page < 1) {
+	let err = new Error(`${page} lehekülg lao muutustes ei eksisteeri`);
+  	err.statusCode = 601;
+  	next(err);
+    } else {
+    	res.render("admin/laoMuutused", {muutused: muutused, numberOfPages: Math.ceil(muutusteArvLadu / 50), currentPage: page});
+    }
 });
 
 router.get("/muutused/kasutajad", middleware.checkIpSessionValid, async (req, res) => {
@@ -215,10 +227,16 @@ router.get("/muutused/kasutajad", middleware.checkIpSessionValid, async (req, re
     res.render("admin/kasutajateMuutused", {muutused: muutused.slice(0, 50), numberOfPages: Math.ceil(muutusteArvKasutajad / 50), currentPage: 1});
 });
 
-router.get("/muutused/kasutajad/:page", middleware.checkIpSessionValid, async (req, res) => {
+router.get("/muutused/kasutajad/:page", middleware.checkIpSessionValid, async (req, res, next) => {
     let muutused = await sqlFun.getKasutajateMuutused(req);
     let page = parseInt(req.params.page, 10);
-    res.render("admin/kasutajateMuutused", {muutused: muutused, numberOfPages: Math.ceil(muutusteArvKasutajad / 50), currentPage: page});
+    if (page > Math.ceil(muutusteArvKasutajad / 50) || page < 1) {
+	let err = new Error(`${page} lehekülg kasutajate muutustes ei eksisteeri`);
+  	err.statusCode = 602;
+  	next(err);
+    } else {
+    	res.render("admin/kasutajateMuutused", {muutused: muutused, numberOfPages: Math.ceil(muutusteArvKasutajad / 50), currentPage: page});
+    }
 });
 
 module.exports = router;

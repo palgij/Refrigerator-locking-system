@@ -36,8 +36,23 @@ router.get("/paneKirja", middleware.checkUserSessionValid, async (req, res) => {
     let id = req.params.id;  
     let sql = mysql.format(sqlString.kasutajadPaneKirja, [id]);
     let kasutajad = await sqlFun.makeSqlQuery(sql, "/", "Andmebaasist kasutajate saamisega tekkis viga", req);
-   
-    res.render("paneKirja", {kasutajad: kasutajad, rebId: id});
+    sql = mysql.format(sqlString.viimase12hKasutajad, [id]);
+    let viimased12hKasutajad = await sqlFun.makeSqlQuery(sql, "/", "Andmebaasist viimase 12h kasutajate saamisega tekkis viga", req);
+
+    let uusKasutajad = [];
+    let arrCoetus = [];
+    let str = "";
+    let num = -1;
+    kasutajad.forEach((kasutaja) => {
+	if (str !== kasutaja.coetus) {
+	    str = kasutaja.coetus;
+	    num++;
+	    uusKasutajad.push([]);
+	}
+	uusKasutajad[num].push(kasutaja);
+    });
+
+    res.render("paneKirja", {kasutajad: uusKasutajad, rebId: id, viimane12h: viimased12hKasutajad});
 });
 
 router.get("/:toode/", middleware.checkUserSessionValid, async (req, res) => {

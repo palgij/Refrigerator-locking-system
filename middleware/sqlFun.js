@@ -30,7 +30,7 @@ module.exports.getSoogid = async (req) =>
 
 module.exports.getOstud = async (req) => {
     let sql;
-    if (req.params.page) sql = sqlString.ostud + ' LIMIT ' + (req.params.page * 50 - 50) + ', 50';
+    if (req.params.page > 1) sql = sqlString.ostud + ' LIMIT ' + (req.params.page * 50 - 50) + ', 50';
     else sql = sqlString.ostud;
     return await makeSqlQuery(sql, "/admin", "Andmebaasist ostude saamisega tekkis viga", req);
 };
@@ -64,14 +64,14 @@ module.exports.getTooted = async (req) => {
 
 module.exports.getToodeteMuutused = async (req) => {
     let sql;
-    if (req.params.page) sql = sqlString.toodeteMuutused + ' LIMIT ' + (req.params.page * 50 - 50) + ', 50';
+    if (req.params.page > 1) sql = sqlString.toodeteMuutused + ' LIMIT ' + (req.params.page * 50 - 50) + ', 50';
     else sql = sqlString.toodeteMuutused;
     return await makeSqlQuery(sql, "/admin", "Andmebaasist toodete muutuste saamisega tekkis viga", req);
 };
 
 module.exports.getKasutajateMuutused = async (req) => {
     let sql;
-    if (req.params.page) sql = sqlString.kasutajateMuutused + ' LIMIT ' + (req.params.page * 50 - 50) + ', 50';
+    if (req.params.page > 1) sql = sqlString.kasutajateMuutused + ' LIMIT ' + (req.params.page * 50 - 50) + ', 50';
     else sql = sqlString.kasutajateMuutused;
     return await makeSqlQuery(sql, "/admin", "Andmebaasist kasutajate muutuste saamisega tekkis viga", req);
 };

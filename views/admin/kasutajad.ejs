@@ -66,7 +66,9 @@
 		    <td><%= kasutaja.staatus + " " + kasutaja.eesnimi + " " + kasutaja.perenimi %></td>
 		    <td><%= kasutaja.volg.toFixed(2) %>€</td>
 		    <td>
-			<input class="form-check-input" type="checkbox" <% if (kasutaja.admin_on_kinnitanud) {%> checked <% }%>disabled>
+			<% if (kasutaja.admin_on_kinnitanud) {%> <img src="/checkedMark.png" style="height: 17px; width: 17px;"> <% } else { %>
+			<img src="/uncheckedMark.png" style="height: 17px; width: 17px;"><% } %>
+			
 		    </td>
 		    <td><a href="/admin/kasutajad/muuda/<%= kasutaja.kasutaja_id %>">Muuda</a></td>
 		    <td>
