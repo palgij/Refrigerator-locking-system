@@ -28,7 +28,7 @@
                     	    <a class="nav-link" href="/admin/tooted">Tooted</a>
 		    	</li>
 		    	<li class="nav-item mr-4">
-                    	    <a class="nav-link" href="/admin/ostud">Ostude Nimekiri</a>
+                    	    <a class="nav-link" href="/admin/ostud">Ostud</a>
 		    	</li>
                     	<li class="nav-item mr-4">
                     	    <a class="nav-link" href="/admin/csv">Võlad</a>
@@ -46,8 +46,12 @@
                     <ul class="navbar-nav mr-right">
 		    	<li class="nav-item mr-4">
                     	    <a class="nav-link" href="/admin/toggleLukk">
-			    	<i class="fas fa-lock"></i>
-			    	Lukk
+			    	<% if (lockOpen) { %>
+				    <i class="fas fa-lock-open"></i>
+			    	<%} else { %>
+				    <i class="fas fa-lock"></i>
+				<% } %>
+				Lukk
 			    </a>
 		    	</li>
                     	<li class="nav-item">

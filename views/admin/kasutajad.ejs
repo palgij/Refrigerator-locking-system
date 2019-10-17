@@ -26,15 +26,18 @@
     </div>
 
     <!-- Kustuta kasutaja Modal -->
-    <div class="modal fade" id="kustuta" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="kustuta" tabindex="-1" role="dialog" aria-labelledby="kustutaText" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 	    <div class="modal-content">
 		<div class="modal-header">
-		    <h4 class="modal-title" id="exampleModalCenterTitle">Oled kindel, et tahad kasutaja kustutada?</h4>
+		    <h5 class="modal-title" id="exampleModalCenterTitle">Kasutaja Kustutamine</h5>
 		    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			<span aria-hidden="true">&times;</span>
 		    </button>
 		</div>
+		<div class="modal-body">
+        	    <p id="kustutaText"></p>
+      		</div>
 		<div class="modal-footer">
 		    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tagasi</button>
 		    <form id="delModal" action="" method="POST">
@@ -63,7 +66,7 @@
 		<tr>
 		    <td><%= kasutaja.coetus %></td>
 		    <td><%= kasutaja.seisuNim %></td>
-		    <td><%= kasutaja.staatus + " " + kasutaja.eesnimi + " " + kasutaja.perenimi %></td>
+		    <td id="<%= kasutaja.kasutaja_id %>"><%= kasutaja.staatus + " " + kasutaja.eesnimi + " " + kasutaja.perenimi %></td>
 		    <td><%= kasutaja.volg.toFixed(2) %>€</td>
 		    <td>
 			<% if (kasutaja.admin_on_kinnitanud) {%> <img src="/checkedMark.png" style="height: 17px; width: 17px;"> <% } else { %>
@@ -86,6 +89,11 @@
 
     $(document).on("click", "#kustutaModal", function () {
      	let id = $(this).data('id');
+	
+	let nimi = $(`#${id}`).html();
+	$('#kustutaText').html(`Oled kindel, et tahad kustudada kasutaja <br><span style="font-weight: bold;">${nimi}</span>`);
+	$('.btn-danger').html(`Jah, kustuta <span style="font-weight: bold;">${nimi.split(" ").pop()}</span>`);
+
 	$('#delModal').attr('action', '/admin/kasutajad/' + id + '/kustuta');
     });
 

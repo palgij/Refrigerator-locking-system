@@ -112,8 +112,8 @@ router.post("/:toode", middleware.checkUserSessionValid, async (req) => {
     console.log("========== LISA OST ANDMEBAASI ==========");
     if (middleware.getUsers(id).reb) console.log(`Toode: ${toode} | Ostja: reb! -> ${nimi}`);
     else console.log(`Toode: ${toode} | Ostja: ${nimi}`);
-    if (middleware.getUsers(id).reb) sql1 = mysql.format(sqlString.lisaOst, ["reb! -> " + nimi, toode, kogus, summa, tasuta]);
-    else sql1 = mysql.format(sqlString.lisaOst, [nimi, toode, kogus, summa, tasuta]);
+
+    sql1 = mysql.format(sqlString.lisaOst, [nimi, toode, kogus, summa, tasuta, !!middleware.getUsers(id).reb]);
     await sqlFun.makeSqlQuery(sql1, "/", "Ostu sooritamisega tekkis viga", req);
     rpio.lockOpen();
     middleware.removeUser(id);

@@ -59,6 +59,7 @@
                 <th scope="col">Kogus</th>
                 <th scope="col">Summa</th>
                 <th scope="col">Tasuta</th>
+		<th scope="col">Rebane</th>
             </tr>
         </thead>
         <tbody>
@@ -71,6 +72,10 @@
                     <td> <%= ost.summa.toFixed(2) %>€ </td>
                     <td>
 			<% if (ost.on_tasuta) {%> <img src="/checkedMark.png" style="height: 17px; width: 17px;"> <% } else { %>
+			<img src="/uncheckedMark.png" style="height: 17px; width: 17px;"><% } %>
+                    </td>
+		    <td>
+			<% if (ost.rebane_ostis) {%> <img src="/checkedMark.png" style="height: 17px; width: 17px;"> <% } else { %>
 			<img src="/uncheckedMark.png" style="height: 17px; width: 17px;"><% } %>
                     </td>
                 </tr>
