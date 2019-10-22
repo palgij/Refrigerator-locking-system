@@ -1,6 +1,7 @@
 <% include partials/headerAdmin %>
 
 <div class="container text-center mt-5">
+
     <h1 class="mb-4"> Lisa toode </h1>
     <form class="needs-validation" action="/admin/tooted/" method="POST" novalidate>
         <div class="form-row justify-content-center mb-5">
@@ -40,6 +41,14 @@
             </div>
         </div>
     </form>
+    <% if (locals.flash) { %>
+        <%- locals.flash %>
+        <script>
+            setTimeout(() => {
+                $('.alert').fadeOut("fast")				
+            }, 10000)
+        </script>
+    <% } %>
 </div>
 
 <script>

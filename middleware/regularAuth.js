@@ -1,3 +1,5 @@
+let errorCodes = require("./errorCodes");
+
 var middlewareObj = {};
 
 middlewareObj.users = [];
@@ -25,7 +27,9 @@ middlewareObj.checkUserSessionValid = (req, res, next) => {
     } else id = req.params.id;
 
     if (getIndexOfId(id) === -1) {
-        req.flash("WARN", "Selle kaardi sessioon on aegunud!", "/");
+        let err = new Error(errorCodes.KAARDI_SESSIOON_AEGUNUD.message);
+        err.statusCode = errorCodes.KAARDI_SESSIOON_AEGUNUD.code;
+        next(err);
     } else {
 	next();
     }
@@ -35,7 +39,6 @@ middlewareObj.removeUser = id => {
     let pos = getIndexOfId(id);
     clearTimeout(middlewareObj.users[pos].timeout);
     removeAndLog(id);
-    //console.log(middlewareObj.users);
 };
 
 module.exports = middlewareObj;
@@ -46,7 +49,6 @@ function removeAndLog(id) {
     let pos = getIndexOfId(id);
     middlewareObj.users.splice(pos, 1);
     console.log("Timeout removed for " + String(id));
-    //console.log(middlewareObj.users);	  
 }
 
 function addUserWithTimeout(id) {
@@ -54,14 +56,14 @@ function addUserWithTimeout(id) {
 	    id: id,
 	    timeout: setTimeout(removeAndLog.bind(null, id), 180000)
     });
-    //console.log(middlewareObj.users);
 }
 
-function getIndexOfId(id) {
-    for (let i = 0; i < middlewareObj.users.length; i++) {
+function getIndexOfId(ids) {
+    let index = middlewareObj.users.findIndex(id => id === ids);
+    /*for (let i = 0; i < middlewareObj.users.length; i++) {
 	    if (middlewareObj.users[i].id === id) {
 	        return i;
 	    }
-    }
-    return -1;
+    }*/
+    return index;
 }

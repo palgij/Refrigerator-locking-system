@@ -68,6 +68,14 @@
             </div>
         </div>
     </form>
+    <% if (locals.flash) { %>
+        <%- locals.flash %>
+        <script>
+            setTimeout(() => {
+                $('.alert').fadeOut("fast")				
+            }, 10000)
+        </script>
+    <% } %>
 </div>
 
 <script>

@@ -1,6 +1,15 @@
 <% include partials/header %>
 
 <div class="container text-center shadow p-5">
+    <% if (locals.flash) { %>
+        <%- locals.flash %>
+        <script>
+            setTimeout(() => {
+                $('.alert').fadeOut("fast")
+            }, 10000)
+        </script>
+    <% } %>
+
     <% if (reb) { %>
     	<h1> <%= toode %> - <%= hind %> €. Rebane sisesta kogus: </h1>
     <% } else { %> <h1> <%= toode %> - <%= hind %> €. <%= nimi %> sisesta kogus: </h1> <% } %>

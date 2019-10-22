@@ -4,9 +4,10 @@ let bodyParser  = require("body-parser"),
     session     = require("express-session"),
     database    = require("./middleware/database"),
     auth        = require("./middleware/basicAuth"),
+    errorCodes  = require("./middleware/errorCodes"),
     morgan      = require("morgan"),
     requestIp   = require("request-ip"),
-    helmet	= require("helmet"),
+    helmet	    = require("helmet"),
     app         = express();
 
 //This line add the authentication requirement to all pages starting with localhost:3000/
@@ -51,7 +52,7 @@ const flashNotificationOptions = {
                     break;
                 case 'WARN':
                     item.type = 'Tähelepanu!';
-                    item.alertClass = 'alert-warning';
+                    item.alertClass = 'alert-danger';
                     break;
                 case 'ERROR':
                     item.type = 'Tekkis viga';
@@ -79,20 +80,88 @@ let server = app.listen(3000, function(){
 // ============ ERRORS ============
 
 app.get("*", function(req, res, next) {
-    let err = new Error(`${req.ip} tried to reach ${req.originalUrl}`);
-    err.statusCode = 404;
-    //err.shouldRedirect = true;
+    let err = new Error(`${errorCodes.NO_SUCH_PAGE.message} ${req.originalUrl}`);
+    err.statusCode = errorCodes.NO_SUCH_PAGE.code;
     next(err);
 });
 
 app.use(function(err, req, res, next) {
     console.error(`ERROR: "${err.message}"`);
-    if (!err.statusCode) err.statusCode = 500;
+    if (!!err.statusCode) err.statusCode = 500;
 
-    if (err.shouldRedirect) {
-    	//res.render("PANE SIIA OMA ERROR HANDLING!! vms");
-    } else {
-    	res.status(err.statusCode).send(err.message);
+     // Igal erroril on oma handling, et kuhu suunab kasutaja vms ja kuidas.
+    switch(err.statusCode) {
+        case errorCodes.NO_SUCH_PAGE_IN_OSTUD.code:
+        case errorCodes.GET_TOOTED_ERROR.code:
+            req.flash("WARN", err.message, "/admin/ostud");
+            break;
+        case errorCodes.NO_SUCH_PAGE_IN_LAO_MUUTUSED.code:
+            req.flash("WARN",err.message, "/admin/muutused/ladu");
+            break;
+        case errorCodes.NO_SUCH_PAGE_IN_KASUTAJATE_MUUTUSED.code:
+            req.flash("WARN", err.message, "/admin/muutused/kasutajad");
+            break;
+        case errorCodes.NO_SUCH_PAGE.code:
+            res.status(err.statusCode).send(err.message); // TODO tee selleks ja random erroriks oma page!
+            break;
+        case errorCodes.IP_SESSIOON_AEGUNUD.code:
+        case errorCodes.WRONG_PASSWORD.code:
+            req.flash("WARN", err.message, "/admin");
+            break;
+        case errorCodes.TOODETE_TOP_ERROR.code:
+        case errorCodes.KASUTAJATE_TOP_ERROR.code:
+            req.flash("ERROR", err.message, "/admin/kodu");
+            break;
+        case errorCodes.NULLI_VOLAD_ERROR.code:
+        case errorCodes.GET_KASUTAJAD_ERROR.code:
+        case errorCodes.GET_KASUTAJA_ERROR.code:
+        case errorCodes.DELETE_KASUTAJA_ERROR.code:
+        case errorCodes.UPDATE_KASUTAJA_ERROR.code:
+        case errorCodes.GET_STAATUS_ERROR.code:
+            req.flash("ERROR", err.message, "/admin/kasutajad");
+            break;
+        case errorCodes.GET_TOODE_ERROR.code:
+        case errorCodes.GET_JOOGID_ERROR.code:
+        case errorCodes.GET_SOOGID_ERROR.code:
+        case errorCodes.DELETE_TOODE_ERROR.code:
+        case errorCodes.UPDATE_TOODE_ERROR.code:
+        case errorCodes.INSERT_TOODE_ERROR.code:
+            req.flash("ERROR", err.message, "/admin/tooted");
+            break;
+        case errorCodes.INSERT_KASUTAJA_MUUTUS_ERROR.code:
+        case errorCodes.INSERT_TOOTE_MUUTUS_ERROR.code:
+        case errorCodes.GET_OSTUD_ERROR.code:
+        case errorCodes.GET_KASUTAJATE_MUUTUSED_ERROR.code:
+        case errorCodes.GET_TOODETE_MUUTUSED_ERROR.code:
+            req.flash("ERROR", err.message, req.headers.referer.split("3000")[1]);
+            break;
+        case errorCodes.KAARDI_SESSIOON_AEGUNUD.code:    
+        case errorCodes.VÄLJALANGENU.code:
+        case errorCodes.ADMINI_KINNITUS_PUUDUB.code:
+            req.flash("WARN", err.message, "/");
+            break;
+        case errorCodes.SOOK_JOOK_ERROR.code:
+        case errorCodes.KASUTAJA_ERROR_OST.code:
+        case errorCodes.KASUTAJATE_ERROR_OST.code:
+        case errorCodes.VIIMASE_12H_KASUTAJATE_ERROR.code:
+        case errorCodes.TOOTE_HINNA_ERROR.code:
+        case errorCodes.TOOTE_KATEGOORIA_ERROR.code:
+        case errorCodes.VÕLA_STAATUSE_ERROR.code:
+        case errorCodes.UPDATE_VOLG_ERROR.code:
+        case errorCodes.TOOTE_KOGUS_ERROR.code:
+        case errorCodes.UPDATE_KOGUS_ERROR.code:
+        case errorCodes.INSERT_OST_ERROR.code:
+        case errorCodes.MAIL_ERROR.code:
+        case errorCodes.GET_STAATUS_REGISTREERIMINE_ERROR.code:
+        case errorCodes.INSERT_KASUTAJA_ERROR.code:
+        case errorCodes.REGISTREERIMINE_INSERT_KASUTAJA_MUUTUS_ERROR.code:
+        case errorCodes.KASUTAJA_NIME_ERROR.code:
+        case errorCodes.KINNITA_KASUTAJA_ERROR.code:
+        case errorCodes.GET_KASUTAJA_KAART_ERROR.code:
+            req.flash("ERROR", err.message, "/");
+            break;
+        default:
+            res.status(err.statusCode).send(err.message); // TODO tee selleks ja random erroriks oma page!
     }
 });
 /* //

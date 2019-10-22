@@ -25,6 +25,6 @@ module.exports.toggleLock = () => {
     } else {
 	rpio.close(7);
 	opened = false;
-	console.log("========== LUKK SULETUD ==========")
+	console.log("========== LUKK SULETUD ==========");
     }
 };

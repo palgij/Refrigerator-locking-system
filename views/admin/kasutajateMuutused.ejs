@@ -1,6 +1,16 @@
 <% include partials/headerAdmin %>
 
 <div class="container text-center mt-5">
+
+    <% if (locals.flash) { %>
+        <%- locals.flash %>
+        <script>
+            setTimeout(() => {
+                $('.alert').fadeOut("fast")
+            }, 10000)
+        </script>
+    <% } %>
+
     <h1>Kasutajate Muutused</h1>
 
     <% let num = 1 %>

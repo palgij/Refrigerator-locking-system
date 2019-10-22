@@ -1,3 +1,5 @@
+let errorCodes = require("./errorCodes");
+
 let middlewareObj = {};
 
 middlewareObj.IPs = [];
@@ -16,7 +18,9 @@ middlewareObj.addIp = ip => {
 middlewareObj.checkIpSessionValid = (req, res, next) => {
     let ip = req.clientIp;
     if (getIndexOfIp(ip) === -1) {
-        req.flash("WARN", "Selle IP sessioon on aegunud!", "/admin");
+        let err = new Error(errorCodes.IP_SESSIOON_AEGUNUD.message);
+        err.statusCode = errorCodes.IP_SESSIOON_AEGUNUD.code;
+        next(err);
     } else {
 	    clearTimeout(middlewareObj.IPs[getIndexOfIp(ip)].timeout);
 	    removeAndLog(ip, false);
@@ -31,7 +35,6 @@ middlewareObj.removeIp = (req, res, next) => {
     if (pos !== -1) {
  	    clearTimeout(middlewareObj.IPs[pos].timeout);
     	removeAndLog(ip, true);
-    	//console.log(middlewareObj.IPs);
     }
     next();
 };
@@ -46,7 +49,6 @@ function removeAndLog(ip, log) {
     if(log) {
       	console.log("Timeout removed for " + String(ip)); 
     } 
-    //console.log(middlewareObj.IPs); 
 }
 
 function addIpWithTimeout(ip, log) {
@@ -57,14 +59,14 @@ function addIpWithTimeout(ip, log) {
     if (log) {
 	    console.log("Timeout added for " + String(ip));
     }
-    //console.log(middlewareObj.IPs); 
 }
 
-function getIndexOfIp(ip) {
-    for (let i = 0; i < middlewareObj.IPs.length; i++) {
+function getIndexOfIp(ips) {
+    let index = middlewareObj.IPs.findIndex(ip => ip === ips);
+    /*for (let i = 0; i < middlewareObj.IPs.length; i++) {
 	    if (middlewareObj.IPs[i].ip === ip) {
 	        return i;
 	    }
-    }
-    return -1;
+    }*/
+    return index;
 }

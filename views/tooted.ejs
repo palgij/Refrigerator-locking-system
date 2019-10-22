@@ -1,6 +1,16 @@
 <% include partials/header %>
 
 <div class="container p-5 text-center shadow">
+    
+    <% if (locals.flash) { %>
+        <%- locals.flash %>
+        <script>
+            setTimeout(() => {
+                $('.alert').fadeOut("fast")
+            }, 10000)
+        </script>
+    <% } %>
+
     <% if (reb) { %>
     	<h1> <strong> <%= nimi %></strong>! Rebane vali toode: </h1>
     <% } else { %> <h1> Hei<strong> <%= nimi %></strong>! Vali toode: </h1> <% } %>

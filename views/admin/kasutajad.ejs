@@ -2,6 +2,15 @@
 
 <div class="container text-center mt-5">
 
+	<% if (locals.flash) { %>
+		<%- locals.flash %>
+		<script>
+			setTimeout(() => {
+				$('.alert').fadeOut("fast")				
+			}, 10000)
+		</script>
+	<% } %>
+
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-outline-primary btn-md shadow mb-5" data-toggle="modal" data-target="#nulliVolad">Nulli võlad</button>
 
