@@ -137,7 +137,7 @@ router.post("/tooted", middleware.checkIpSessionValid, async (req, res, next) =>
         oma_hind: parseFloat(req.body.oma_hind).toFixed(2)
     }
     
-    await sqlFun.insertToode(next, toode);
+    await sqlFun.insertToode(next, toode)
     req.flash("SUCCESS3", "Uus toode sai lisatud.", "/admin/tooted");
 });
 
@@ -150,7 +150,7 @@ router.get("/ostud", middleware.checkIpSessionValid, async (req, res, next) => {
     let ostud = await sqlFun.getOstud(req, next);
     ostudeArv = getLength(ostud);
 
-    res.render("admin/ostudeNimekiri", {ostud: ostud.slice(0, 50), numberOfPages: 100, currentPage: 1, lockOpen: lockOpen});
+    res.render("admin/ostudeNimekiri", {ostud: ostud.slice(0, 50), numberOfPages: Math.ceil(ostudeArv / 50), currentPage: 1, lockOpen: lockOpen});
 });
 
 router.get("/ostud/:page", middleware.checkIpSessionValid, async (req, res, next) => {

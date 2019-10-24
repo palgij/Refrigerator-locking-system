@@ -377,6 +377,7 @@ async function makeSqlQuery (sql, errCode, message, next) {
 	if (err.code === "ER_DUP_ENTRY") error.statusCode = errorCodes.ER_DUP_ENTRY_TOODE.code;
 	else error.statusCode = errCode;
   	next(error);
+	return -1;
     }
     return result;
 }

@@ -16,20 +16,40 @@
     <% let num = 1 %>
     <% if (numberOfPages > 1) { %>
 	<form id="pageForm" action="" method="GET"> 
+    	    <% if (currentPage !== 1) { %>
+	    	<button type="button" class="btn btn-sm mt-3 mr-3" onClick="submitForm('<%= currentPage - 1 %>')">
+		    <i class="fas fa-angle-double-left"></i>
+	    	</button>
+	    <% } %>
     	    <div class="btn-group mt-3 shadow" role="group">
-	    	<% for (let i = 0; i < numberOfPages; i++) { %>
+		<% let index = 0 %>
+		<% if (currentPage < 7) { %>
+		    <% var i = 0 %>
+		<% } else { %>
+		    <% if (numberOfPages - currentPage <= 5) { %>
+			<% var i = numberOfPages - 11 %>
+		    <% } else { %>
+		    	<% var i = currentPage - 6 %>
+		    <% } %>
+		<% } %>
+		<% if (numberOfPages < 11) { %>
+		    <% var end = numberOfPages %>
+		<% } else { %>
+		    <% var end = 11 %>
+		<% } %>
+	    	<% for (i; index < end; index++) { %>
 		    <% if (i + 1 === currentPage) {%>
 		    	<button type="button" onClick="submitForm('<%= i + 1 %>')" class="btn btn-secondary" style="background: #596269;"><%= i + 1 %></button>
 		    <% } else { %>
 		    	<button type="button" onClick="submitForm('<%= i + 1 %>')" class="btn btn-secondary"><%= i + 1 %></button>
-		    <% } %>
-		    <% if (i === num * 27 && i + 1 < numberOfPages) { %>
-		    	<% num++ %>
-			</div>
-			<div class="btn-group shadow" role="group">
-		    <% } %>
+		    <% } i++ %>
 	    	<% } %>
     	    </div>
+	    <% if (currentPage !== numberOfPages) { %>
+	    	<button type="button" class="btn btn-sm mt-3 ml-3" onClick="submitForm('<%= currentPage + 1 %>')">
+		    <i class="fas fa-angle-double-right"></i>
+	    	</button>
+	    <% } %>
 	</form>
     <% } %>
 

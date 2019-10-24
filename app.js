@@ -98,24 +98,24 @@ app.use(function(err, req, res, next) {
     switch(err.statusCode) {
         case errorCodes.NO_SUCH_PAGE_IN_OSTUD.code:
         case errorCodes.GET_TOOTED_ERROR.code:
-            req.flash("WARN", `ADMIN$${err.message}`, "/admin/ostud");
+            req.flash("WARN", err.message, "/admin/ostud");
             break;
         case errorCodes.NO_SUCH_PAGE_IN_LAO_MUUTUSED.code:
-            req.flash("WARN", `ADMIN$${err.message}`, "/admin/muutused/ladu");
+            req.flash("WARN", err.message, "/admin/muutused/ladu");
             break;
         case errorCodes.NO_SUCH_PAGE_IN_KASUTAJATE_MUUTUSED.code:
-            req.flash("WARN", `ADMIN$${err.message}`, "/admin/muutused/kasutajad");
+            req.flash("WARN", err.message, "/admin/muutused/kasutajad");
             break;
         case errorCodes.NO_SUCH_PAGE.code:
             res.status(err.statusCode).send(err.message); // TODO tee selleks ja random erroriks oma page!
             break;
         case errorCodes.IP_SESSIOON_AEGUNUD.code:
         case errorCodes.WRONG_PASSWORD.code:
-            req.flash("WARN", `ADMIN$${err.message}`, "/admin");
+            req.flash("WARN", err.message, "/admin");
             break;
         case errorCodes.TOODETE_TOP_ERROR.code:
         case errorCodes.KASUTAJATE_TOP_ERROR.code:
-            req.flash("ERROR", `ADMIN$${err.message}`, "/admin/kodu");
+            req.flash("ERROR", err.message, "/admin/kodu");
             break;
         case errorCodes.NULLI_VOLAD_ERROR.code:
         case errorCodes.GET_KASUTAJAD_ERROR.code:
@@ -123,7 +123,7 @@ app.use(function(err, req, res, next) {
         case errorCodes.DELETE_KASUTAJA_ERROR.code:
         case errorCodes.UPDATE_KASUTAJA_ERROR.code:
         case errorCodes.GET_STAATUS_ERROR.code:
-            req.flash("ERROR", `ADMIN$${err.message}`, "/admin/kasutajad");
+            req.flash("ERROR", err.message, "/admin/kasutajad");
             break;
         case errorCodes.GET_TOODE_ERROR.code:
         case errorCodes.GET_JOOGID_ERROR.code:
@@ -131,7 +131,7 @@ app.use(function(err, req, res, next) {
         case errorCodes.DELETE_TOODE_ERROR.code:
         case errorCodes.UPDATE_TOODE_ERROR.code:
         case errorCodes.INSERT_TOODE_ERROR.code:
-            req.flash("ERROR", `ADMIN$${err.message}`, "/admin/tooted");
+            req.flash("ERROR", err.message, "/admin/tooted");
             break;
 	case errorCodes.ER_DUP_ENTRY_TOODE.code:
 	    req.flash("ERROR", errorCodes.ER_DUP_ENTRY_TOODE.message, "/admin/tooted");
@@ -141,7 +141,7 @@ app.use(function(err, req, res, next) {
         case errorCodes.GET_OSTUD_ERROR.code:
         case errorCodes.GET_KASUTAJATE_MUUTUSED_ERROR.code:
         case errorCodes.GET_TOODETE_MUUTUSED_ERROR.code:
-            req.flash("ERROR", `ADMIN$${err.message}`, req.headers.referer.split("3000")[1]);
+            req.flash("ERROR", err.message, req.headers.referer.split("3000")[1]);
             break;
         case errorCodes.KAARDI_SESSIOON_AEGUNUD.code:    
         case errorCodes.VÄLJALANGENU.code:

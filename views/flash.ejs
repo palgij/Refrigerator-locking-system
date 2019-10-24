@@ -1,9 +1,4 @@
 
 <div class="alert shadow <%= locals.alertClass %>">
-    <% if (locals.message.includes("$")) { %>
-        <strong class="alert-type"><%= locals.message.split("$")[1] %></strong
-    <% } else { %>
-        <strong class="alert-type"><%= locals.type %></strong>
-        <span class="alert-message"><%- locals.message %></span>
-    <% } %>
+    <strong class="alert-type"><%= locals.message %></strong>
 </div>

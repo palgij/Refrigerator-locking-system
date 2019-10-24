@@ -1,15 +1,15 @@
 // admin
 module.exports.NO_SUCH_PAGE_IN_OSTUD =  {
     code: 600,
-    message: "lehekülg ostudes ei eksisteeri."
+    message: "lehekülge ostudes ei eksisteeri."
 };
 module.exports.NO_SUCH_PAGE_IN_LAO_MUUTUSED = {
     code: 601,
-    message: "lehekülg lao muutustes ei eksisteeri."
+    message: "lehekülge lao muutustes ei eksisteeri."
 };
 module.exports.NO_SUCH_PAGE_IN_KASUTAJATE_MUUTUSED = {
     code: 602,
-    message: "lehekülg kasutajate muutustes ei eksisteeri."
+    message: "lehekülge kasutajate muutustes ei eksisteeri."
 };
 module.exports.NO_SUCH_PAGE = {
     code: 603,
