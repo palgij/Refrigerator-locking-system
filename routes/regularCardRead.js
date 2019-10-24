@@ -14,21 +14,21 @@ router.get("/", (req, res) => {
 router.get("/kaart", (req, res, next) => {
     rc522.init();
     rc522.read(async (serial) => {       
-	    buzzer.ring();
+	buzzer.ring();
         rc522.child();
         let kasutaja = await sqlFun.kasutajaKaardiLugemisel(next, serial);
 
         if (kasutaja.length > 0) {
             if (kasutaja[0].admin_on_kinnitanud === 1 && (kasutaja[0].kasutaja_seisu_id === 1 || kasutaja[0].kasutaja_seisu_id === 2)) {
                 middleware.addUserCard(serial);
-		        if (kasutaja[0].kasutaja_staatuse_id === 1) res.redirect("/tooted/" + serial + "/paneKirja");
-		        else res.redirect("/tooted/" + serial);
+		if (kasutaja[0].kasutaja_staatuse_id === 1) res.redirect("/tooted/" + serial + "/paneKirja");
+		else res.redirect("/tooted/" + serial);
             } else {
                 if (kasutaja[0].admin_on_kinnitanud === 0) {
                     let err = new Error(errorCodes.ADMINI_KINNITUS_PUUDUB.message);
                     err.statusCode = errorCodes.ADMINI_KINNITUS_PUUDUB.code;
                     next(err);
-		        } else {
+		} else {
                     let err = new Error(errorCodes.VÄLJALANGENU.message);
                     err.statusCode = errorCodes.VÄLJALANGENU.code;
                     next(err);

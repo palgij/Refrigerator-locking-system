@@ -33,7 +33,7 @@ router.get("/toggleLukk", middleware.checkIpSessionValid, (req, res) => {
     lockOpen = !lockOpen;
     let text = lockOpen ? "Kapp on avatud." : "Kapp on suletud."
     let requestedAddress = req.headers.referer.split("3000")[1];
-    req.flash("SUCCESS2", text, requestedAddress);
+    req.flash("SUCCESS3", text, requestedAddress);
 });
 
 router.get("/kodu", middleware.checkIpSessionValid, async (req, res, next) => {
@@ -49,7 +49,7 @@ router.get("/kasutajad", middleware.checkIpSessionValid, async (req, res, next) 
 
 router.post("/kasutajad", middleware.checkIpSessionValid, async (req, res, next) => {
     await sqlFun.nulliVolad(next);
-    req.flash("SUCCESS2", "Võlad said nullitud.", "/admin/kasutajad");
+    req.flash("SUCCESS3", "Võlad said nullitud.", "/admin/kasutajad");
 });
 
 router.post("/kasutajad/:id", middleware.checkIpSessionValid, async (req, res, next) => {
@@ -74,7 +74,7 @@ router.post("/kasutajad/:id", middleware.checkIpSessionValid, async (req, res, n
 
     if (arr.length !== 0 && arr.length !== undefined) {
         await sqlFun.updateKasutaja(next, fields, arr);
-        req.flash("SUCCESS2", "Kasutaja andmed said muudetud.", "/admin/kasutajad");
+        req.flash("SUCCESS3", "Kasutaja andmed said muudetud.", "/admin/kasutajad");
     } else res.redirect("/admin/kasutajad");
 });
 
@@ -85,7 +85,7 @@ router.get("/kasutajad/muuda/:id", middleware.checkIpSessionValid, async (req, r
 
 router.post("/kasutajad/:id/kustuta", middleware.checkIpSessionValid, async (req, res, next) => {
     await sqlFun.deleteKasutaja(req, next);
-    req.flash("SUCCESS2", "Kasutaja sai kustutatud.", "/admin/kasutajad");
+    req.flash("SUCCESS3", "Kasutaja sai kustutatud.", "/admin/kasutajad");
 });
 
 router.get("/tooted", middleware.checkIpSessionValid, async (req, res, next) => {
@@ -95,7 +95,7 @@ router.get("/tooted", middleware.checkIpSessionValid, async (req, res, next) => 
 });
 
 router.post("/tooted/:id", middleware.checkIpSessionValid, async (req, res, next) => {
-    let toode = await sqlFun.getToodeNimetusega(req, next);
+    let toode = await sqlFun.getToodeID(req, next);
     let arr = [];
     let fields = {
         id: req.params.id,
@@ -104,7 +104,7 @@ router.post("/tooted/:id", middleware.checkIpSessionValid, async (req, res, next
         uusKogus: parseFloat(req.body.kogus).toFixed(2),
         myygi_hind: parseFloat(req.body.myygi_hind).toFixed(2),
         oma_hind: parseFloat(req.body.oma_hind).toFixed(2),
-        vanaKogus: parseFloat(toode.hetke_kogus).toFixed(2)
+        vanaKogus: parseFloat(toode[0].hetke_kogus).toFixed(2)
     };
 
     if (fields.nimetus !== toode.nimetus) arr.push("nimetus");
@@ -115,7 +115,7 @@ router.post("/tooted/:id", middleware.checkIpSessionValid, async (req, res, next
     
     if (arr.length !== 0 && arr.length !== undefined) {
         await sqlFun.updateToode(next, fields);
-        req.flash("SUCCESS2", "Toote andmed said muudetud.", "/admin/tooted");
+        req.flash("SUCCESS3", "Toote andmed said muudetud.", "/admin/tooted");
     } else res.redirect("/admin/tooted");
 });
 
@@ -138,18 +138,18 @@ router.post("/tooted", middleware.checkIpSessionValid, async (req, res, next) =>
     }
     
     await sqlFun.insertToode(next, toode);
-    req.flash("SUCCESS2", "Uus toode sai lisatud.", "/admin/tooted");
+    req.flash("SUCCESS3", "Uus toode sai lisatud.", "/admin/tooted");
 });
 
 router.post("/tooted/:id/kustuta", middleware.checkIpSessionValid, async (req, res, next) => {
     await sqlFun.deleteToode(req, next);
-    req.flash("SUCCESS2", "Toode sai kustutatud.", "/admin/tooted");
+    req.flash("SUCCESS3", "Toode sai kustutatud.", "/admin/tooted");
 });
 
 router.get("/ostud", middleware.checkIpSessionValid, async (req, res, next) => {
     let ostud = await sqlFun.getOstud(req, next);
     ostudeArv = getLength(ostud);
-    console.log(ostud);
+
     res.render("admin/ostudeNimekiri", {ostud: ostud.slice(0, 50), numberOfPages: 100, currentPage: 1, lockOpen: lockOpen});
 });
 
@@ -166,23 +166,28 @@ router.get("/ostud/:page", middleware.checkIpSessionValid, async (req, res, next
 });
 
 router.get("/csv", middleware.checkIpSessionValid, async (req, res, next) => {
-    let ostud = await sqlFun.getVolad(next);
+    let volad = await sqlFun.getVolad(next);
     console.log("Võlgade CSV päriti");
-    res.setHeader('Content-Type', 'text/csv', 'charset=utf-8,%EF%BB%B');
-    res.setHeader('Content-Disposition', `attachment; filename=\"võlad-${Date.now()}.csv\"`);
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Pragma', 'no-cache');
-    stringify(ostud, { header: true }).pipe(res);
+    if (volad.length !== 0) {
+    	res.setHeader('Content-Type', 'text/csv');
+    	res.setHeader('Content-Disposition', `attachment; filename=\"võlad-${Date.now()}.csv\"`);
+    	res.setHeader('Cache-Control', 'no-cache');
+    	res.setHeader('Pragma', 'no-cache');
+    	stringify(volad, { header: true }).pipe(res);
+    } else req.flash("WARN", "Võlad on kõik nullid.", req.headers.referer.split("3000")[1]);
 });
 
 router.post("/ostudeCSV", middleware.checkIpSessionValid, async (req, res, next) => {
-    let tooted = await sqlFun.getTooted(req, next);
+    let ostud = await sqlFun.getOstudAeg(req, next);
     console.log("Ostude CSV päriti");
-    res.setHeader('Content-Type', 'text/csv');
-    res.setHeader('Content-Disposition', `attachment; filename=\"ostud-${req.body.start}-${req.body.end}.csv\"`);
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Pragma', 'no-cache');
-    stringify(tooted, { header: true }).pipe(res);
+    
+    if (ostud.length !== 0) {
+    	res.setHeader('Content-Type', 'text/csv');
+    	res.setHeader('Content-Disposition', `attachment; filename=\"ostud-${req.body.start}-${req.body.end}.csv\"`);
+    	res.setHeader('Cache-Control', 'no-cache');
+    	res.setHeader('Pragma', 'no-cache');
+    	stringify(ostud, { header: true }).pipe(res);
+    } else req.flash("WARN", "Ühtegi rida andmebaasist ei leitud.", "/admin/ostud");
 });
 
 router.get("/muutused/ladu", middleware.checkIpSessionValid, async (req, res, next) => {

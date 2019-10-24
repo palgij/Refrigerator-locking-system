@@ -42,8 +42,8 @@ module.exports.soogid = "SELECT * FROM (Toode INNER JOIN Toote_Kategooria ON Too
 module.exports.ostud = "SELECT DATE_FORMAT(aeg, '%d.%m.%Y %H:%i') AS aeg, ostja_nimi, toote_nimi, kogus, summa, on_tasuta, rebane_ostis FROM Ost ORDER BY DATE(aeg) DESC, TIME(aeg) DESC";
 module.exports.volad = "SELECT Kasutaja_Staatus.nimetus as staatus, eesnimi, perenimi, volg FROM Kasutaja INNER JOIN Kasutaja_Staatus ON Kasutaja.kasutaja_staatuse_id = Kasutaja_Staatus.kasutaja_staatuse_id WHERE volg > 0";
 module.exports.nulliVolad = "UPDATE Kasutaja SET volg = 0 WHERE volg <> 0";
-module.exports.tootedAEG = "SELECT DATE_FORMAT(aeg, '%d.%m.%Y %H:%i') AS aeg, ostja_nimi, toote_nimi, kogus, summa, on_tasuta FROM Ost WHERE aeg BETWEEN ? and ? ORDER BY DATE(aeg) DESC, TIME(aeg) DESC";
+module.exports.ostudAEG = "SELECT DATE_FORMAT(aeg, '%d.%m.%Y %H:%i') AS aeg, ostja_nimi, toote_nimi, kogus, summa, on_tasuta FROM Ost WHERE aeg BETWEEN ? and ? ORDER BY DATE(aeg) DESC, TIME(aeg) DESC";
 module.exports.toodeteMuutused = "SELECT DATE_FORMAT(aeg, '%d.%m.%Y %H:%i') AS aeg, toote_nimi, kogus, tegevus FROM Toodete_Muutused ORDER BY DATE(aeg) DESC, TIME(aeg) DESC";
 module.exports.kasutajateMuutused = "SELECT DATE_FORMAT(aeg, '%d.%m.%Y %H:%i') AS aeg, kasutaja_nimi, tegevus, muudetud FROM Kasutajate_Muutused ORDER BY DATE(aeg) DESC, TIME(aeg) DESC";
 module.exports.viimase12hKasutajad = "SELECT nimetus, eesnimi, perenimi, coetus, kaardi_id FROM Kasutaja INNER JOIN Kasutaja_Staatus ON Kasutaja.kasutaja_staatuse_id = Kasutaja_Staatus.kasutaja_staatuse_id WHERE kasutaja_seisu_id <> 3 AND admin_on_kinnitanud = 1 AND kaardi_id <> ? AND CONCAT(nimetus, ' ', eesnimi, ' ', perenimi) IN (SELECT ostja_nimi FROM Ost WHERE aeg >= DATE_SUB(NOW(), INTERVAL 12 HOUR)) ORDER BY coetus DESC, eesnimi, perenimi";
-module.exports.getToodeNIM = "SELECT * FROM Toode WHERE nimetus = ?";
+module.exports.getToodeID = "SELECT * FROM Toode WHERE toote_id = ?";

@@ -107,6 +107,10 @@ module.exports.GET_TOOTED_ERROR = {
     code: 625,
     message: "Andmebaasist toodete saamisega tekkis viga."
 }
+module.exports.ER_DUP_ENTRY_TOODE = {
+    code: 648,
+    message: "Proovisid lisada toote juba eksisteeriva toote nimega."
+}; 
 
 // regularCardRead.js
 module.exports.GET_KASUTAJA_KAART_ERROR = {

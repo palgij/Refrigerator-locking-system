@@ -44,19 +44,23 @@ const flashNotificationOptions = {
             switch(item.type) {
                 case 'SUCCESS':
                     item.type = 'Edukas ost!';
-                    item.alertClass = 'alert-success';
+                    item.alertClass = 'alert-successs';
                     break;
                 case 'SUCCESS2':
                     item.type = 'Registreerimine õnnestus!';
-                    item.alertClass = 'alert-success';
+                    item.alertClass = 'alert-successs';
+                    break;
+		case 'SUCCESS3':
+                    item.type = 'Operatsioon õnnestus!';
+                    item.alertClass = 'alert-successs';
                     break;
                 case 'WARN':
                     item.type = 'Tähelepanu!';
-                    item.alertClass = 'alert-danger';
+                    item.alertClass = 'alert-dangerr';
                     break;
                 case 'ERROR':
                     item.type = 'Tekkis viga';
-                    item.alertClass = 'alert-danger';
+                    item.alertClass = 'alert-dangerr';
                     break;
             }
         }
@@ -87,9 +91,10 @@ app.get("*", function(req, res, next) {
 
 app.use(function(err, req, res, next) {
     console.error(`ERROR: "${err.message}"`);
-    if (!!err.statusCode) err.statusCode = 500;
+    //console.log(err);
+    if (!err.statusCode) err.statusCode = 500;
 
-     // Igal erroril on oma handling, et kuhu suunab kasutaja vms ja kuidas.
+    // Igal erroril on oma handling, et kuhu suunab kasutaja vms ja kuidas.
     switch(err.statusCode) {
         case errorCodes.NO_SUCH_PAGE_IN_OSTUD.code:
         case errorCodes.GET_TOOTED_ERROR.code:
@@ -127,6 +132,9 @@ app.use(function(err, req, res, next) {
         case errorCodes.UPDATE_TOODE_ERROR.code:
         case errorCodes.INSERT_TOODE_ERROR.code:
             req.flash("ERROR", err.message, "/admin/tooted");
+            break;
+	case errorCodes.ER_DUP_ENTRY_TOODE.code:
+	    req.flash("ERROR", errorCodes.ER_DUP_ENTRY_TOODE.message, "/admin/tooted");
             break;
         case errorCodes.INSERT_KASUTAJA_MUUTUS_ERROR.code:
         case errorCodes.INSERT_TOOTE_MUUTUS_ERROR.code:

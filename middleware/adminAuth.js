@@ -61,12 +61,12 @@ function addIpWithTimeout(ip, log) {
     }
 }
 
-function getIndexOfIp(ips) {
-    let index = middlewareObj.IPs.findIndex(ip => ip === ips);
-    /*for (let i = 0; i < middlewareObj.IPs.length; i++) {
+function getIndexOfIp(ip) {
+    //let index = middlewareObj.IPs.findIndex(ip => ip === ips);
+    for (let i = 0; i < middlewareObj.IPs.length; i++) {
 	    if (middlewareObj.IPs[i].ip === ip) {
 	        return i;
 	    }
-    }*/
-    return index;
+    }
+    return -1;//index;
 }

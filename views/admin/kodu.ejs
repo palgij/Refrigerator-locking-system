@@ -18,12 +18,12 @@
 	</div>
 	</div>
 	<% if (locals.flash) { %>
-		<%- locals.flash %>
-		<script>
-			setTimeout(() => {
-				$('.alert').fadeOut("fast")
-			}, 10000)
-		</script>
+	    <%- locals.flash %>
+	    <script>
+		setTimeout(() => {
+		    $('.alert').fadeOut("fast")
+		}, 10000)
+	    </script>
 	<% } %>
 </div>
 

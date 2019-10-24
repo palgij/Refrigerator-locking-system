@@ -53,7 +53,7 @@ router.get("/:toode/", middleware.checkUserSessionValid, async (req, res, next) 
 });
 
 router.post("/:toode", middleware.checkUserSessionValid, async (req, res, next) => {
-    let hind = middleware.getUsers(ost.id).hind;
+    let hind = middleware.getUsers(req.params.id).hind;
     let kategooria;
     let volg;
     let ost = {

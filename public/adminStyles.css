@@ -148,3 +148,29 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+.alert {
+    display: inline-block;
+    padding: 15px 30px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-successs {
+    color: #FFF;
+    background-color: #5DB865;
+    border-color: #5DB865;
+}
+
+.alert-dangerr {
+    color: #FFF;
+    background-color: #D85452;
+    border-color: #D85452;
+}
+
+.alert-warningg {
+    color: #FFF;
+    background-color: #FFBB33;
+    border-color: #FFBB33;
+}
