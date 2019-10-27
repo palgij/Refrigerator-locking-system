@@ -15,7 +15,7 @@ router.get("/", middleware.checkUserSessionValid, async (req, res, next) => {
         results = await sqlFun.getTootedJaKasutaja(arr[1], next);
     } else results = await sqlFun.getTootedJaKasutaja(id, next);
     
-    if (result !== -1) {
+    if (results !== -1) {
     	let nimi = results[6][0].nimetus + " " + results[6][0].eesnimi + " " + results[6][0].perenimi;
     	middleware.getUsers(id).nimi = nimi; 
     	res.render("tooted", {id: id, reb: !!middleware.getUsers(id).reb, jook1: results[0], jook2: results[1], jook3: results[2], jook4: results[3],
