@@ -39,89 +39,98 @@ router.get("/toggleLukk", middleware.checkIpSessionValid, (req, res) => {
 router.get("/kodu", middleware.checkIpSessionValid, async (req, res, next) => {
     let ostjad = await sqlFun.getOstjadTop(next);
     let tooted = await sqlFun.getTootedTop(next);
-    res.render("admin/kodu", {tooted: tooted, ostjad: ostjad, lockOpen: lockOpen})
+    if (ostjad !== -1 && tooted !== -1)
+    	res.render("admin/kodu", {tooted: tooted, ostjad: ostjad, lockOpen: lockOpen})
 });
 
 router.get("/kasutajad", middleware.checkIpSessionValid, async (req, res, next) => {
     let kasutajad = await sqlFun.getKasutajad(next);
-    res.render("admin/kasutajad", {kasutajad: kasutajad, lockOpen: lockOpen});
+    if (kasutajad !== -1)
+	res.render("admin/kasutajad", {kasutajad: kasutajad, lockOpen: lockOpen});
 });
 
 router.post("/kasutajad", middleware.checkIpSessionValid, async (req, res, next) => {
-    await sqlFun.nulliVolad(next);
-    req.flash("SUCCESS3", "Võlad said nullitud.", "/admin/kasutajad");
+    if (await sqlFun.nulliVolad(next) !== -1)
+    	req.flash("SUCCESS3", "Võlad said nullitud.", "/admin/kasutajad");
 });
 
 router.post("/kasutajad/:id", middleware.checkIpSessionValid, async (req, res, next) => {
     let kasutaja = await sqlFun.getKasutaja(req.params.id, next);
-    let arr = [];
-    let fields = {
-        id: req.params.id,
-        eesnimi: req.body.eesnimi,
-        perenimi: req.body.perenimi,
-        volg: parseFloat(req.body.volg).toFixed(2),
-        kinnitatud: !!req.body.check,
-        seisus: parseFloat(req.body.seis),
-        staatus: parseFloat(req.body.staatus)
-    };
+    if (kasutaja !== -1) {
+    	let arr = [];
+    	let fields = {
+            id: req.params.id,
+            eesnimi: req.body.eesnimi,
+            perenimi: req.body.perenimi,
+            volg: parseFloat(req.body.volg).toFixed(2),
+            kinnitatud: !!req.body.check,
+            seisus: parseFloat(req.body.seis),
+            staatus: parseFloat(req.body.staatus)
+    	};
 
-    if (fields.seisus !== kasutaja[0].kasutaja_seisu_id) arr.push("seisus");
-    if (fields.staatus !== kasutaja[0].kasutaja_staatuse_id) arr.push("staatus");
-    if (fields.eesnimi !== kasutaja[0].eesnimi) arr.push("eesnimi");
-    if (fields.perenimi !== kasutaja[0].perenimi) arr.push("perenimi");
-    if (fields.volg !== parseFloat(kasutaja[0].volg).toFixed(2)) arr.push("volg");
-    if (fields.kinnitatud != kasutaja[0].admin_on_kinnitanud) arr.push("kinnitanud");
+    	if (fields.seisus !== kasutaja[0].kasutaja_seisu_id) arr.push("seisus");
+    	if (fields.staatus !== kasutaja[0].kasutaja_staatuse_id) arr.push("staatus");
+    	if (fields.eesnimi !== kasutaja[0].eesnimi) arr.push("eesnimi");
+    	if (fields.perenimi !== kasutaja[0].perenimi) arr.push("perenimi");
+    	if (fields.volg !== parseFloat(kasutaja[0].volg).toFixed(2)) arr.push("volg");
+    	if (fields.kinnitatud != kasutaja[0].admin_on_kinnitanud) arr.push("kinnitanud");
 
-    if (arr.length !== 0 && arr.length !== undefined) {
-        await sqlFun.updateKasutaja(next, fields, arr);
-        req.flash("SUCCESS3", "Kasutaja andmed said muudetud.", "/admin/kasutajad");
-    } else res.redirect("/admin/kasutajad");
+    	if (arr.length !== 0 && arr.length !== undefined) {
+            if (await sqlFun.updateKasutaja(next, fields, arr) !== -1)
+            	req.flash("SUCCESS3", "Kasutaja andmed said muudetud.", "/admin/kasutajad");
+    	} else res.redirect("/admin/kasutajad");
+    }
 });
 
 router.get("/kasutajad/muuda/:id", middleware.checkIpSessionValid, async (req, res, next) => {
     let kasutaja = await sqlFun.getKasutaja(req.params.id, next);
-    res.render("admin/muuda", {kasutaja: kasutaja[0], lockOpen: lockOpen});
+    if (kasutaja !== -1)
+	res.render("admin/muuda", {kasutaja: kasutaja[0], lockOpen: lockOpen});
 });
 
 router.post("/kasutajad/:id/kustuta", middleware.checkIpSessionValid, async (req, res, next) => {
-    await sqlFun.deleteKasutaja(req, next);
-    req.flash("SUCCESS3", "Kasutaja sai kustutatud.", "/admin/kasutajad");
+    if (await sqlFun.deleteKasutaja(req, next) !== -1)
+    	req.flash("SUCCESS3", "Kasutaja sai kustutatud.", "/admin/kasutajad");
 });
 
 router.get("/tooted", middleware.checkIpSessionValid, async (req, res, next) => {
     let joogid = await sqlFun.getJoogid(next);
     let soogid = await sqlFun.getSoogid(next);
-    res.render("admin/tooted", {joogid: joogid, soogid: soogid, lockOpen: lockOpen});
+    if (soogid !== -1 && joogid !== -1)
+	res.render("admin/tooted", {joogid: joogid, soogid: soogid, lockOpen: lockOpen});
 });
 
 router.post("/tooted/:id", middleware.checkIpSessionValid, async (req, res, next) => {
     let toode = await sqlFun.getToodeID(req, next);
-    let arr = [];
-    let fields = {
-        id: req.params.id,
-        nimetus: req.body.nimetus,
-        kategooria: parseFloat(req.body.kategooria),
-        uusKogus: parseFloat(req.body.kogus).toFixed(2),
-        myygi_hind: parseFloat(req.body.myygi_hind).toFixed(2),
-        oma_hind: parseFloat(req.body.oma_hind).toFixed(2),
-        vanaKogus: parseFloat(toode[0].hetke_kogus).toFixed(2)
-    };
+    if (toode !== -1) {
+    	let arr = [];
+    	let fields = {
+            id: req.params.id,
+            nimetus: req.body.nimetus,
+            kategooria: parseFloat(req.body.kategooria),
+            uusKogus: parseFloat(req.body.kogus).toFixed(2),
+            myygi_hind: parseFloat(req.body.myygi_hind).toFixed(2),
+            oma_hind: parseFloat(req.body.oma_hind).toFixed(2),
+            vanaKogus: parseFloat(toode[0].hetke_kogus).toFixed(2)
+    	};
 
-    if (fields.nimetus !== toode.nimetus) arr.push("nimetus");
-    if (fields.kategooria !== parseFloat(toode.kategooria)) arr.push("kategooria");
-    if (fields.uusKogus !== parseFloat(toode.hetke_kogus).toFixed(2)) arr.push("hetke_kogus");
-    if (fields.myygi_hind !== parseFloat(toode.myygi_hind).toFixed(2)) arr.push("myygi_hind");
-    if (fields.oma_hind !== parseFloat(toode.oma_hind).toFixed(2)) arr.push("oma_hind");
+    	if (fields.nimetus !== toode.nimetus) arr.push("nimetus");
+    	if (fields.kategooria !== parseFloat(toode.kategooria)) arr.push("kategooria");
+    	if (fields.uusKogus !== parseFloat(toode.hetke_kogus).toFixed(2)) arr.push("hetke_kogus");
+    	if (fields.myygi_hind !== parseFloat(toode.myygi_hind).toFixed(2)) arr.push("myygi_hind");
+    	if (fields.oma_hind !== parseFloat(toode.oma_hind).toFixed(2)) arr.push("oma_hind");
     
-    if (arr.length !== 0 && arr.length !== undefined) {
-        await sqlFun.updateToode(next, fields);
-        req.flash("SUCCESS3", "Toote andmed said muudetud.", "/admin/tooted");
-    } else res.redirect("/admin/tooted");
+    	if (arr.length !== 0 && arr.length !== undefined) {
+            if (await sqlFun.updateToode(next, fields) !== -1)
+            	req.flash("SUCCESS3", "Toote andmed said muudetud.", "/admin/tooted");
+    	} else res.redirect("/admin/tooted");
+    }
 });
 
 router.get("/tooted/muuda/:id", middleware.checkIpSessionValid, async (req, res, next) => {
     let toode = await sqlFun.getToode(req.params.id, next);
-    res.render("admin/muudaToode", {toode: toode[0], lockOpen: lockOpen});
+    if (toode !== -1)
+	res.render("admin/muudaToode", {toode: toode[0], lockOpen: lockOpen});
 });
 
 router.get("/tooted/uus", middleware.checkIpSessionValid, (req, res) => {
@@ -137,94 +146,106 @@ router.post("/tooted", middleware.checkIpSessionValid, async (req, res, next) =>
         oma_hind: parseFloat(req.body.oma_hind).toFixed(2)
     }
     
-    await sqlFun.insertToode(next, toode)
-    req.flash("SUCCESS3", "Uus toode sai lisatud.", "/admin/tooted");
+    if(await sqlFun.insertToode(next, toode) !== -1)
+    	req.flash("SUCCESS3", "Uus toode sai lisatud.", "/admin/tooted");
 });
 
 router.post("/tooted/:id/kustuta", middleware.checkIpSessionValid, async (req, res, next) => {
-    await sqlFun.deleteToode(req, next);
-    req.flash("SUCCESS3", "Toode sai kustutatud.", "/admin/tooted");
+    if (await sqlFun.deleteToode(req, next) !== -1)
+    	req.flash("SUCCESS3", "Toode sai kustutatud.", "/admin/tooted");
 });
 
 router.get("/ostud", middleware.checkIpSessionValid, async (req, res, next) => {
     let ostud = await sqlFun.getOstud(req, next);
-    ostudeArv = getLength(ostud);
-
-    res.render("admin/ostudeNimekiri", {ostud: ostud.slice(0, 50), numberOfPages: Math.ceil(ostudeArv / 50), currentPage: 1, lockOpen: lockOpen});
+    if (ostud !== -1) {
+    	ostudeArv = getLength(ostud);
+    	res.render("admin/ostudeNimekiri", {ostud: ostud.slice(0, 50), numberOfPages: Math.ceil(ostudeArv / 50), currentPage: 1, lockOpen: lockOpen});
+    }
 });
 
 router.get("/ostud/:page", middleware.checkIpSessionValid, async (req, res, next) => {
     let ostud = await sqlFun.getOstud(req, next);
-    let page = parseInt(req.params.page, 10);
-    if (page > Math.ceil(ostudeArv / 50) || page < 1) {
-	let err = new Error(`${page} ${errorCodes.NO_SUCH_PAGE_IN_OSTUD.message}`);
-  	err.statusCode = errorCodes.NO_SUCH_PAGE_IN_OSTUD.code; 
-    next(err);
-    } else {
-    	res.render("admin/ostudeNimekiri", {ostud: ostud, numberOfPages: Math.ceil(ostudeArv / 50), currentPage: page, lockOpen: lockOpen});
+    if (ostud !== -1) {
+    	let page = parseInt(req.params.page, 10);
+    	if (page > Math.ceil(ostudeArv / 50) || page < 1) {
+	    let err = new Error(`${page} ${errorCodes.NO_SUCH_PAGE_IN_OSTUD.message}`);
+  	    err.statusCode = errorCodes.NO_SUCH_PAGE_IN_OSTUD.code; 
+    	    next(err);
+    	} else {
+    	    res.render("admin/ostudeNimekiri", {ostud: ostud, numberOfPages: Math.ceil(ostudeArv / 50), currentPage: page, lockOpen: lockOpen});
+    	}
     }
 });
 
 router.get("/csv", middleware.checkIpSessionValid, async (req, res, next) => {
     let volad = await sqlFun.getVolad(next);
     console.log("Võlgade CSV päriti");
-    if (volad.length !== 0) {
-    	res.setHeader('Content-Type', 'text/csv');
-    	res.setHeader('Content-Disposition', `attachment; filename=\"võlad-${Date.now()}.csv\"`);
-    	res.setHeader('Cache-Control', 'no-cache');
-    	res.setHeader('Pragma', 'no-cache');
-    	stringify(volad, { header: true }).pipe(res);
-    } else req.flash("WARN", "Võlad on kõik nullid.", req.headers.referer.split("3000")[1]);
+    if (volad !== -1) {
+    	if (volad !== -1 && volad.length !== 0) {
+    	    res.setHeader('Content-Type', 'text/csv');
+    	    res.setHeader('Content-Disposition', `attachment; filename=\"võlad-${Date.now()}.csv\"`);
+    	    res.setHeader('Cache-Control', 'no-cache');
+    	    res.setHeader('Pragma', 'no-cache');
+    	    stringify(volad, { header: true }).pipe(res);
+    	} else req.flash("WARN", "Võlad on kõik nullid.", req.headers.referer.split("3000")[1]);
+    }
 });
 
 router.post("/ostudeCSV", middleware.checkIpSessionValid, async (req, res, next) => {
     let ostud = await sqlFun.getOstudAeg(req, next);
     console.log("Ostude CSV päriti");
-    
-    if (ostud.length !== 0) {
-    	res.setHeader('Content-Type', 'text/csv');
-    	res.setHeader('Content-Disposition', `attachment; filename=\"ostud-${req.body.start}-${req.body.end}.csv\"`);
-    	res.setHeader('Cache-Control', 'no-cache');
-    	res.setHeader('Pragma', 'no-cache');
-    	stringify(ostud, { header: true }).pipe(res);
-    } else req.flash("WARN", "Ühtegi rida andmebaasist ei leitud.", "/admin/ostud");
+    if (ostud !== -1) {
+    	if (ostud.length !== 0) {
+    	    res.setHeader('Content-Type', 'text/csv');
+    	    res.setHeader('Content-Disposition', `attachment; filename=\"ostud-${req.body.start}-${req.body.end}.csv\"`);
+    	    res.setHeader('Cache-Control', 'no-cache');
+    	    res.setHeader('Pragma', 'no-cache');
+    	    stringify(ostud, { header: true }).pipe(res);
+    	} else req.flash("WARN", "Ühtegi rida andmebaasist ei leitud.", "/admin/ostud");
+    }
 });
 
 router.get("/muutused/ladu", middleware.checkIpSessionValid, async (req, res, next) => {
     let muutused = await sqlFun.getToodeteMuutused(req, next);
-    muutusteArvLadu = getLength(muutused);
-
-    res.render("admin/laoMuutused", {muutused: muutused.slice(0, 50), numberOfPages: Math.ceil(muutusteArvLadu / 50), currentPage: 1, lockOpen: lockOpen});
+    if (muutused !== -1) {
+    	muutusteArvLadu = getLength(muutused);
+	res.render("admin/laoMuutused", {muutused: muutused.slice(0, 50), numberOfPages: Math.ceil(muutusteArvLadu / 50), currentPage: 1, lockOpen: lockOpen});
+    }
 });
 
 router.get("/muutused/ladu/:page", middleware.checkIpSessionValid, async (req, res, next) => {
     let muutused = await sqlFun.getToodeteMuutused(req, next);
-    let page = parseInt(req.params.page, 10);
-    if (page > Math.ceil(muutusteArvLadu / 50) || page < 1) {
-	let err = new Error(`${page} ${errorCodes.NO_SUCH_PAGE_IN_LAO_MUUTUSED.message}`);
-    err.statusCode = errorCodes.NO_SUCH_PAGE_IN_LAO_MUUTUSED.code;
-  	next(err);
-    } else {
-    	res.render("admin/laoMuutused", {muutused: muutused, numberOfPages: Math.ceil(muutusteArvLadu / 50), currentPage: page, lockOpen: lockOpen});
+    if (muutused !== -1) {
+    	let page = parseInt(req.params.page, 10);
+    	if (page > Math.ceil(muutusteArvLadu / 50) || page < 1) {
+	    let err = new Error(`${page} ${errorCodes.NO_SUCH_PAGE_IN_LAO_MUUTUSED.message}`);
+    	    err.statusCode = errorCodes.NO_SUCH_PAGE_IN_LAO_MUUTUSED.code;
+  	    next(err);
+    	} else {
+    	    res.render("admin/laoMuutused", {muutused: muutused, numberOfPages: Math.ceil(muutusteArvLadu / 50), currentPage: page, lockOpen: lockOpen});
+    	}
     }
 });
 
 router.get("/muutused/kasutajad", middleware.checkIpSessionValid, async (req, res, next) => {
     let muutused = await sqlFun.getKasutajateMuutused(req, next);
-    muutusteArvKasutajad = getLength(muutused);
-
-    res.render("admin/kasutajateMuutused", {muutused: muutused.slice(0, 50), numberOfPages: Math.ceil(muutusteArvKasutajad / 50), currentPage: 1, lockOpen: lockOpen});
+    if (muutused !== -1) {
+    	muutusteArvKasutajad = getLength(muutused);
+    	res.render("admin/kasutajateMuutused", {muutused: muutused.slice(0, 50), numberOfPages: Math.ceil(muutusteArvKasutajad / 50), currentPage: 1, lockOpen: lockOpen});
+    }
 });
 
 router.get("/muutused/kasutajad/:page", middleware.checkIpSessionValid, async (req, res, next) => {
     let muutused = await sqlFun.getKasutajateMuutused(req, next);
-    let page = parseInt(req.params.page, 10);
-    if (page > Math.ceil(muutusteArvKasutajad / 50) || page < 1) {
-	let err = new Error(`${page} ${errorCodes.NO_SUCH_PAGE_IN_KASUTAJATE_MUUTUSED.message}`);
-    err.statusCode = errorCodes.NO_SUCH_PAGE_IN_KASUTAJATE_MUUTUSED.code;
-  	next(err);
-    } else {
-    	res.render("admin/kasutajateMuutused", {muutused: muutused, numberOfPages: Math.ceil(muutusteArvKasutajad / 50), currentPage: page, lockOpen: lockOpen});
+    if (muutused !== -1) {
+    	let page = parseInt(req.params.page, 10);
+    	if (page > Math.ceil(muutusteArvKasutajad / 50) || page < 1) {
+	    let err = new Error(`${page} ${errorCodes.NO_SUCH_PAGE_IN_KASUTAJATE_MUUTUSED.message}`);
+    	    err.statusCode = errorCodes.NO_SUCH_PAGE_IN_KASUTAJATE_MUUTUSED.code;
+  	    next(err);
+    	} else {
+    	    res.render("admin/kasutajateMuutused", {muutused: muutused, numberOfPages: Math.ceil(muutusteArvKasutajad / 50), currentPage: page, lockOpen: lockOpen});
+    	}
     }
 });
 
