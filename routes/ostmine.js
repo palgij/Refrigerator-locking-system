@@ -106,7 +106,7 @@ router.post("/:toode", middleware.checkUserSessionValid, async (req, res, next) 
     			    if (await sqlFun.lisaOst(ost, !!middleware.getUsers(ost.id).reb, next) !== -1) {
 				rpio.lockOpen();
     				middleware.removeUser(ost.id);
-    				req.flash("SUCCESS", "Kapp on avatud 10s", "/");
+    				req.flash("SUCCESS", "Edukas ost! Kapp on avatud 10s", "/");
 			    }
 			}
 		    }

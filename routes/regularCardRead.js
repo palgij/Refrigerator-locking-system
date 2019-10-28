@@ -49,7 +49,7 @@ router.get("/registreeri/:id", (req, res) => {
 
 router.post("/kinnitaKasutaja/:id", async (req, res, next) => {
     if (await sqlFun.kinnitaKasutaja(req.params.id, next) !== -1)
-	req.flash("SUCCESS2", "Kasutaja on kinnitatud!", "/");
+	req.flash("SUCCESS", "Kasutaja on kinnitatud!", "/");
 });
 
 router.post("/registreeri/:id", async (req, res, next) => {
@@ -71,7 +71,7 @@ router.post("/registreeri/:id", async (req, res, next) => {
     	let html = `<p><h1>Uus kasutaja vajab kinnitamist!</h1><ul><li>${nimi}</li><li>${staatus}</li><li>${coetusTxt}</li>
     	</ul><form action="${link}" method="POST"><button type="submit">Kinnita kasutaja, vajuta siia</button></form></p>`;
     	email.sendMail("Uus Kasutaja registreeris ennast süsteemi", html);
-	req.flash("SUCCESS2", "Oota Bibendi kinnitust.", "/");
+	    req.flash("SUCCESS", "Registreerimine õnnestus! Oota Bibendi kinnitust.", "/");
     }
 });
 

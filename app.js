@@ -46,20 +46,20 @@ const flashNotificationOptions = {
                     item.type = 'Edukas ost!';
                     item.alertClass = 'alert-successs';
                     break;
-                case 'SUCCESS2':
-                    item.type = 'Registreerimine õnnestus!';
+                case 'SUCCESS2': // mt-4
+                    item.type = 'TopMargin';
                     item.alertClass = 'alert-successs';
                     break;
-		case 'SUCCESS3':
-                    item.type = 'Operatsioon õnnestus!';
+		        case 'SUCCESS3': // mb-4
+                    item.type = 'BottomMargin';
                     item.alertClass = 'alert-successs';
                     break;
-                case 'WARN':
-                    item.type = 'Tähelepanu!';
+                case 'WARN': // mb-4
+                    item.type = 'BottomMargin';
                     item.alertClass = 'alert-dangerr';
                     break;
-                case 'ERROR':
-                    item.type = 'Tekkis viga';
+                case 'ERROR': // mt-4
+                    item.type = 'TopMargin';
                     item.alertClass = 'alert-dangerr';
                     break;
             }
@@ -114,7 +114,7 @@ app.use((err, req, res, next) => {
             break;
         case errorCodes.IP_SESSIOON_AEGUNUD.code:
         case errorCodes.WRONG_PASSWORD.code:
-            req.flash("WARN", err.message, "/admin");
+            req.flash("ERROR", err.message, "/admin");
             break;
         case errorCodes.TOODETE_TOP_ERROR.code:
         case errorCodes.KASUTAJATE_TOP_ERROR.code:
@@ -126,7 +126,7 @@ app.use((err, req, res, next) => {
         case errorCodes.DELETE_KASUTAJA_ERROR.code:
         case errorCodes.UPDATE_KASUTAJA_ERROR.code:
         case errorCodes.GET_STAATUS_ERROR.code:
-            req.flash("ERROR", err.message, "/admin/kasutajad");
+            req.flash("WARN", err.message, "/admin/kasutajad");
             break;
         case errorCodes.GET_TOODE_ERROR.code:
         case errorCodes.GET_JOOGID_ERROR.code:
@@ -134,22 +134,22 @@ app.use((err, req, res, next) => {
         case errorCodes.DELETE_TOODE_ERROR.code:
         case errorCodes.UPDATE_TOODE_ERROR.code:
         case errorCodes.INSERT_TOODE_ERROR.code:
-            req.flash("ERROR", err.message, "/admin/tooted");
+            req.flash("WARN", err.message, "/admin/tooted");
             break;
 	case errorCodes.ER_DUP_ENTRY_TOODE.code:
-	    req.flash("ERROR", errorCodes.ER_DUP_ENTRY_TOODE.message, "/admin/tooted");
+	    req.flash("WARN", errorCodes.ER_DUP_ENTRY_TOODE.message, "/admin/tooted");
             break;
         case errorCodes.INSERT_KASUTAJA_MUUTUS_ERROR.code:
         case errorCodes.INSERT_TOOTE_MUUTUS_ERROR.code:
         case errorCodes.GET_OSTUD_ERROR.code:
         case errorCodes.GET_KASUTAJATE_MUUTUSED_ERROR.code:
         case errorCodes.GET_TOODETE_MUUTUSED_ERROR.code:
-            req.flash("ERROR", err.message, req.headers.referer.split("3000")[1]);
+            req.flash("WARN", err.message, req.headers.referer.split("3000")[1]);
             break;
         case errorCodes.KAARDI_SESSIOON_AEGUNUD.code:    
         case errorCodes.VÄLJALANGENU.code:
         case errorCodes.ADMINI_KINNITUS_PUUDUB.code:
-            req.flash("WARN", err.message, "/");
+            req.flash("ERROR", err.message, "/");
             break;
         case errorCodes.SOOK_JOOK_ERROR.code:
         case errorCodes.KASUTAJA_ERROR_OST.code:

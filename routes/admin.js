@@ -33,7 +33,8 @@ router.get("/toggleLukk", middleware.checkIpSessionValid, (req, res) => {
     lockOpen = !lockOpen;
     let text = lockOpen ? "Kapp on avatud." : "Kapp on suletud."
     let requestedAddress = req.headers.referer.split("3000")[1];
-    req.flash("SUCCESS3", text, requestedAddress);
+    if (requestedAddress.includes("kodu")) req.flash("SUCCESS2", text, requestedAddress);
+    else req.flash("SUCCESS3", text, requestedAddress);
 });
 
 router.get("/kodu", middleware.checkIpSessionValid, async (req, res, next) => {
@@ -187,7 +188,10 @@ router.get("/csv", middleware.checkIpSessionValid, async (req, res, next) => {
     	    res.setHeader('Cache-Control', 'no-cache');
     	    res.setHeader('Pragma', 'no-cache');
     	    stringify(volad, { header: true }).pipe(res);
-    	} else req.flash("WARN", "Võlad on kõik nullid.", req.headers.referer.split("3000")[1]);
+    	} else {
+            if (req.headers.referer.split("3000")[1].includes("kodu")) req.flash("ERROR", "Võlad on kõik nullid.", req.headers.referer.split("3000")[1]);
+            else req.flash("WARN", "Võlad on kõik nullid.", req.headers.referer.split("3000")[1]);
+        }
     }
 });
 
