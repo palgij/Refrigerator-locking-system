@@ -1,6 +1,7 @@
 let rpio = require("rpio");
 
 let opened = false;
+let locked = undefined;
 
 module.exports.ring = () => {
     rpio.open(40, rpio.OUTPUT, rpio.HIGH);
@@ -12,9 +13,18 @@ module.exports.ring = () => {
 
 module.exports.lockOpen = () => {
     rpio.open(7, rpio.OUTPUT, rpio.LOW);
-    setTimeout( () => {
-        rpio.close(7);
-    }, 10000);
+    if (locked === undefined) {
+    	locked = setTimeout(() => {
+            rpio.close(7);
+	    locked = undefined;
+    	}, 10000);
+    } else {
+	clearTimeout(locked);
+	locked = setTimeout(() => {
+            rpio.close(7);
+	    locked = undefined;
+    	}, 10000);
+    }
 };
 
 module.exports.toggleLock = () => {

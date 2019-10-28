@@ -70,7 +70,8 @@ router.post("/registreeri/:id", async (req, res, next) => {
     	let link = `http://192.168.1.243:3000/kinnitaKasutaja/${uusKasutaja.id}`;
     	let html = `<p><h1>Uus kasutaja vajab kinnitamist!</h1><ul><li>${nimi}</li><li>${staatus}</li><li>${coetusTxt}</li>
     	</ul><form action="${link}" method="POST"><button type="submit">Kinnita kasutaja, vajuta siia</button></form></p>`;
-    	email.sendMail("Uus Kasutaja registreeris ennast süsteemi", req, html, next);
+    	email.sendMail("Uus Kasutaja registreeris ennast süsteemi", html);
+	req.flash("SUCCESS2", "Oota Bibendi kinnitust.", "/");
     }
 });
 

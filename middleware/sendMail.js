@@ -1,7 +1,7 @@
 let nodemailer	= require("nodemailer"),
     errorCodes  = require("./errorCodes");
 
-module.exports.sendMail = (subject, req, html, next) => {
+module.exports.sendMail = (subject, html) => {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -17,12 +17,10 @@ module.exports.sendMail = (subject, req, html, next) => {
     };
     transporter.sendMail(mailOptions, (err) => {
         if(err) {
+	    console.log(errorCodes.MAIL_ERROR.message);
             console.log(`SEND MAILI OMA ERROR:\n${err}\n`);
-            let err2 = new Error(errorCodes.MAIL_ERROR.message);
-            err2.statusCode = errorCodes.MAIL_ERROR.code;
-            next(err2);
         } else {
-            req.flash("SUCCESS2", "Oota Bibendi kinnitust.", "/");
+            console.log("Meili saatmine õnnestus!");
         }
     });
 };

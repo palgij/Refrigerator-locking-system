@@ -89,7 +89,7 @@ app.get("*", function(req, res, next) {
     next(err);
 });
 
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
     console.error(`ERROR: "${err.message}"`);
     //console.log(err);
     if (!err.statusCode) err.statusCode = 500;
@@ -107,7 +107,10 @@ app.use(function(err, req, res, next) {
             req.flash("WARN", err.message, "/admin/muutused/kasutajad");
             break;
         case errorCodes.NO_SUCH_PAGE.code:
-            res.status(err.statusCode).send(err.message); // TODO tee selleks ja random erroriks oma page!
+	    if (req.url.includes("admin"))
+		req.flash("ERROR", err.message, "/admin/kodu");
+	    else
+		req.flash("ERROR", err.message, "/");
             break;
         case errorCodes.IP_SESSIOON_AEGUNUD.code:
         case errorCodes.WRONG_PASSWORD.code:
@@ -159,7 +162,7 @@ app.use(function(err, req, res, next) {
         case errorCodes.TOOTE_KOGUS_ERROR.code:
         case errorCodes.UPDATE_KOGUS_ERROR.code:
         case errorCodes.INSERT_OST_ERROR.code:
-        case errorCodes.MAIL_ERROR.code:
+        //case errorCodes.MAIL_ERROR.code:
         case errorCodes.GET_STAATUS_REGISTREERIMINE_ERROR.code:
         case errorCodes.INSERT_KASUTAJA_ERROR.code:
         case errorCodes.REGISTREERIMINE_INSERT_KASUTAJA_MUUTUS_ERROR.code:

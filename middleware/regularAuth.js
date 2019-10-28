@@ -59,12 +59,10 @@ function addUserWithTimeout(id) {
 }
 
 function getIndexOfId(id) {
-    //let index = middlewareObj.users.findIndex(id => id === ids);
     for (let i = 0; i < middlewareObj.users.length; i++) {
 	    if (middlewareObj.users[i].id === id) {
 	        return i;
 	    }
     }
-    //return index;
     return -1;
 }
