@@ -13,7 +13,7 @@
 
     <!-- Button trigger modal -->
     <div>
-	<button type="button" class="btn btn-outline-primary btn-md shadow mb-4" data-toggle="modal" data-target="#nulliVolad">Nulli võlad</button>
+	<button type="button" class="btn btn-outline-primary btn-lg shadow mb-4" data-toggle="modal" data-target="#nulliVolad">Nulli võlad</button>
     </div>    
 
     <!-- Nulli võlad Modal -->
@@ -59,8 +59,8 @@
 	</div>
     </div>
 
-    <h1> Kasutajad </h1>
-    <table class="table table-hover table-bordered mt-4 shadow">
+    <h2> Kasutajad </h2>
+    <table class="table table-hover table-bordered mt-4 mb-5 shadow">
         <thead>
             <tr>
 		<th scope="col">Coetus</th>
@@ -68,7 +68,7 @@
                 <th scope="col">Nimi</th>
                 <th scope="col">Võlg</th>
                 <th scope="col">Kinnitatud</th>
-                <th scope="col">Muuda</th>
+                <th scope="col"><i class="far fa-edit" style="color: #000000;"></i></th>
 		<th><i class="fas fa-trash-alt"></i></th>
 	    </tr>
         </thead>
@@ -84,9 +84,9 @@
 			<img src="/uncheckedMark.png" style="height: 17px; width: 17px;"><% } %>
 			
 		    </td>
-		    <td><a href="/admin/kasutajad/muuda/<%= kasutaja.kasutaja_id %>">Muuda</a></td>
+		    <td><a href="/admin/kasutajad/muuda/<%= kasutaja.kasutaja_id %>"><i class="far fa-edit" style="color: #000000;"></i></a></td>
 		    <td>
-			<a data-toggle="modal" data-target="#kustuta" id="kustutaModal" data-id="<%= kasutaja.kasutaja_id %>">
+			<a data-toggle="modal" data-target="#kustuta" id="kustutaModal" href="#" data-id="<%= kasutaja.kasutaja_id %>">
 			    <i class="fas fa-trash-alt" style="color: #cc2900;"></i>
 			</a>
 		    </td>

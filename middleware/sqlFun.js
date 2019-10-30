@@ -69,7 +69,7 @@ module.exports.nulliVolad = async (next) => {
     if (result !== -1) {
     	// Salvesta tegevus kasutajate muutustesse
     	let sql = mysql.format(sqlString.insertKasutajaMuutus, ["Kõik kasutajad", "võlgade nullimine", "võlg"]);
-    	await makeSqlQuery(sql,
+    	result = await makeSqlQuery(sql,
             errorCodes.INSERT_KASUTAJA_MUUTUS_ERROR.code, 
             errorCodes.INSERT_KASUTAJA_MUUTUS_ERROR.message, 
             next);
@@ -79,30 +79,30 @@ module.exports.nulliVolad = async (next) => {
 module.exports.deleteKasutaja = async (req, next) => {
     // Otsi nimi enne kustutamist, muutuste jaoks
     let sql = mysql.format(sqlString.kasutajaNimiID, [req.params.id]);
-    let kasutaja = await makeSqlQuery(sql,
+    let result = await makeSqlQuery(sql,
         errorCodes.GET_KASUTAJA_ERROR.code, 
         errorCodes.GET_KASUTAJA_ERROR.message, 
         next);
 
-    if (kasutaja !== -1) {
-    	let nimi = `${kasutaja[0].nimetus} ${kasutaja[0].eesnimi} ${kasutaja[0].perenimi}`;
+    if (result !== -1) {
+    	let nimi = `${result[0].nimetus} ${result[0].eesnimi} ${result[0].perenimi}`;
 
     	// Kustuta kasutaja
     	sql = mysql.format(sqlString.deleteKasutajaID, [req.params.id]);
-    	var result = await makeSqlQuery(sql,
+    	result = await makeSqlQuery(sql,
             errorCodes.DELETE_KASUTAJA_ERROR.code, 
             errorCodes.DELETE_KASUTAJA_ERROR.message, 
             next);
 	if (result !== -1) {
     	    // Lisa kasutajate muutuste tabelisse rida
     	    sql = mysql.format(sqlString.insertKasutajaMuutus, [nimi, "kustutamine", "kõik"]);
-    	    await makeSqlQuery(sql,
+    	    result = await makeSqlQuery(sql,
             	errorCodes.INSERT_KASUTAJA_MUUTUS_ERROR.code, 
             	errorCodes.INSERT_KASUTAJA_MUUTUS_ERROR.message, 
             	next);
 	}
     }
-    return kasutaja === -1 ? kasutaja : result;
+    return result;
 };
 module.exports.deleteToode = async (req, next) => {
     // Otsi nimi enne kustutamist, muutuste jaoks
@@ -122,7 +122,7 @@ module.exports.deleteToode = async (req, next) => {
 	if (result !== -1) {
     	    // Lisa lao muutustesse tabelisse rida
     	    sql = mysql.format(sqlString.insertTooteMuutus, [toode[0].nimetus, toode[0].hetke_kogus * -1, "kustutamine"]);
-    	    await makeSqlQuery(sql,
+    	    result = await makeSqlQuery(sql,
             	errorCodes.INSERT_TOOTE_MUUTUS_ERROR.code, 
             	errorCodes.INSERT_TOOTE_MUUTUS_ERROR.message, 
             	next);
@@ -172,13 +172,13 @@ module.exports.updateKasutaja = async (next, kasutaja, muutused) => {
             next);
 	if (nim !== -1) {
     	    sql = mysql.format(sqlString.insertKasutajaMuutus, [`${nim[0].nimetus} ${kasutaja.eesnimi} ${kasutaja.perenimi}`, "muutmine", muutused.join(", ")]);
-    	    await makeSqlQuery(sql,
+    	    result = await makeSqlQuery(sql,
             	errorCodes.INSERT_KASUTAJA_MUUTUS_ERROR.code, 
             	errorCodes.INSERT_KASUTAJA_MUUTUS_ERROR.message, 
             	next);
 	}
     }
-    return result;
+    return result === -1 ? result : nim;
 };
 module.exports.updateToode = async (next, toode) => {
     // Update toode
@@ -190,10 +190,10 @@ module.exports.updateToode = async (next, toode) => {
     console.log(`========== TOOTE ${toode.nimetus} ANDMEID MUUDETUD ==========`);
 
     if (result !== -1) {
-    // Sisesta koguse muutus lattu kui vaja
+	// Sisesta koguse muutus lattu kui vaja
     	if (toode.uusKogus - toode.vanaKogus !== 0) {
             sql = mysql.format(sqlString.insertTooteMuutus, [toode.nimetus, toode.uusKogus - toode.vanaKogus, "muutmine"]);
-    	    await makeSqlQuery(sql,
+    	    result = await makeSqlQuery(sql,
             	errorCodes.INSERT_TOOTE_MUUTUS_ERROR.code, 
             	errorCodes.INSERT_TOOTE_MUUTUS_ERROR.message, 
             	next);
@@ -219,13 +219,18 @@ module.exports.insertToode = async (next, toode) => {
     if (result !== -1) {
         // Sisesta toote lisamine lao muutustesse
         sql = mysql.format(sqlString.insertTooteMuutus, [toode.nimetus, toode.kogus, "lisamine"]);
-        await makeSqlQuery(sql,
+        result = await makeSqlQuery(sql,
             errorCodes.INSERT_TOOTE_MUUTUS_ERROR.code, 
             errorCodes.INSERT_TOOTE_MUUTUS_ERROR.message, 
             next);
     }
     return result;
 };
+module.exports.rebasteJoodudOlled = async (next) =>
+    await makeSqlQuery(sqlString.rebasteJoodudOlled,
+	errorCodes.REBASTE_OLLED_ERROR.code,
+	errorCodes.REBASTE_OLLED_ERROR.message,
+	next);
 
 // ===============================================================
 // ===============================================================
@@ -256,7 +261,7 @@ module.exports.kinnitaKasutaja = async (id, next) => {
             next);
 	if (kasutaja !== -1) {
     	    sql = mysql.format(sqlString.insertKasutajaMuutus, [`${kasutaja[0].nimetus} ${kasutaja[0].eesnimi} ${kasutaja[0].perenimi}`, "muutmine", "kinnitanud"]);
-    	    await makeSqlQuery(sql,
+    	    result = await makeSqlQuery(sql,
             	errorCodes.REGISTREERIMINE_INSERT_KASUTAJA_MUUTUS_ERROR.code, 
             	errorCodes.REGISTREERIMINE_INSERT_KASUTAJA_MUUTUS_ERROR.message, 
             	next);
@@ -279,7 +284,7 @@ module.exports.registreeriKasutaja = async (uusKasutaja, next) => {
 
     	if (staatus !== -1) {
     	    sql = mysql.format(sqlString.insertKasutajaMuutus, [`${staatus[0].nimetus} ${uusKasutaja.eesnimi} ${uusKasutaja.perenimi}`, "lisamine", "kõik"]);
-    	    await makeSqlQuery(sql,
+    	    result = await makeSqlQuery(sql,
             	errorCodes.REGISTREERIMINE_INSERT_KASUTAJA_MUUTUS_ERROR.code, 
         	errorCodes.REGISTREERIMINE_INSERT_KASUTAJA_MUUTUS_ERROR.message, 
         	next);
@@ -363,8 +368,8 @@ module.exports.myygiHindNim = async (toode, next) => {
         errorCodes.TOOTE_HINNA_ERROR.message, 
         next);
 };
-module.exports.tooteKategooriaID = async (toode, next) => {
-    let sql = mysql.format(sqlString.tooteKategooriaID, [toode]);
+module.exports.tooteKategooriaOmaHindID = async (toode, next) => {
+    let sql = mysql.format(sqlString.tooteKategooriaOmaHindID, [toode]);
     return await makeSqlQuery(sql,
         errorCodes.TOOTE_KATEGOORIA_ERROR.code, 
         errorCodes.TOOTE_KATEGOORIA_ERROR.message, 
@@ -399,7 +404,7 @@ module.exports.updateKogusNimetus = async (total, toode, next) => {
         next);
 };
 module.exports.lisaOst = async (ost, reb, next) => {
-    let sql = mysql.format(sqlString.lisaOst, [ost.nimi, ost.toode, ost.kogus, ost.summa, ost.tasuta, reb]);
+    let sql = mysql.format(sqlString.lisaOst, [ost.nimi, ost.toode, ost.kogus, ost.summa, ost.tasuta, reb, ost.oma]);
     return await makeSqlQuery(sql,
         errorCodes.INSERT_OST_ERROR.code, 
         errorCodes.INSERT_OST_ERROR.message, 

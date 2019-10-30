@@ -1,9 +1,10 @@
 let express     = require("express"),
     middleware  = require("../middleware/adminAuth"),
     sqlFun      = require("../middleware/sqlFun"),
-    errorCodes      = require("../middleware/errorCodes"),
+    errorCodes	= require("../middleware/errorCodes"),
     stringify   = require("csv-stringify"),
     gpio        = require("../middleware/gpio"),
+    email	= require("../middleware/sendMail"),
     router      = express.Router();
 
 let password = "admin";
@@ -253,12 +254,43 @@ router.get("/muutused/kasutajad/:page", middleware.checkIpSessionValid, async (r
     }
 });
 
+router.post("/kuuLopp", middleware.checkIpSessionValid, async (req, res, next) => {
+    let olledSumma = await sqlFun.rebasteJoodudOlled(next);
+    if (olledSumma !== -1) {
+    	let volad = await sqlFun.getVolad(next);
+    	if (volad !== -1 && (olledSumma[0].olledSumma !== 0 || volad.length !== 0)) {
+    	    try {
+		var result = await email.bibendileMeil(voladToCsv(volad), olledSumma[0].olledSumma);
+	    } catch (err) {
+		next(err);
+	    }
+	    if (!!result) {
+		if (await sqlFun.nulliVolad(next) !== -1)
+	            req.flash("SUCCESS2", "Kuulõpu esitamine oli edukas.", req.headers.referer.split("3000")[1]);
+	    }
+	} else {
+	    if (volad !== -1)
+		req.flash("SUCCESS2", "Kuulõppu ei esitatud, kuna pole midagi esitada.", req.headers.referer.split("3000")[1]);
+	}
+    }
+});
+
 module.exports = router;
 
-function getLength(obj) {
+let getLength = (obj) => {
     let i = 0;
     for (num in obj) {
         i++;
     }
     return i;
-}
+};
+
+let voladToCsv = arr => {
+    let csv = [];
+
+    for (i = 0; i < arr.length; i++) {
+    	if (i === 0) csv.push(Object.keys(arr[i]).join(","));
+    	csv.push(Object.values(arr[i]).join(","));
+    }
+    return csv.join("\n");
+};

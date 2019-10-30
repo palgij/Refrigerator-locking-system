@@ -35,7 +35,7 @@
     </div>
 
     <div>
-    	<a class="btn btn-outline-primary btn-lg shadow mb-5" id="btnLisa" href="/admin/tooted/uus"> Lisa uus Toode</a>
+    	<a class="btn btn-outline-primary btn-lg shadow mb-4" href="/admin/tooted/uus"> Lisa uus Toode</a>
     </div>
     <h2>Joogid</h2>
     <table class="table table-hover table-bordered mt-4 shadow">
@@ -46,7 +46,7 @@
                 <th scope="col">Nimetus</th>
                 <th scope="col">Kogus</th>
                 <th scope="col">Hind</th>
-                <th scope="col">Muuda</th>
+                <th scope="col"><i class="far fa-edit" style="color: #000000;"></i></th>
 	        <th><i class="fas fa-trash-alt"></i></th>
             </tr>
         </thead>
@@ -58,7 +58,7 @@
                     <td id="<%= jook.toote_id %>"><%= jook.nimetus %></td>
                     <td><%= jook.hetke_kogus %></td>
                     <td><%= jook.myygi_hind.toFixed(2) %>€</td>
-                    <td><a href="/admin/tooted/muuda/<%= jook.toote_id %>">Muuda</a></td>
+                    <td><a href="/admin/tooted/muuda/<%= jook.toote_id %>"><i class="far fa-edit" style="color: #000000;"></i></a></td>
 		    <td>
                         <a data-toggle="modal" data-target="#kustuta" id="kustutaModal" data-id="<%= jook.toote_id %>">
                             <i class="fas fa-trash-alt" style="color: #cc2900;"></i>
@@ -106,7 +106,7 @@
     window.onload = function() {
     	$("td").each(function() {
             if(parseFloat($(this).text()) <= 0) { 
-           	$(this).parent().css("background-color","#FF4141");
+           	$(this).parent().css("background-color","#eb7891");
             }
     	})  
     }

@@ -48,8 +48,14 @@ router.get("/registreeri/:id", (req, res) => {
 });
 
 router.post("/kinnitaKasutaja/:id", async (req, res, next) => {
-    if (await sqlFun.kinnitaKasutaja(req.params.id, next) !== -1)
-	req.flash("SUCCESS", "Kasutaja on kinnitatud!", "/");
+    if (removeUserId(req.params.id)) {
+	if (await sqlFun.kinnitaKasutaja(req.params.id, next) !== -1)
+	    req.flash("SUCCESS", "Kasutaja on kinnitatud!", "/");
+    } else {
+	let err = new Error(errorCodes.MAIL_ALREADY_CONFIRMED.message);
+        err.statusCode = errorCodes.MAIL_ALREADY_CONFIRMED.code;
+        next(err);
+    }
 });
 
 router.post("/registreeri/:id", async (req, res, next) => {
@@ -70,9 +76,28 @@ router.post("/registreeri/:id", async (req, res, next) => {
     	let link = `http://192.168.1.243:3000/kinnitaKasutaja/${uusKasutaja.id}`;
     	let html = `<p><h1>Uus kasutaja vajab kinnitamist!</h1><ul><li>${nimi}</li><li>${staatus}</li><li>${coetusTxt}</li>
     	</ul><form action="${link}" method="POST"><button type="submit">Kinnita kasutaja, vajuta siia</button></form></p>`;
-    	email.sendMail("Uus Kasutaja registreeris ennast süsteemi", html);
-	    req.flash("SUCCESS", "Registreerimine õnnestus! Oota Bibendi kinnitust.", "/");
+    	email.sendMail("Uus Kasutaja registreeris ennast süsteemi", html, uusKasutaja.id);
+	req.flash("SUCCESS", "Registreerimine õnnestus! Oota Bibendi kinnitust.", "/");
     }
 });
 
 module.exports = router;
+
+// =============================================
+
+let removeUserId = (id) => {
+    let pos = getIndexOfUserId(id);
+    if (pos !== -1) {
+	email.userIds.splice(pos, 1);
+	return true;
+    } else return false;
+};
+
+let getIndexOfUserId = (id) => {
+    for (let i = 0; i < email.userIds.length; i++) {
+	    if (email.userIds[i] === id) {
+	        return i;
+	    }
+    }
+    return -1;
+}

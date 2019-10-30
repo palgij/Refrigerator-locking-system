@@ -118,6 +118,8 @@ app.use((err, req, res, next) => {
             break;
         case errorCodes.TOODETE_TOP_ERROR.code:
         case errorCodes.KASUTAJATE_TOP_ERROR.code:
+	case errorCodes.BIBENDI_MAIL_ERROR.code:
+	case errorCodes.REBASTE_OLLED_ERROR.code:
             req.flash("ERROR", err.message, "/admin/kodu");
             break;
         case errorCodes.NULLI_VOLAD_ERROR.code:
@@ -163,6 +165,7 @@ app.use((err, req, res, next) => {
         case errorCodes.UPDATE_KOGUS_ERROR.code:
         case errorCodes.INSERT_OST_ERROR.code:
         //case errorCodes.MAIL_ERROR.code:
+	case errorCodes.MAIL_ALREADY_CONFIRMED.code:
         case errorCodes.GET_STAATUS_REGISTREERIMINE_ERROR.code:
         case errorCodes.INSERT_KASUTAJA_ERROR.code:
         case errorCodes.REGISTREERIMINE_INSERT_KASUTAJA_MUUTUS_ERROR.code:

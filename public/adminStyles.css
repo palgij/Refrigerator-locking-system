@@ -127,7 +127,7 @@ thead tr {
 }
 
 input:checked + .slider {
-  background-color: #28a745;
+  background-color: #2b882b;
 }
 
 input:focus + .slider {

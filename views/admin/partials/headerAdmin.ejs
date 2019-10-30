@@ -31,10 +31,7 @@
 		    	<li class="nav-item mr-4">
                     	    <a class="nav-link" href="/admin/ostud">Ostud</a>
 		    	</li>
-                    	<li class="nav-item mr-4">
-                    	    <a class="nav-link" href="/admin/csv">Võlad</a>
-		    	</li>
-			<li class="nav-item dropdown">
+			<li class="nav-item dropdown mr-4">
         		    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           			Muutused
         		    </a>
@@ -43,6 +40,12 @@
           			<a class="dropdown-item" href="/admin/muutused/kasutajad">Kasutajates</a>
 			    </div>
       			</li>
+			<li class="nav-item mr-4">
+                    	    <a class="nav-link" href="/admin/csv">Võlad</a>
+		    	</li>
+			<li class="nav-item">
+			    <a class="nav-link" id="kuuLopp" href="#">Kuu lõpp</a>
+			</li>
                     </ul>
                     <ul class="navbar-nav mr-right">
 		    	<li class="nav-item mr-4">
@@ -65,3 +68,26 @@
 		</div>
 	    </div>
 	</nav>
+
+	<!-- Kuu lõpp Modal -->
+    	<div class="modal fade" id="kuuLoppModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	    <div class="modal-dialog modal-dialog-centered" role="document">
+	    	<div class="modal-content">
+		    <div class="modal-header">
+		    	<h4 class="modal-title" id="exampleModalCenterTitle">Oled kindel, et soovid teha kuu lõpu tehingu?</h4>
+		    	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			    <span aria-hidden="true">&times;</span>
+		    	</button>
+		    </div>
+		    <div class="modal-body">
+        	    	<p>Vajutades Jah, nullitakse kõikide võlad ja saadetakse Laekurile meil, kus on kirjas rebaste tasuta joodud joogid eelmise kuu jooksul ja liitena on võlgade väljund hetke kuupäevani. Soovitan kasutada kuu lõpu tehingut järgmise kuu esimestel päevadel.</p>
+      		    </div>
+		    <div class="modal-footer">
+		    	<button type="button" class="btn btn-secondary" data-dismiss="modal">Tagasi</button>
+		    	<form action="/admin/kuuLopp" method="POST">
+			    <button type="submit" class="btn btn-success">Jah, tee kuu lõpp</button>
+		    	</form>
+		    </div>
+	    	</div>
+	    </div>
+    	</div>

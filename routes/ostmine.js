@@ -72,10 +72,11 @@ router.post("/:toode", middleware.checkUserSessionValid, async (req, res, next) 
             nimi    : middleware.getUsers(req.params.id).nimi,
             tasuta  : false
         };
-    	let result = await sqlFun.tooteKategooriaID(ost.toode, next);
+    	let result = await sqlFun.tooteKategooriaOmaHindID(ost.toode, next);
 	if (result !== -1) {
     	    kategooria = result[0].toote_kategooria_id;
-
+	    ost.oma = result[0].oma_hind * ost.kogus;
+	    console.log(`Oma hind * kogus = oma\n${result[0].oma_hind} * ${ost.kogus} = ${ost.oma}`);
     	    console.log("========== LISA SUMMA KASUTAJA VÕLGA ==========");
     	    if (!!middleware.getUsers(ost.id).reb) result = await sqlFun.volgStaatusID(middleware.getUsers(ost.id).newId, next);
     	    else result = await sqlFun.volgStaatusID(ost.id, next);
