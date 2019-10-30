@@ -77,7 +77,7 @@
                 <th scope="col">Nimetus</th>
                 <th scope="col">Kogus</th>
                 <th scope="col">Hind</th>
-                <th scope="col">Muuda</th>
+                <th scope="col"><i class="far fa-edit" style="color: #000000;"></i></th>
 		<th><i class="fas fa-trash-alt"></i></th>
             </tr>
         </thead>
@@ -89,7 +89,7 @@
                     <td id="<%= sook.toote_id %>"><%= sook.nimetus %></td>
                     <td><%= sook.hetke_kogus %></td>
                     <td><%= sook.myygi_hind.toFixed(2) %>€</td>
-                    <td><a href="/admin/tooted/muuda/<%= sook.toote_id %>">Muuda</a></td>
+                    <td><a href="/admin/tooted/muuda/<%= sook.toote_id %>"><i class="far fa-edit" style="color: #000000;"></i></a></td>
                     <td>
                         <a data-toggle="modal" data-target="#kustuta" id="kustutaModal" data-id="<%= sook.toote_id %>">
                             <i class="fas fa-trash-alt" style="color: #cc2900;"></i>

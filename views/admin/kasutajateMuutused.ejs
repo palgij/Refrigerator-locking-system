@@ -16,12 +16,10 @@
     <% let num = 1 %>
     <% if (numberOfPages > 1) { %>
 	<form id="pageForm" action="" method="GET"> 
-    	    <% if (currentPage !== 1) { %>
-	    	<button type="button" class="btn btn-sm mt-3 mr-3" onClick="submitForm('<%= currentPage - 1 %>')">
-		    <i class="fas fa-angle-double-left"></i>
-	    	</button>
-	    <% } %>
-    	    <div class="btn-group mt-4 shadow" role="group">
+	    <button type="button" class="btn btn-sm mt-3 mr-3" onClick="submitForm('<%= currentPage - 1 %>')"<% if (currentPage === 1) { %>style="visibility: hidden"<% } %>>
+		<i class="fas fa-angle-double-left"></i>
+	    </button>
+    	    <div class="btn-group mt-3 shadow" role="group">
 		<% let index = 0 %>
 		<% if (currentPage < 7) { %>
 		    <% var i = 0 %>
@@ -45,11 +43,9 @@
 		    <% } i++ %>
 	    	<% } %>
     	    </div>
-	    <% if (currentPage !== numberOfPages) { %>
-	    	<button type="button" class="btn btn-sm mt-3 ml-3" onClick="submitForm('<%= currentPage + 1 %>')">
-		    <i class="fas fa-angle-double-right"></i>
-	    	</button>
-	    <% } %>
+	    <button type="button" class="btn btn-sm mt-3 ml-3" onClick="submitForm('<%= currentPage + 1 %>')"<% if (currentPage === numberOfPages) { %>style="visibility: hidden"<% } %>>
+		<i class="fas fa-angle-double-right"></i>
+	    </button>
 	</form>
     <% } %>
 
