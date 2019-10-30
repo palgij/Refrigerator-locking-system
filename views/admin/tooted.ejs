@@ -7,7 +7,7 @@
         <script>
             setTimeout(() => {
                 $('.alert').fadeOut("fast")				
-            }, 10000)
+            }, 5000)
         </script>
     <% } %>
 
@@ -34,11 +34,8 @@
         </div>
     </div>
 
-    <div>
-    	<a class="btn btn-outline-primary btn-lg shadow mb-4" href="/admin/tooted/uus"> Lisa uus Toode</a>
-    </div>
     <h2>Joogid</h2>
-    <table class="table table-hover table-bordered mt-4 shadow">
+    <table class="table table-hover table-bordered mt-5 shadow">
         <thead>
             <tr>
                 <th scope="col">#</th>
@@ -60,7 +57,7 @@
                     <td><%= jook.myygi_hind.toFixed(2) %>€</td>
                     <td><a href="/admin/tooted/muuda/<%= jook.toote_id %>"><i class="far fa-edit" style="color: #000000;"></i></a></td>
 		    <td>
-                        <a data-toggle="modal" data-target="#kustuta" id="kustutaModal" data-id="<%= jook.toote_id %>">
+                        <a data-toggle="modal" href="#" data-target="#kustuta" id="kustutaModal" data-id="<%= jook.toote_id %>">
                             <i class="fas fa-trash-alt" style="color: #cc2900;"></i>
                         </a>
 		    </td>
@@ -91,7 +88,7 @@
                     <td><%= sook.myygi_hind.toFixed(2) %>€</td>
                     <td><a href="/admin/tooted/muuda/<%= sook.toote_id %>"><i class="far fa-edit" style="color: #000000;"></i></a></td>
                     <td>
-                        <a data-toggle="modal" data-target="#kustuta" id="kustutaModal" data-id="<%= sook.toote_id %>">
+                        <a data-toggle="modal" href="#" data-target="#kustuta" id="kustutaModal" data-id="<%= sook.toote_id %>">
                             <i class="fas fa-trash-alt" style="color: #cc2900;"></i>
                         </a>
                     </td>

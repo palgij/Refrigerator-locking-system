@@ -52,8 +52,10 @@ router.get("/kasutajad", middleware.checkIpSessionValid, async (req, res, next) 
 });
 
 router.post("/kasutajad", middleware.checkIpSessionValid, async (req, res, next) => {
-    if (await sqlFun.nulliVolad(next) !== -1)
-    	req.flash("SUCCESS3", "Võlad said nullitud.", "/admin/kasutajad");
+    if (await sqlFun.nulliVolad(next) !== -1) {
+	if (req.headers.referer.split("3000")[1].includes("kodu")) req.flash("SUCCESS2", "Võlad said nullitud.", req.headers.referer.split("3000")[1]);
+        else req.flash("SUCCESS3", "Võlad said nullitud.", req.headers.referer.split("3000")[1]);
+    }
 });
 
 router.post("/kasutajad/:id", middleware.checkIpSessionValid, async (req, res, next) => {

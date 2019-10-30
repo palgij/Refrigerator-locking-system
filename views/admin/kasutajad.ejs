@@ -7,34 +7,9 @@
 		<script>
 			setTimeout(() => {
 				$('.alert').fadeOut("fast")				
-			}, 10000)
+			}, 5000)
 		</script>
 	<% } %>
-
-    <!-- Button trigger modal -->
-    <div>
-	<button type="button" class="btn btn-outline-primary btn-lg shadow mb-4" data-toggle="modal" data-target="#nulliVolad">Nulli võlad</button>
-    </div>    
-
-    <!-- Nulli võlad Modal -->
-    <div class="modal fade" id="nulliVolad" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-	    <div class="modal-content">
-		<div class="modal-header">
-		    <h4 class="modal-title" id="exampleModalCenterTitle">Oled kindel, et tahad nullida võlad?</h4>
-		    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		    </button>
-		</div>
-		<div class="modal-footer">
-		    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tagasi</button>
-		    <form action="/admin/kasutajad" method="POST">
-			<button type="submit" class="btn btn-primary">Jah, nulli võlad</button>
-		    </form>
-		</div>
-	    </div>
-	</div>
-    </div>
 
     <!-- Kustuta kasutaja Modal -->
     <div class="modal fade" id="kustuta" tabindex="-1" role="dialog" aria-labelledby="kustutaText" aria-hidden="true">
@@ -60,7 +35,7 @@
     </div>
 
     <h2> Kasutajad </h2>
-    <table class="table table-hover table-bordered mt-4 mb-5 shadow">
+    <table class="table table-hover table-bordered mt-5 mb-5 shadow">
         <thead>
             <tr>
 		<th scope="col">Coetus</th>

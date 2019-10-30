@@ -122,7 +122,6 @@ app.use((err, req, res, next) => {
 	case errorCodes.REBASTE_OLLED_ERROR.code:
             req.flash("ERROR", err.message, "/admin/kodu");
             break;
-        case errorCodes.NULLI_VOLAD_ERROR.code:
         case errorCodes.GET_KASUTAJAD_ERROR.code:
         case errorCodes.GET_KASUTAJA_ERROR.code:
         case errorCodes.DELETE_KASUTAJA_ERROR.code:
@@ -141,6 +140,7 @@ app.use((err, req, res, next) => {
 	case errorCodes.ER_DUP_ENTRY_TOODE.code:
 	    req.flash("WARN", errorCodes.ER_DUP_ENTRY_TOODE.message, "/admin/tooted");
             break;
+	case errorCodes.NULLI_VOLAD_ERROR.code:
         case errorCodes.INSERT_KASUTAJA_MUUTUS_ERROR.code:
         case errorCodes.INSERT_TOOTE_MUUTUS_ERROR.code:
         case errorCodes.GET_OSTUD_ERROR.code:

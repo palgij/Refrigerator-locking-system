@@ -22,29 +22,39 @@
   		</button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
-		    	<li class="nav-item mr-4">
-                    	    <a class="nav-link" href="/admin/kasutajad">Kasutajad</a>
-		    	</li>
-		    	<li class="nav-item mr-4">
-                    	    <a class="nav-link" href="/admin/tooted">Tooted</a>
-		    	</li>
-		    	<li class="nav-item mr-4">
-                    	    <a class="nav-link" href="/admin/ostud">Ostud</a>
-		    	</li>
 			<li class="nav-item dropdown mr-4">
-        		    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        		    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          			Kasutajad
+        		    </a>
+        		    <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
+          		    	<a class="dropdown-item" href="/admin/kasutajad"><i class="fas fa-table"></i> Kasutajad</a>
+          			<a class="dropdown-item" href="#" id="toggleNulliModal"><i class="fas fa-cog"></i> Nulli võlad</a>
+				<a class="dropdown-item" href="/admin/csv"><i class="fas fa-file-csv"></i> Võlglased</a>
+			    </div>
+      			</li>
+			<li class="nav-item dropdown mr-4">
+        		    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          			Ladu
+        		    </a>
+        		    <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
+          		    	<a class="dropdown-item" href="/admin/tooted"><i class="fas fa-table"></i> Tooted</a>
+          			<a class="dropdown-item" href="/admin/tooted/uus"><i class="fas fa-plus"></i> Lisa toode</a>
+			    </div>
+      			</li>
+			<li class="nav-item dropdown mr-4">
+        		    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           			Muutused
         		    </a>
-        		    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          		    	<a class="dropdown-item" href="/admin/muutused/ladu">Laos</a>
-          			<a class="dropdown-item" href="/admin/muutused/kasutajad">Kasutajates</a>
+        		    <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+          		    	<a class="dropdown-item" href="/admin/muutused/ladu"><i class="fas fa-table"></i> Laos</a>
+          			<a class="dropdown-item" href="/admin/muutused/kasutajad"><i class="fas fa-table"></i> Kasutajates</a>
 			    </div>
       			</li>
 			<li class="nav-item mr-4">
-                    	    <a class="nav-link" href="/admin/csv">Võlad</a>
+                    	    <a class="nav-link" href="/admin/ostud"><i class="fas fa-table"></i> Ostud</a>
 		    	</li>
 			<li class="nav-item">
-			    <a class="nav-link" id="kuuLopp" href="#">Kuu lõpp</a>
+			    <a class="nav-link" id="kuuLopp" href="#"><i class="fas fa-cog"></i> Kuu lõpp</a>
 			</li>
                     </ul>
                     <ul class="navbar-nav mr-right">
@@ -80,12 +90,32 @@
 		    	</button>
 		    </div>
 		    <div class="modal-body">
-        	    	<p>Vajutades Jah, nullitakse kõikide võlad ja saadetakse Laekurile meil, kus on kirjas rebaste tasuta joodud joogid eelmise kuu jooksul ja liitena on võlgade väljund hetke kuupäevani. Soovitan kasutada kuu lõpu tehingut järgmise kuu esimestel päevadel.</p>
+        	    	<p>Vajutades Jah, nullitakse kõikide võlad ja saadetakse Laekurile meil, kus on kirjas rebaste tasuta joodud joogid eelmise kuu jooksul ning liitena on võlgade väljund hetke kuupäevani. Soovitan kasutada kuu lõpu tehingut kuu esimestel päevadel.</p>
       		    </div>
 		    <div class="modal-footer">
 		    	<button type="button" class="btn btn-secondary" data-dismiss="modal">Tagasi</button>
 		    	<form action="/admin/kuuLopp" method="POST">
 			    <button type="submit" class="btn btn-success">Jah, tee kuu lõpp</button>
+		    	</form>
+		    </div>
+	    	</div>
+	    </div>
+    	</div>
+
+    	<!-- Nulli võlad Modal -->
+    	<div class="modal fade" id="nulliVolad" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	    <div class="modal-dialog modal-dialog-centered" role="document">
+	    	<div class="modal-content">
+		    <div class="modal-header">
+		    	<h4 class="modal-title" id="exampleModalCenterTitle">Oled kindel, et tahad nullida võlad?</h4>
+		    	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		    	    </button>
+			</div>
+			<div class="modal-footer">
+		    	<button type="button" class="btn btn-secondary" data-dismiss="modal">Tagasi</button>
+		        <form action="/admin/kasutajad" method="POST">
+			    <button type="submit" class="btn btn-primary">Jah, nulli võlad</button>
 		    	</form>
 		    </div>
 	    	</div>
