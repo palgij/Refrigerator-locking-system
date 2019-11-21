@@ -154,7 +154,7 @@ router.get("/tooted/:id", middleware.checkIpSessionValid, async (req, res, next)
 });
 
 // Lisa toode vaade
-router.get("/tooted/uus", middleware.checkIpSessionValid, (req, res) => {
+router.get("/uusToode", middleware.checkIpSessionValid, (req, res) => {
     res.render("admin/uusToode", {lockOpen: lockOpen});
 });
 
