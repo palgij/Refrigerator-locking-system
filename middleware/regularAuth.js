@@ -8,17 +8,19 @@ middlewareObj.getUsers = id => {
     return middlewareObj.users[getIndexOfId(id)];
 };
 
+// Lisa kasutaja kaardi id arraysse
 middlewareObj.addUserCard = id => {
     let pos = getIndexOfId(id);
     if (pos === -1) {
 	addUserWithTimeout(id);
     } else {
-	    clearTimeout(middlewareObj.users[pos].timeout);
-	    removeAndLog(id);
-	    addUserWithTimeout(id);
+	clearTimeout(middlewareObj.users[pos].timeout);
+	removeAndLog(id);
+	addUserWithTimeout(id);
     }
 };
 
+// Kontrolli kas kasutaja kaardi id on ikka arrays
 middlewareObj.checkUserSessionValid = (req, res, next) => {
     let id;
     if (req.params.id.includes('"')) {
@@ -35,6 +37,7 @@ middlewareObj.checkUserSessionValid = (req, res, next) => {
     }
 };
 
+// Kustuta kasutaja kaardi id arrayst
 middlewareObj.removeUser = id => {
     let pos = getIndexOfId(id);
     clearTimeout(middlewareObj.users[pos].timeout);
@@ -53,16 +56,9 @@ function removeAndLog(id) {
 
 function addUserWithTimeout(id) {
     middlewareObj.users.push({
-	    id: id,
-	    timeout: setTimeout(removeAndLog.bind(null, id), 180000)
+	id: id,
+	timeout: setTimeout(removeAndLog.bind(null, id), 180000)
     });
 }
 
-function getIndexOfId(id) {
-    for (let i = 0; i < middlewareObj.users.length; i++) {
-	    if (middlewareObj.users[i].id === id) {
-	        return i;
-	    }
-    }
-    return -1;
-}
+let getIndexOfId = id => middlewareObj.users.findIndex(elem => elem.id === id);

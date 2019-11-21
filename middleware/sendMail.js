@@ -5,6 +5,7 @@ let userIds = [];
 let monthNames = ["Jaanuarikuu", "Veebruarikuu", "Märtsikuu", "Aprillikuu", "Maikuu", "Juunikuu", "Juulikuu", "Augustikuu", "Septembrikuu", "Oktoobrikuu", "Novembrikuu", "Detsembrikuu"];
 module.exports.userIds = userIds;
 
+// Uus kasutaja vajab kinnitamist meil
 module.exports.sendMail = (subject, html, id) => {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -30,7 +31,9 @@ module.exports.sendMail = (subject, html, id) => {
     });
 };
 
+// Kuu lõpu operatsiooni meil
 module.exports.bibendileMeil = (csv, olleSumma) => {
+    // Tee arrayst tekst fail -> csv
     let html = getHtml(csv, olleSumma);
 
     let transporter = nodemailer.createTransport({
@@ -40,6 +43,8 @@ module.exports.bibendileMeil = (csv, olleSumma) => {
             pass: "vironialukutaha19"
         }
     });
+
+    // Meili sisu ja liited
     const mailOptions = getMailOptions(csv, html);
 
     return new Promise((resolve, reject) => { 

@@ -7,24 +7,32 @@ let express     = require("express"),
     email       = require("../middleware/sendMail"),
     router      = express.Router();
 
+// Viipa kaarti
 router.get("/", (req, res) => {
     res.render("home");
 });
 
+// Tahetakse kaarti viibata
 router.get("/kaart", (req, res, next) => {
     rc522.init();
+    // Kaardi viipamise ootamine
     rc522.read(async (serial) => {       
 	buzzer.ring();
         rc522.child();
         let kasutaja = await sqlFun.kasutajaKaardiLugemisel(next, serial);
 
+	// Andmebaasi operatsioon õnnestus
  	if (kasutaja !== -1) {
+	    // Andmebaasis leidus kasutaja
             if (kasutaja.length > 0) {
+		// Kasutaja on kinnitatud, on kas Tavaline või Juthser
             	if (kasutaja[0].admin_on_kinnitanud === 1 && (kasutaja[0].kasutaja_seisu_id === 1 || kasutaja[0].kasutaja_seisu_id === 2)) {
                     middleware.addUserCard(serial);
+		    // Rebane või tava kasutaja
 		    if (kasutaja[0].kasutaja_staatuse_id === 1) res.redirect("/tooted/" + serial + "/paneKirja");
 		    else res.redirect("/tooted/" + serial);
             	} else {
+		    // Kas kasutaja kinnitamata või on kasutaja on väljalangenu
                     if (kasutaja[0].admin_on_kinnitanud === 0) {
                     	let err = new Error(errorCodes.ADMINI_KINNITUS_PUUDUB.message);
                     	err.statusCode = errorCodes.ADMINI_KINNITUS_PUUDUB.code;
@@ -35,6 +43,7 @@ router.get("/kaart", (req, res, next) => {
                     	next(err);
                     }
             	}
+	    // Uus kaardi id -> uus kasutaja
             } else {
             	res.redirect("/registreeri/" + serial);
             }
@@ -42,15 +51,18 @@ router.get("/kaart", (req, res, next) => {
     });
 });
 
+// Registreerimis vaade, uus kaart
 router.get("/registreeri/:id", (req, res) => {
     let id = req.params.id;
     res.render("registreeri", {id: id});
 });
 
-router.post("/kinnitaKasutaja/:id", async (req, res, next) => {
+// Kinnita kasutaja meilist
+router.put("/kinnitaKasutaja/:id", async (req, res, next) => {
+    // Kinnita kasutaja ainult siis kui leidub kaardi id arrayst
     if (removeUserId(req.params.id)) {
 	if (await sqlFun.kinnitaKasutaja(req.params.id, next) !== -1)
-	    req.flash("SUCCESS", "Kasutaja on kinnitatud!", "/");
+	    req.flash("SUCCESS2", "Kasutaja on kinnitatud!", "/");
     } else {
 	let err = new Error(errorCodes.MAIL_ALREADY_CONFIRMED.message);
         err.statusCode = errorCodes.MAIL_ALREADY_CONFIRMED.code;
@@ -58,6 +70,7 @@ router.post("/kinnitaKasutaja/:id", async (req, res, next) => {
     }
 });
 
+// Kasutaja registreerimine süsteemi
 router.post("/registreeri/:id", async (req, res, next) => {
     let uusKasutaja = {
         id: req.params.id,
@@ -68,6 +81,7 @@ router.post("/registreeri/:id", async (req, res, next) => {
     };
 
     let staatuseNimetus = await sqlFun.registreeriKasutaja(uusKasutaja, next);
+    // Staatuse saamine õnnestus, saada bibendile meil asünkroonselt
     if (staatuseNimetus !== -1) {
     	// Anna bibendile teada uue kasutaja registreerimisest
     	let nimi = `Nimi - ${uusKasutaja.eesnimi} ${uusKasutaja.perenimi}`;
@@ -75,9 +89,9 @@ router.post("/registreeri/:id", async (req, res, next) => {
     	let coetusTxt = `Coetus - ${uusKasutaja.coetus}`;
     	let link = `http://192.168.1.243:3000/kinnitaKasutaja/${uusKasutaja.id}`;
     	let html = `<p><h1>Uus kasutaja vajab kinnitamist!</h1><ul><li>${nimi}</li><li>${staatus}</li><li>${coetusTxt}</li>
-    	</ul><form action="${link}" method="POST"><button type="submit">Kinnita kasutaja, vajuta siia</button></form></p>`;
+    	</ul><form action="${link}?_method=PUT" method="POST"><button type="submit">Kinnita kasutaja, vajuta siia</button></form></p>`;
     	email.sendMail("Uus Kasutaja registreeris ennast süsteemi", html, uusKasutaja.id);
-	req.flash("SUCCESS", "Registreerimine õnnestus! Oota Bibendi kinnitust.", "/");
+	req.flash("SUCCESS2", "Registreerimine õnnestus! Oota Bibendi kinnitust.", "/");
     }
 });
 
@@ -95,9 +109,9 @@ let removeUserId = (id) => {
 
 let getIndexOfUserId = (id) => {
     for (let i = 0; i < email.userIds.length; i++) {
-	    if (email.userIds[i] === id) {
-	        return i;
-	    }
+	if (email.userIds[i] === id) {
+	    return i;
+	}
     }
     return -1;
 }

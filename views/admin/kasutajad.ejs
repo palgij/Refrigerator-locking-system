@@ -80,7 +80,7 @@
 	$('#kustutaText').html(`Oled kindel, et tahad kustudada kasutaja <br><span style="font-weight: bold;">${nimi}</span>`);
 	$('.btn-danger').html(`Jah, kustuta <span style="font-weight: bold;">${nimi.split(" ").pop()}</span>`);
 
-	$('#delModal').attr('action', '/admin/kasutajad/' + id + '/kustuta');
+	$('#delModal').attr('action', '/admin/kasutajad/' + id + '/kustuta?_method=DELETE');
     });
 
 </script>

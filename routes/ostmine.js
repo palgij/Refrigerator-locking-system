@@ -4,17 +4,20 @@ let rpio        = require("../middleware/gpio"),
     sqlFun      = require("../middleware/sqlFun"),
     router      = express.Router({mergeParams: true});
 
+// Toodete valik
 router.get("/", middleware.checkUserSessionValid, async (req, res, next) => {
     let id = req.params.id;
     let results;
+    // Kas id sisaldab kahte id mis on seotud "
     if (id.includes('"')) {
-	    let arr = id.split('"');
-	    id = arr[0] // rebase id
-        middleware.getUsers(id).newId = arr[1];
-        middleware.getUsers(id).reb = true;
+	let arr = id.split('"');
+	id = arr[0] // rebase id
+        middleware.getUsers(id).newId = arr[1]; // kasutaja kellele ostetakse
+        middleware.getUsers(id).reb = true; // rebane ostab teisele
         results = await sqlFun.getTootedJaKasutaja(arr[1], next);
     } else results = await sqlFun.getTootedJaKasutaja(id, next);
     
+    // Andmebaasi operatsioon oli edukas
     if (results !== -1) {
     	let nimi = results[6][0].nimetus + " " + results[6][0].eesnimi + " " + results[6][0].perenimi;
     	middleware.getUsers(id).nimi = nimi; 
@@ -23,12 +26,14 @@ router.get("/", middleware.checkUserSessionValid, async (req, res, next) => {
     }
 });
 
+// Rebane viipas kaarti
 router.get("/paneKirja", middleware.checkUserSessionValid, async (req, res, next) => {
     let id = req.params.id;  
     let kasutajad = await sqlFun.kasutajadPaneKirja(id, next);
     if (kasutajad !== -1) {
 	let viimased12hKasutajad = await sqlFun.viimase12hKasutajad(id, next);
 
+	// Viimased 12h kasutajad saadi kätte, sorteeri kasutajad, iga coetus oma arraysse
 	if (viimased12hKasutajad !== -1) {
     	    let uusKasutajad = [];
     	    let str = "";
@@ -46,6 +51,7 @@ router.get("/paneKirja", middleware.checkUserSessionValid, async (req, res, next
     }
 });
 
+// Kalkulaatori vaade
 router.get("/:toode/", middleware.checkUserSessionValid, async (req, res, next) => {
     let toode = req.params.toode;
     let id = req.params.id;
@@ -59,8 +65,10 @@ router.get("/:toode/", middleware.checkUserSessionValid, async (req, res, next) 
     }
 });
 
+// Soorita ost
 router.post("/:toode", middleware.checkUserSessionValid, async (req, res, next) => {
     let hind = middleware.getUsers(req.params.id).hind;
+    // Hind saadi kätte
     if (hind !== -1) {
     	let kategooria;
     	let volg;
@@ -76,7 +84,6 @@ router.post("/:toode", middleware.checkUserSessionValid, async (req, res, next) 
 	if (result !== -1) {
     	    kategooria = result[0].toote_kategooria_id;
 	    ost.oma = result[0].oma_hind * ost.kogus;
-	    console.log(`Oma hind * kogus = oma\n${result[0].oma_hind} * ${ost.kogus} = ${ost.oma}`);
     	    console.log("========== LISA SUMMA KASUTAJA VÕLGA ==========");
     	    if (!!middleware.getUsers(ost.id).reb) result = await sqlFun.volgStaatusID(middleware.getUsers(ost.id).newId, next);
     	    else result = await sqlFun.volgStaatusID(ost.id, next);
@@ -85,6 +92,7 @@ router.post("/:toode", middleware.checkUserSessionValid, async (req, res, next) 
 	    	console.log(`Kogus: ${ost.kogus} | hind: ${hind} | kokku: ${ost.summa} | (1 == reb!) ${result[0].kasutaja_staatuse_id}`);
     	    	console.log(`Võlg enne: ${parseFloat(result[0].volg)}`);
     		volg = parseFloat(result[0].volg);
+		// Kui ei ole rebane lisa summa kasutaja võlga
     		if (result[0].kasutaja_staatuse_id === 1 && (kategooria === 1 || kategooria === 2)) {
         	    ost.tasuta = true;
         	    console.log("Võlg sama mis enne - !reb");
@@ -107,7 +115,7 @@ router.post("/:toode", middleware.checkUserSessionValid, async (req, res, next) 
     			    if (await sqlFun.lisaOst(ost, !!middleware.getUsers(ost.id).reb, next) !== -1) {
 				rpio.lockOpen();
     				middleware.removeUser(ost.id);
-    				req.flash("SUCCESS", "Edukas ost! Kapp on avatud 10s", "/");
+    				req.flash("SUCCESS2", "Edukas ost! Kapp on avatud 10s", "/");
 			    }
 			}
 		    }

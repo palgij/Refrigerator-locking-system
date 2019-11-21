@@ -115,7 +115,7 @@
 	$('#kustutaText').html(`Oled kindel, et tahad kustudada toote <br><span style="font-weight: bold;">${nimi}</span>`);
 	$('.btn-danger').html(`Jah, kustuta <span style="font-weight: bold;">${nimi}</span>`);
 
-	$('#delModal').attr('action', '/admin/tooted/' + id + '/kustuta');
+	$('#delModal').attr('action', '/admin/tooted/' + id + '/kustuta?_method=DELETE');
     });
 </script>
 

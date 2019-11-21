@@ -1,6 +1,7 @@
 let mysql   = require("mysql"),
     util    = require("util");
 
+// Andmebaasi avamine
 let pool = mysql.createPool({
     connectionLimit: 10,
     host: 'localhost',

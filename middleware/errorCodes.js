@@ -119,7 +119,10 @@ module.exports.REBASTE_OLLED_ERROR = {
     code: 651,
     message: "Rebaste jookide saamisega tekkis viga."
 };
-
+module.exports.GET_KOIK_TOOTED_ERROR = {
+    code: 652,
+    message: "Andmebaasist kõikide toodete saamisega tekkis viga."
+};
 
 // regularCardRead.js
 module.exports.GET_KASUTAJA_KAART_ERROR = {

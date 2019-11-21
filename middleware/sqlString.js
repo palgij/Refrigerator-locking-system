@@ -48,3 +48,4 @@ module.exports.kasutajateMuutused = "SELECT DATE_FORMAT(aeg, '%d.%m.%Y %H:%i') A
 module.exports.viimase12hKasutajad = "SELECT ostja_nimi, kaardi_id FROM Ost INNER JOIN Kasutaja ON LOCATE(CONCAT(eesnimi, ' ', perenimi), ostja_nimi) <> 0 WHERE kasutaja_seisu_id <> 3 AND admin_on_kinnitanud = 1 AND kaardi_id <> ? AND aeg >= DATE_SUB(NOW(), INTERVAL 12 HOUR) GROUP BY kaardi_id ORDER BY DATE(aeg) DESC, TIME(aeg) DESC, ostja_nimi";
 module.exports.getToodeID = "SELECT * FROM Toode WHERE toote_id = ?";
 module.exports.rebasteJoodudOlled = "SELECT COALESCE(SUM(summa_oma_hind), 0) AS olledSumma FROM Ost WHERE aeg BETWEEN (LAST_DAY(NOW() - INTERVAL 2 MONTH) + INTERVAL 1 DAY) AND LAST_DAY(NOW() - INTERVAL 1 MONTH) AND ostja_nimi LIKE 'reb! %' AND on_tasuta = 1";
+module.exports.getTooted = "SELECT toote_kategooria_id, nimetus, myygi_hind, oma_hind, hetke_kogus FROM Toode ORDER BY toote_kategooria_id";

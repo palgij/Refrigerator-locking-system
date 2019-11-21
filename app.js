@@ -1,14 +1,15 @@
-let bodyParser  = require("body-parser"),
-    express     = require("express"),
-    flash       = require("express-flash-notification"),
-    session     = require("express-session"),
-    database    = require("./middleware/database"),
-    auth        = require("./middleware/basicAuth"),
-    errorCodes  = require("./middleware/errorCodes"),
-    morgan      = require("morgan"),
-    requestIp   = require("request-ip"),
-    helmet	    = require("helmet"),
-    app         = express();
+let bodyParser		= require("body-parser"),
+    express     	= require("express"),
+    flash       	= require("express-flash-notification"),
+    session     	= require("express-session"),
+    database    	= require("./middleware/database"),
+    auth        	= require("./middleware/basicAuth"),
+    errorCodes  	= require("./middleware/errorCodes"),
+    morgan      	= require("morgan"),
+    requestIp   	= require("request-ip"),
+    helmet		= require("helmet"),
+    methodOverride 	= require('method-override'),
+    app         	= express();
 
 //This line add the authentication requirement to all pages starting with localhost:3000/
 //app.all("/*", auth);
@@ -16,6 +17,7 @@ let bodyParser  = require("body-parser"),
 //app.use(morgan('tiny'));
 app.use(requestIp.mw());
 app.use(helmet());
+app.use(methodOverride('_method'));
 
 // ============ ROUTES ============
 
@@ -50,7 +52,7 @@ const flashNotificationOptions = {
                     item.type = 'TopMargin';
                     item.alertClass = 'alert-successs';
                     break;
-		        case 'SUCCESS3': // mb-4
+		case 'SUCCESS3': // mb-4
                     item.type = 'BottomMargin';
                     item.alertClass = 'alert-successs';
                     break;
@@ -146,6 +148,7 @@ app.use((err, req, res, next) => {
         case errorCodes.GET_OSTUD_ERROR.code:
         case errorCodes.GET_KASUTAJATE_MUUTUSED_ERROR.code:
         case errorCodes.GET_TOODETE_MUUTUSED_ERROR.code:
+	case errorCodes.GET_KOIK_TOOTED_ERROR.code:
             req.flash("WARN", err.message, req.headers.referer.split("3000")[1]);
             break;
         case errorCodes.KAARDI_SESSIOON_AEGUNUD.code:    
@@ -175,7 +178,7 @@ app.use((err, req, res, next) => {
             req.flash("ERROR", err.message, "/");
             break;
         default:
-            res.status(err.statusCode).send(err.message); // TODO tee selleks ja random erroriks oma page!
+            res.status(err.statusCode).send(err.message);
     }
 });
 /* //

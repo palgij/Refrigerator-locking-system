@@ -2,29 +2,29 @@
 
 <div class="container text-center mt-5">
     <h1 class="mb-4"> Muuda toodet <strong><%= toode.nimetus %></strong> </h1>
-    <form class="needs-validation" action="/admin/tooted/<%= toode.toote_id%>/" method="POST" novalidate>
+    <form class="needs-validation" action="/admin/tooted/<%= toode.toote_id%>?_method=PUT" method="POST" novalidate>
         <div class="form-row justify-content-center mb-5">
             <div class="col-2">
                 <label for="kategooria" class="col-form-label col-form-label-lg">Toote Kategooria</label>
-                <select id="kategooria" name="kategooria" class="form-control form-control-lg" required="required">
+                <select id="kategooria" name="kategooria" class="form-control form-control-lg shadow-sm" required="required">
                     <option value="" disabled="disabled">Vali Kategooria</option>
                 </select>
             </div>
             <div class="col-3">
                 <label for="nimetus" class="col-form-label col-form-label-lg">Toote nimetus</label>
-                <input type="text" name="nimetus" pattern=".{2,70}" class="form-control form-control-lg" id="nimetus" value="<%= toode.nimetus %>" placeholder="Nimetus" required>
+                <input type="text" name="nimetus" pattern=".{2,70}" class="form-control form-control-lg shadow-sm" id="nimetus" value="<%= toode.nimetus %>" placeholder="Nimetus" required>
             </div>
             <div class="col-2">
                 <label for="kogus" class="col-form-label col-form-label-lg">Kogus</label>
-                <input type="number" name="kogus" class="form-control form-control-lg text-center" id="kogus" value="<%= toode.hetke_kogus %>" placeholder="Kogus" step="0.01" min="0" max="9999.99" required>
+                <input type="number" name="kogus" class="form-control form-control-lg text-center shadow-sm" id="kogus" value="<%= toode.hetke_kogus %>" placeholder="Kogus" step="0.01" min="0" max="9999.99" required>
             </div>
             <div class="col-2">
                 <label for="myygi_hind" class="col-form-label col-form-label-lg">Müügi Hind</label>
-                <input type="number" name="myygi_hind" class="form-control form-control-lg text-center" id="myygi_hind" value="<%= toode.myygi_hind %>" placeholder="Müügi Hind" step="0.01" min="0" max="999.99" required>
+                <input type="number" name="myygi_hind" class="form-control form-control-lg text-center shadow-sm" id="myygi_hind" value="<%= toode.myygi_hind %>" placeholder="Müügi Hind" step="0.01" min="0" max="999.99" required>
             </div>
             <div class="col-2">
                 <label for="oma_hind" class="col-form-label col-form-label-lg">Oma Hind</label>
-                <input type="number" name="oma_hind" class="form-control form-control-lg text-center" id="oma_hind" value="<%= toode.oma_hind %>" placeholder="Oma Hind" step="0.01" min="0" max="999.99" required>
+                <input type="number" name="oma_hind" class="form-control form-control-lg text-center shadow-sm" id="oma_hind" value="<%= toode.oma_hind %>" placeholder="Oma Hind" step="0.01" min="0" max="999.99" required>
             </div>
         </div>
         <div class="row justify-content-around">

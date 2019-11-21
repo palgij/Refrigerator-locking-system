@@ -23,7 +23,7 @@ td {
 td input[type="checkbox"] {
     margin: 0 auto;
 }
-
+/*
 tbody tr:nth-child(odd) {
     background: #DFDCE3;
 }
@@ -35,7 +35,7 @@ tbody tr:nth-child(even) {
 thead tr {
     background: #BEBEBE;
 }
-
+*/
 #volg {
     margin-left: 14px;
 }

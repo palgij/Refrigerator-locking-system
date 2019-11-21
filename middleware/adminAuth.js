@@ -4,6 +4,7 @@ let middlewareObj = {};
 
 middlewareObj.IPs = [];
 
+// Kasutaja ip lisamine andmebaasi
 middlewareObj.addIp = ip => {
     let pos = getIndexOfIp(ip);
     if (pos === -1) {
@@ -15,6 +16,7 @@ middlewareObj.addIp = ip => {
     }
 };
 
+// Kasutaja ip arrays kontrollimine
 middlewareObj.checkIpSessionValid = (req, res, next) => {
     let ip = req.clientIp;
     if (getIndexOfIp(ip) === -1) {
@@ -22,18 +24,19 @@ middlewareObj.checkIpSessionValid = (req, res, next) => {
         err.statusCode = errorCodes.IP_SESSIOON_AEGUNUD.code;
         next(err);
     } else {
-	    clearTimeout(middlewareObj.IPs[getIndexOfIp(ip)].timeout);
-	    removeAndLog(ip, false);
-	    addIpWithTimeout(ip, false);
-	    next();
+	clearTimeout(middlewareObj.IPs[getIndexOfIp(ip)].timeout);
+	removeAndLog(ip, false);
+	addIpWithTimeout(ip, false);
+	next();
     }
 };
 
+// Kasutaja ip kustutamine arrayst
 middlewareObj.removeIp = (req, res, next) => {
     let ip = req.clientIp;
     let pos = getIndexOfIp(ip);
     if (pos !== -1) {
- 	    clearTimeout(middlewareObj.IPs[pos].timeout);
+ 	clearTimeout(middlewareObj.IPs[pos].timeout);
     	removeAndLog(ip, true);
     }
     next();
@@ -53,19 +56,12 @@ function removeAndLog(ip, log) {
 
 function addIpWithTimeout(ip, log) {
     middlewareObj.IPs.push({
-	    ip: ip,
-	    timeout: setTimeout(removeAndLog.bind(null, ip, true), 300000)
+	ip: ip,
+	timeout: setTimeout(removeAndLog.bind(null, ip, true), 300000)
     });
     if (log) {
-	    console.log("Timeout added for " + String(ip));
+	console.log("Timeout added for " + String(ip));
     }
 }
 
-function getIndexOfIp(ip) {
-    for (let i = 0; i < middlewareObj.IPs.length; i++) {
-	    if (middlewareObj.IPs[i].ip === ip) {
-	        return i;
-	    }
-    }
-    return -1;
-}
+let getIndexOfIp = ip => middlewareObj.IPs.findIndex(elem => elem.ip === ip);

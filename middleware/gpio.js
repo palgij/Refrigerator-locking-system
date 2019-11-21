@@ -3,6 +3,7 @@ let rpio = require("rpio");
 let opened = false;
 let locked = undefined;
 
+// Kaardi viipe registreerimis heli mängmine
 module.exports.ring = () => {
     rpio.open(40, rpio.OUTPUT, rpio.HIGH);
     rpio.open(33, rpio.OUTPUT, rpio.HIGH);
@@ -11,6 +12,7 @@ module.exports.ring = () => {
     rpio.close(40);
 };
 
+// Luku avamine ostmise taga järjel
 module.exports.lockOpen = () => {
     rpio.open(7, rpio.OUTPUT, rpio.LOW);
     if (locked === undefined) {
@@ -27,6 +29,7 @@ module.exports.lockOpen = () => {
     }
 };
 
+// Luku avamine/sulgemine adminsist
 module.exports.toggleLock = () => {
     if (!opened) {
 	rpio.open(7, rpio.OUTPUT, rpio.LOW);

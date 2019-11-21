@@ -39,6 +39,7 @@
         		    <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
           		    	<a class="dropdown-item" href="/admin/tooted"><i class="fas fa-table"></i> Tooted</a>
           			<a class="dropdown-item" href="/admin/tooted/uus"><i class="fas fa-plus"></i> Lisa toode</a>
+          		    	<a class="dropdown-item" href="/admin/inventuur"><i class="fas fa-table"></i> Lao väärtus</a>
 			    </div>
       			</li>
 			<li class="nav-item dropdown mr-4">
@@ -94,7 +95,7 @@
       		    </div>
 		    <div class="modal-footer">
 		    	<button type="button" class="btn btn-secondary" data-dismiss="modal">Tagasi</button>
-		    	<form action="/admin/kuuLopp" method="POST">
+		    	<form action="/admin/kuuLopp?_method=PUT" method="POST">
 			    <button type="submit" class="btn btn-success">Jah, tee kuu lõpp</button>
 		    	</form>
 		    </div>
@@ -114,7 +115,7 @@
 			</div>
 			<div class="modal-footer">
 		    	<button type="button" class="btn btn-secondary" data-dismiss="modal">Tagasi</button>
-		        <form action="/admin/kasutajad" method="POST">
+		        <form action="/admin/kasutajad?_method=PUT" method="POST">
 			    <button type="submit" class="btn btn-primary">Jah, nulli võlad</button>
 		    	</form>
 		    </div>
