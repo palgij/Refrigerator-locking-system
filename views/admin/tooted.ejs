@@ -55,7 +55,7 @@
                     <td id="<%= jook.toote_id %>"><%= jook.nimetus %></td>
                     <td><%= jook.hetke_kogus %></td>
                     <td><%= jook.myygi_hind.toFixed(2) %>€</td>
-                    <td><a href="/admin/tooted/muuda/<%= jook.toote_id %>"><i class="far fa-edit" style="color: #000000;"></i></a></td>
+                    <td><a href="/admin/tooted/<%= jook.toote_id %>"><i class="far fa-edit" style="color: #000000;"></i></a></td>
 		    <td>
                         <a data-toggle="modal" href="#" data-target="#kustuta" id="kustutaModal" data-id="<%= jook.toote_id %>">
                             <i class="fas fa-trash-alt" style="color: #cc2900;"></i>
@@ -86,7 +86,7 @@
                     <td id="<%= sook.toote_id %>"><%= sook.nimetus %></td>
                     <td><%= sook.hetke_kogus %></td>
                     <td><%= sook.myygi_hind.toFixed(2) %>€</td>
-                    <td><a href="/admin/tooted/muuda/<%= sook.toote_id %>"><i class="far fa-edit" style="color: #000000;"></i></a></td>
+                    <td><a href="/admin/tooted/<%= sook.toote_id %>"><i class="far fa-edit" style="color: #000000;"></i></a></td>
                     <td>
                         <a data-toggle="modal" href="#" data-target="#kustuta" id="kustutaModal" data-id="<%= sook.toote_id %>">
                             <i class="fas fa-trash-alt" style="color: #cc2900;"></i>
@@ -115,7 +115,7 @@
 	$('#kustutaText').html(`Oled kindel, et tahad kustudada toote <br><span style="font-weight: bold;">${nimi}</span>`);
 	$('.btn-danger').html(`Jah, kustuta <span style="font-weight: bold;">${nimi}</span>`);
 
-	$('#delModal').attr('action', '/admin/tooted/' + id + '/kustuta?_method=DELETE');
+	$('#delModal').attr('action', '/admin/tooted/' + id + '?_method=DELETE');
     });
 </script>
 

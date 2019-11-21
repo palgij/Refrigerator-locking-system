@@ -96,14 +96,14 @@ router.put("/kasutajad/:id", middleware.checkIpSessionValid, async (req, res, ne
 });
 
 // Muuda kasutajat vaade
-router.get("/kasutajad/muuda/:id", middleware.checkIpSessionValid, async (req, res, next) => {
+router.get("/kasutajad/:id", middleware.checkIpSessionValid, async (req, res, next) => {
     let kasutaja = await sqlFun.getKasutaja(req.params.id, next);
     if (kasutaja !== -1)
 	res.render("admin/muuda", {kasutaja: kasutaja[0], lockOpen: lockOpen});
 });
 
 // Kustuta kasutaja
-router.delete("/kasutajad/:id/kustuta", middleware.checkIpSessionValid, async (req, res, next) => {
+router.delete("/kasutajad/:id", middleware.checkIpSessionValid, async (req, res, next) => {
     if (await sqlFun.deleteKasutaja(req, next) !== -1)
     	req.flash("SUCCESS3", "Kasutaja sai kustutatud.", "/admin/kasutajad");
 });
@@ -147,7 +147,7 @@ router.put("/tooted/:id", middleware.checkIpSessionValid, async (req, res, next)
 });
 
 // Toote muutmise vaade
-router.get("/tooted/muuda/:id", middleware.checkIpSessionValid, async (req, res, next) => {
+router.get("/tooted/:id", middleware.checkIpSessionValid, async (req, res, next) => {
     let toode = await sqlFun.getToode(req.params.id, next);
     if (toode !== -1)
 	res.render("admin/muudaToode", {toode: toode[0], lockOpen: lockOpen});
@@ -173,7 +173,7 @@ router.post("/tooted", middleware.checkIpSessionValid, async (req, res, next) =>
 });
 
 // Kustuta toode
-router.delete("/tooted/:id/kustuta", middleware.checkIpSessionValid, async (req, res, next) => {
+router.delete("/tooted/:id", middleware.checkIpSessionValid, async (req, res, next) => {
     if (await sqlFun.deleteToode(req, next) !== -1)
     	req.flash("SUCCESS3", "Toode sai kustutatud.", "/admin/tooted");
 });
