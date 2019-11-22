@@ -19,7 +19,7 @@ router.get("/", middleware.checkUserSessionValid, async (req, res, next) => {
     
     // Andmebaasi operatsioon oli edukas
     if (results !== -1) {
-    	let nimi = results[6][0].nimetus + " " + results[6][0].eesnimi + " " + results[6][0].perenimi;
+    	let nimi = results[6][0].staatuse_nimetus + " " + results[6][0].eesnimi + " " + results[6][0].perenimi;
     	middleware.getUsers(id).nimi = nimi; 
     	res.render("tooted", {id: id, reb: !!middleware.getUsers(id).reb, jook1: results[0], jook2: results[1], jook3: results[2], jook4: results[3],
 				sook5: results[4], sook6: results[5], nimi: nimi, seis: results[6][0].kasutaja_seisu_id});

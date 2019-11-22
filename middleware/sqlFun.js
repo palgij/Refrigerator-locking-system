@@ -85,7 +85,7 @@ module.exports.deleteKasutaja = async (req, next) => {
         next);
 
     if (result !== -1) {
-    	let nimi = `${result[0].nimetus} ${result[0].eesnimi} ${result[0].perenimi}`;
+    	let nimi = `${result[0].staatuse_nimetus} ${result[0].eesnimi} ${result[0].perenimi}`;
 
     	// Kustuta kasutaja
     	sql = mysql.format(sqlString.deleteKasutajaID, [req.params.id]);
@@ -171,7 +171,7 @@ module.exports.updateKasutaja = async (next, kasutaja, muutused) => {
             errorCodes.GET_STAATUS_ERROR.message, 
             next);
 	if (nim !== -1) {
-    	    sql = mysql.format(sqlString.insertKasutajaMuutus, [`${nim[0].nimetus} ${kasutaja.eesnimi} ${kasutaja.perenimi}`, "muutmine", muutused.join(", ")]);
+    	    sql = mysql.format(sqlString.insertKasutajaMuutus, [`${nim[0].staatuse_nimetus} ${kasutaja.eesnimi} ${kasutaja.perenimi}`, "muutmine", muutused.join(", ")]);
     	    result = await makeSqlQuery(sql,
             	errorCodes.INSERT_KASUTAJA_MUUTUS_ERROR.code, 
             	errorCodes.INSERT_KASUTAJA_MUUTUS_ERROR.message, 
@@ -268,7 +268,7 @@ module.exports.kinnitaKasutaja = async (id, next) => {
             next);
 	if (kasutaja !== -1) {
 	    // Lisa kasutajate muutuste tabelisse rida
-    	    sql = mysql.format(sqlString.insertKasutajaMuutus, [`${kasutaja[0].nimetus} ${kasutaja[0].eesnimi} ${kasutaja[0].perenimi}`, "muutmine", "kinnitanud"]);
+    	    sql = mysql.format(sqlString.insertKasutajaMuutus, [`${kasutaja[0].staatuse_nimetus} ${kasutaja[0].eesnimi} ${kasutaja[0].perenimi}`, "muutmine", "kinnitanud"]);
     	    result = await makeSqlQuery(sql,
             	errorCodes.REGISTREERIMINE_INSERT_KASUTAJA_MUUTUS_ERROR.code, 
             	errorCodes.REGISTREERIMINE_INSERT_KASUTAJA_MUUTUS_ERROR.message, 
@@ -293,7 +293,7 @@ module.exports.registreeriKasutaja = async (uusKasutaja, next) => {
 
     	if (staatus !== -1) {
 	    // Lisa kasutajate muutsute tabelisse rida
-    	    sql = mysql.format(sqlString.insertKasutajaMuutus, [`${staatus[0].nimetus} ${uusKasutaja.eesnimi} ${uusKasutaja.perenimi}`, "lisamine", "kõik"]);
+    	    sql = mysql.format(sqlString.insertKasutajaMuutus, [`${staatus[0].staatuse_nimetus} ${uusKasutaja.eesnimi} ${uusKasutaja.perenimi}`, "lisamine", "kõik"]);
     	    result = await makeSqlQuery(sql,
             	errorCodes.REGISTREERIMINE_INSERT_KASUTAJA_MUUTUS_ERROR.code, 
         	errorCodes.REGISTREERIMINE_INSERT_KASUTAJA_MUUTUS_ERROR.message, 

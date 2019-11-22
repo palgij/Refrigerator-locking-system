@@ -54,7 +54,7 @@
 	    		    <% str = kasutaja.coetus %>
 			<% } %>
 			<tr onclick="clicked('<%= kasutaja.kaardi_id %>')" style="height: 45px;">
-	    		    <td class="tdId"><%= kasutaja.nimetus %> <%= kasutaja.eesnimi %> <%= kasutaja.perenimi %></td>
+	    		    <td class="tdId"><%= kasutaja.staatuse_nimetus %> <%= kasutaja.eesnimi %> <%= kasutaja.perenimi %></td>
 			</tr>
 			<% if (kasutajad2[i + 1] === undefined || (kasutajad2[i + 1] !== undefined && kasutaja.coetus !== kasutajad2[i + 1].coetus)) { %>
             		    </tbody>
@@ -76,7 +76,7 @@
 	    		    <% str = kasutaja.coetus %>
 			<% } %>
 			<tr onclick="clicked('<%= kasutaja.kaardi_id %>')" style="height: 45px;">
-	    		    <td class="tdId"><%= kasutaja.nimetus %> <%= kasutaja.eesnimi %> <%= kasutaja.perenimi %></td>
+	    		    <td class="tdId"><%= kasutaja.staatuse_nimetus %> <%= kasutaja.eesnimi %> <%= kasutaja.perenimi %></td>
 			</tr>
 			<% if (kasutajad2[i + 2] === undefined || (kasutajad2[i + 2] !== undefined && kasutaja.coetus !== kasutajad2[i + 2].coetus)) { %>
             		    </tbody>
