@@ -57,7 +57,18 @@ router.get("/registreeri/:id", (req, res) => {
     res.render("registreeri", {id: id});
 });
 
-// Kinnita kasutaja meilist
+// Kinnita kasutaja vaade, meilist päritakse
+router.get("/kinnitaKasutaja/:id", async (req, res, next) => {
+    if (getIndexOfUserId(req.params.id) !== -1) {
+        res.render("kinnitaKasutaja", {id: req.params.id});
+    } else {
+        let err = new Error(errorCodes.MAIL_ALREADY_CONFIRMED.message);
+        err.statusCode = errorCodes.MAIL_ALREADY_CONFIRMED.code;
+        next(err);
+    }
+});
+
+// Kinnita kasutaja, vastavast vaates kutsutakse
 router.put("/kinnitaKasutaja/:id", async (req, res, next) => {
     // Kinnita kasutaja ainult siis kui leidub kaardi id arrayst
     if (removeUserId(req.params.id)) {
@@ -89,9 +100,9 @@ router.post("/registreeri/:id", async (req, res, next) => {
     	let coetusTxt = `Coetus - ${uusKasutaja.coetus}`;
     	let link = `http://192.168.1.243:3000/kinnitaKasutaja/${uusKasutaja.id}`;
     	let html = `<p><h1>Uus kasutaja vajab kinnitamist!</h1><ul><li>${nimi}</li><li>${staatus}</li><li>${coetusTxt}</li>
-    	</ul><form action="${link}?_method=PUT" method="POST"><button type="submit">Kinnita kasutaja, vajuta siia</button></form></p>`;
+    	</ul><a href="${link}" type="button">Kinnita kasutaja, vajuta siia</a></p>`;
     	email.sendMail("Uus Kasutaja registreeris ennast süsteemi", html, uusKasutaja.id);
-	req.flash("SUCCESS2", "Registreerimine õnnestus! Oota Bibendi kinnitust.", "/");
+        req.flash("SUCCESS2", "Registreerimine õnnestus! Oota Bibendi kinnitust.", "/");
     }
 });
 
@@ -107,11 +118,12 @@ let removeUserId = (id) => {
     } else return false;
 };
 
-let getIndexOfUserId = (id) => {
-    for (let i = 0; i < email.userIds.length; i++) {
-	if (email.userIds[i] === id) {
-	    return i;
-	}
-    }
-    return -1;
-}
+//let getIndexOfUserId = (id) => {
+//    for (let i = 0; i < email.userIds.length; i++) {
+//	if (email.userIds[i] === id) {
+//	    return i;
+//	}
+//    }
+//    return -1;
+//}
+let getIndexOfUserId = id => email.userIds.findIndex(elem => elem === id);

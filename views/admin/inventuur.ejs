@@ -33,7 +33,7 @@
         	    	<tbody>
 	    	    	    <% tooted2.forEach((toode) => { %>
 			    	<tr>
-		    	    	    <td><%= toode.nimetus %></td>
+		    	    	    <td><%= toode.toote_nimetus %></td>
 		    	    	    <td><%= parseFloat(toode.hetke_kogus).toFixed(2) %></td>
 		    	    	    <td><%= parseFloat(toode.myygi_hind).toFixed(2) %>€</td>
 		    	    	    <td><%= parseFloat(toode.hetke_kogus * toode.myygi_hind).toFixed(2) %>€</td>
@@ -51,7 +51,15 @@
     	        <% } %>
     	    <% } %>
     	<% }) %>
-    <% } %>
+	<% } %>
+	<div class="row justify-content-around text-center">
+		<div class="col">
+			Terve lao väärtus müügi hinnas: <strong><%= sumAll[0] %></strong>
+		</div>
+		<div class="col">
+			Terve lao väärtus oma hinnas: <strong><%= sumAll[1] %></strong>
+		</div>
+	</div>
 </div>
 
 <% include partials/footer %>

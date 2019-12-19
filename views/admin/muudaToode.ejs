@@ -1,7 +1,7 @@
 <% include partials/headerAdmin %>
 
 <div class="container text-center mt-5">
-    <h1 class="mb-4"> Muuda toodet <strong><%= toode.nimetus %></strong> </h1>
+    <h1 class="mb-4"> Muuda toodet <strong><%= toode.toote_nimetus %></strong> </h1>
     <form class="needs-validation" action="/admin/tooted/<%= toode.toote_id%>?_method=PUT" method="POST" novalidate>
         <div class="form-row justify-content-center mb-5">
             <div class="col-2">
@@ -12,7 +12,7 @@
             </div>
             <div class="col-3">
                 <label for="nimetus" class="col-form-label col-form-label-lg">Toote nimetus</label>
-                <input type="text" name="nimetus" pattern=".{2,70}" class="form-control form-control-lg shadow-sm" id="nimetus" value="<%= toode.nimetus %>" placeholder="Nimetus" required>
+                <input type="text" name="toote_nimetus" pattern=".{2,70}" class="form-control form-control-lg shadow-sm" id="nimetus" value="<%= toode.toote_nimetus %>" placeholder="Nimetus" required>
             </div>
             <div class="col-2">
                 <label for="kogus" class="col-form-label col-form-label-lg">Kogus</label>

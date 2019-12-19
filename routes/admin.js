@@ -31,7 +31,7 @@ router.post("/", (req, res, next) => {
 });
 
 // Ava/sulge lukk
-router.get("/toggleLukk", middleware.checkIpSessionValid, (req, res) => {
+router.put("/toggleLukk", middleware.checkIpSessionValid, (req, res) => {
     // TODO tee loogika uuesti kui läheb päriselt laivi!
     gpio.toggleLock();
     lockOpen = !lockOpen;
@@ -123,7 +123,7 @@ router.put("/tooted/:id", middleware.checkIpSessionValid, async (req, res, next)
     	let arr = [];
     	let fields = {
             id: req.params.id,
-            nimetus: req.body.nimetus,
+            toote_nimetus: req.body.toote_nimetus,
             kategooria: parseFloat(req.body.kategooria),
             uusKogus: parseFloat(req.body.kogus).toFixed(2),
             myygi_hind: parseFloat(req.body.myygi_hind).toFixed(2),
@@ -132,7 +132,7 @@ router.put("/tooted/:id", middleware.checkIpSessionValid, async (req, res, next)
     	};
 
 	// Kontrolli kas toote väljasid muudeti
-    	if (fields.nimetus !== toode.nimetus) arr.push("nimetus");
+    	if (fields.toote_nimetus !== toode.toote_nimetus) arr.push("nimetus");
     	if (fields.kategooria !== parseFloat(toode.kategooria)) arr.push("kategooria");
     	if (fields.uusKogus !== parseFloat(toode.hetke_kogus).toFixed(2)) arr.push("hetke_kogus");
     	if (fields.myygi_hind !== parseFloat(toode.myygi_hind).toFixed(2)) arr.push("myygi_hind");
@@ -161,7 +161,7 @@ router.get("/uusToode", middleware.checkIpSessionValid, (req, res) => {
 // Lisa toode
 router.post("/tooted", middleware.checkIpSessionValid, async (req, res, next) => {
     let toode = {
-        nimetus: req.body.nimetus,
+        toote_nimetus: req.body.toote_nimetus,
         kategooria: parseFloat(req.body.kategooria),
         kogus: parseFloat(req.body.kogus).toFixed(2),
         myygi_hind: parseFloat(req.body.myygi_hind).toFixed(2),
@@ -312,8 +312,11 @@ router.get("/inventuur", middleware.checkIpSessionValid, async (req, res, next) 
     	let uuedTooted = [];
     	let id = 0;
     	let num = -1;
-	let sum = [];
-	// Sorteeri tooted ja arvuta summad
+        let sum = [];
+		let sumAll = [];
+		sumAll[0] = 0;
+		sumAll[1] = 0;
+        // Sorteeri tooted ja arvuta summad
     	tooted.forEach((toode, i) => {
 	    if (id !== toode.toote_kategooria_id) {
 	    	    id = toode.toote_kategooria_id;
@@ -324,10 +327,12 @@ router.get("/inventuur", middleware.checkIpSessionValid, async (req, res, next) 
 		sum[num][1] = 0;
 	    }
 	    sum[num][0] += toode.myygi_hind * toode.hetke_kogus;
-	    sum[num][1] += toode.oma_hind * toode.hetke_kogus;
+		sum[num][1] += toode.oma_hind * toode.hetke_kogus;
+		sumAll[0] += toode.myygi_hind * toode.hetke_kogus;
+		sumAll[1] += toode.oma_hind * toode.hetke_kogus;
 	    uuedTooted[num].push(toode);
 	});
-	res.render("admin/inventuur", {tooted: uuedTooted, lockOpen: lockOpen, sum: sum});
+	res.render("admin/inventuur", {tooted: uuedTooted, lockOpen: lockOpen, sum: sum, sumAll: sumAll});
     }
 });
 

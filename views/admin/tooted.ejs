@@ -52,7 +52,7 @@
                 <tr>
                     <th scope="row"> <%= i + 1 %> </th>
                     <td><%= jook.kategooria_nimetus %></td>
-                    <td id="<%= jook.toote_id %>"><%= jook.nimetus %></td>
+                    <td id="<%= jook.toote_id %>"><%= jook.toote_nimetus %></td>
                     <td><%= jook.hetke_kogus %></td>
                     <td><%= jook.myygi_hind.toFixed(2) %>€</td>
                     <td><a href="/admin/tooted/<%= jook.toote_id %>"><i class="far fa-edit" style="color: #000000;"></i></a></td>
@@ -83,7 +83,7 @@
                 <tr>
                     <th scope="row"> <%= i + 1 %> </th>
                     <td><%= sook.kategooria_nimetus %></td>
-                    <td id="<%= sook.toote_id %>"><%= sook.nimetus %></td>
+                    <td id="<%= sook.toote_id %>"><%= sook.toote_nimetus %></td>
                     <td><%= sook.hetke_kogus %></td>
                     <td><%= sook.myygi_hind.toFixed(2) %>€</td>
                     <td><a href="/admin/tooted/<%= sook.toote_id %>"><i class="far fa-edit" style="color: #000000;"></i></a></td>

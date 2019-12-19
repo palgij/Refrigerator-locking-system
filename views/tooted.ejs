@@ -25,8 +25,8 @@
                     <li class="list-group-item list-group-item-secondary p-1"><strong style="font-size: 18px;"> Õlu </strong></li>
                         <% jook1.forEach((jook) => { %>
                             <% if (jook.hetke_kogus > 0) { %>
-                            <a href="/tooted/<%=id%>/<%=jook.nimetus%>" class="list-group-item list-group-item-action p-2">
-                                <%= jook.nimetus %>
+                            <a href="/tooted/<%=id%>/<%=jook.toote_nimetus%>" class="list-group-item list-group-item-action p-2">
+                                <%= jook.toote_nimetus %>
                                 <span class="badge badge-dark mt-1"> <%= jook.myygi_hind.toFixed(2) %>€ </span>
                             </a>
                             <% } %>
@@ -36,8 +36,8 @@
                     <li class="list-group-item list-group-item-secondary p-1"><strong style="font-size: 18px;"> Alkoholivaba </strong></li>
                         <% jook2.forEach((jook) => { %>
                             <% if (jook.hetke_kogus > 0) { %>
-                            <a href="/tooted/<%=id%>/<%=jook.nimetus%>" class="list-group-item list-group-item-action p-2">
-                                <%= jook.nimetus %>
+                            <a href="/tooted/<%=id%>/<%=jook.toote_nimetus%>" class="list-group-item list-group-item-action p-2">
+                                <%= jook.toote_nimetus %>
                                 <span class="badge badge-dark mt-1"> <%= jook.myygi_hind.toFixed(2) %>€ </span>
                             </a>
                             <% } %>
@@ -47,8 +47,8 @@
                     <li class="list-group-item list-group-item-secondary p-1"><strong style="font-size: 18px;"> Kange alkohol </strong></li>
                         <% jook3.forEach((jook) => { %>
                             <% if (jook.hetke_kogus > 0) { %>
-                            <a href="/tooted/<%=id%>/<%=jook.nimetus%>" class="list-group-item list-group-item-action p-2">
-                                <%= jook.nimetus %>
+                            <a href="/tooted/<%=id%>/<%=jook.toote_nimetus%>" class="list-group-item list-group-item-action p-2">
+                                <%= jook.toote_nimetus %>
                                 <span class="badge badge-dark mt-1"> <%= jook.myygi_hind.toFixed(2) %>€ </span>
                             </a>
                             <% } %>
@@ -58,8 +58,8 @@
                     <li class="list-group-item list-group-item-secondary p-1"><strong style="font-size: 18px;"> Muu </strong></li>
                         <% jook4.forEach((jook) => { %>
                             <% if (jook.hetke_kogus > 0) { %>
-                            <a href="/tooted/<%=id%>/<%=jook.nimetus%>" class="list-group-item list-group-item-action p-2">
-                                <%= jook.nimetus %>
+                            <a href="/tooted/<%=id%>/<%=jook.toote_nimetus%>" class="list-group-item list-group-item-action p-2">
+                                <%= jook.toote_nimetus %>
                                 <span class="badge badge-dark mt-1"> <%= jook.myygi_hind.toFixed(2) %>€ </span>
                             </a>
                             <% } %>
@@ -73,8 +73,8 @@
                     <li class="list-group-item list-group-item-secondary p-1"><strong style="font-size: 18px;"> Snäk </strong></li>
                         <% sook5.forEach((sook) => { %>
                             <% if (sook.hetke_kogus > 0) { %>
-                            <a href="/tooted/<%=id%>/<%=sook.nimetus%>" class="list-group-item list-group-item-action p-2">
-                                <%= sook.nimetus %>
+                            <a href="/tooted/<%=id%>/<%=sook.toote_nimetus%>" class="list-group-item list-group-item-action p-2">
+                                <%= sook.toote_nimetus %>
                                 <span class="badge badge-dark mt-1"> <%= sook.myygi_hind.toFixed(2) %>€ </span>
                             </a>
                             <% } %>
@@ -84,8 +84,8 @@
                     <li class="list-group-item list-group-item-secondary p-1"><strong style="font-size: 18px;"> Valmistoit </strong></li>
                         <% sook6.forEach((sook) => { %>
                             <% if (sook.hetke_kogus > 0) { %>
-                            <a href="/tooted/<%=id%>/<%=sook.nimetus%>" class="list-group-item list-group-item-action p-2">
-                                <%= sook.nimetus %>
+                            <a href="/tooted/<%=id%>/<%=sook.toote_nimetus%>" class="list-group-item list-group-item-action p-2">
+                                <%= sook.toote_nimetus %>
                                 <span class="badge badge-dark mt-1"> <%= sook.myygi_hind.toFixed(2) %>€ </span>
                             </a>
                             <% } %>
