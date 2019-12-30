@@ -50,7 +50,7 @@ function removeAndLog(ip, log) {
     let pos = getIndexOfIp(ip);
     middlewareObj.IPs.splice(pos, 1);
     if(log) {
-      	console.log("Timeout removed for " + String(ip)); 
+      	//console.log("Timeout removed for " + String(ip)); 
     } 
 }
 

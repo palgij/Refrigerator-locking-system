@@ -16,11 +16,11 @@
     <% } else { %> <h1> Hei<strong> <%= nimi %></strong>! Vali toode: </h1> <% } %>
 
     <% if (reb || nimi.charAt(0) === 'r') { %>
-    	<a href="/tooted/<%= id %>/paneKirja" class="btn btn-lg btn-outline-primary back">&laquo; Tagasi</a>
-    <% } else { %> <a href="/" class="btn btn-lg btn-outline-primary back">&laquo; Tagasi</a> <% } %>
+    	<a href="/tooted/<%= id %>/paneKirja" class="btn btn-lg btn-outline-primary back shadow">&laquo; Tagasi</a>
+    <% } else { %> <a href="/?id=<%= id %>" class="btn btn-lg btn-outline-primary back shadow">&laquo; Tagasi</a> <% } %>
     <div class="row justify-content-around text-center">
         <div class="col-4"> <strong style="font-size: 18px;"> Joogid </strong>
-            <div class="list-group">
+            <div class="list-group shadow">
                 <% if (jook1.length > 0 && jook1.some(jook => jook.hetke_kogus > 0) && seis === 1) { %>
                     <li class="list-group-item list-group-item-secondary p-1"><strong style="font-size: 18px;"> Õlu </strong></li>
                         <% jook1.forEach((jook) => { %>
@@ -68,7 +68,7 @@
             </div>
         </div>
         <div class="col-4"> <strong style="font-size: 18px;"> Söögid </strong>
-            <div class="list-group">
+            <div class="list-group shadow">
                 <% if (sook5.length > 0 && sook5.some(sook => sook.hetke_kogus > 0)) { %>
                     <li class="list-group-item list-group-item-secondary p-1"><strong style="font-size: 18px;"> Snäk </strong></li>
                         <% sook5.forEach((sook) => { %>

@@ -7,16 +7,28 @@ let express     = require("express"),
     email       = require("../middleware/sendMail"),
     router      = express.Router();
 
+let password = "admin";
+
 // Viipa kaarti
 router.get("/", (req, res) => {
+    if (req.query.id !== undefined) {
+	middleware.removeUser(req.query.id);
+    }
     res.render("home");
 });
 
 // Tahetakse kaarti viibata
 router.get("/kaart", (req, res, next) => {
     rc522.init();
+    let timeout = setTimeout(() => {
+	rc522.child()
+        let error = new Error(errorCodes.NO_CARD_ERROR.message);
+        error.statusCode = errorCodes.NO_CARD_ERROR.code;
+        next(error);
+    }, 10000);
     // Kaardi viipamise ootamine
-    rc522.read(async (serial) => {       
+    rc522.read(async (serial) => {
+	clearTimeout(timeout);      
 	buzzer.ring();
         rc522.child();
         let kasutaja = await sqlFun.kasutajaKaardiLugemisel(next, serial);
@@ -60,7 +72,10 @@ router.get("/registreeri/:id", (req, res) => {
 // Kinnita kasutaja vaade, meilist päritakse
 router.get("/kinnitaKasutaja/:id", async (req, res, next) => {
     if (getIndexOfUserId(req.params.id) !== -1) {
-        res.render("kinnitaKasutaja", {id: req.params.id});
+	let kasutaja = await sqlFun.kasutajaCardID(next, req.params.id);
+        if (kasutaja !== -1) {
+	    res.render("kinnitaKasutaja", {kasutaja: kasutaja[0], id: req.params.id});
+	}
     } else {
         let err = new Error(errorCodes.MAIL_ALREADY_CONFIRMED.message);
         err.statusCode = errorCodes.MAIL_ALREADY_CONFIRMED.code;
@@ -72,8 +87,17 @@ router.get("/kinnitaKasutaja/:id", async (req, res, next) => {
 router.put("/kinnitaKasutaja/:id", async (req, res, next) => {
     // Kinnita kasutaja ainult siis kui leidub kaardi id arrayst
     if (removeUserId(req.params.id)) {
-	if (await sqlFun.kinnitaKasutaja(req.params.id, next) !== -1)
-	    req.flash("SUCCESS2", "Kasutaja on kinnitatud!", "/");
+	if (req.body.password === password) {
+	    if (await sqlFun.kinnitaKasutaja(req.params.id, next) !== -1) {
+	    	req.flash("SUCCESS2", "Kasutaja on kinnitatud!", "/");
+	    }
+    	} else {
+	    email.userIds.push(req.params.id);
+            let err = new Error(errorCodes.WRONG_PASSWORD_KINNITAMINE.message);
+  	    err.statusCode = errorCodes.WRONG_PASSWORD_KINNITAMINE.code;
+	    err.url = `/kinnitaKasutaja/${req.params.id}`;
+  	    next(err);
+    	}
     } else {
 	let err = new Error(errorCodes.MAIL_ALREADY_CONFIRMED.message);
         err.statusCode = errorCodes.MAIL_ALREADY_CONFIRMED.code;
@@ -118,12 +142,4 @@ let removeUserId = (id) => {
     } else return false;
 };
 
-//let getIndexOfUserId = (id) => {
-//    for (let i = 0; i < email.userIds.length; i++) {
-//	if (email.userIds[i] === id) {
-//	    return i;
-//	}
-//    }
-//    return -1;
-//}
 let getIndexOfUserId = id => email.userIds.findIndex(elem => elem === id);

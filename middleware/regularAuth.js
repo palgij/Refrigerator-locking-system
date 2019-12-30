@@ -40,8 +40,10 @@ middlewareObj.checkUserSessionValid = (req, res, next) => {
 // Kustuta kasutaja kaardi id arrayst
 middlewareObj.removeUser = id => {
     let pos = getIndexOfId(id);
-    clearTimeout(middlewareObj.users[pos].timeout);
-    removeAndLog(id);
+    if (pos !== -1) {
+    	clearTimeout(middlewareObj.users[pos].timeout);
+    	removeAndLog(id);
+    }
 };
 
 module.exports = middlewareObj;
@@ -51,7 +53,7 @@ module.exports = middlewareObj;
 function removeAndLog(id) {
     let pos = getIndexOfId(id);
     middlewareObj.users.splice(pos, 1);
-    console.log("Timeout removed for " + String(id));
+    //console.log("Timeout removed for " + String(id));
 }
 
 function addUserWithTimeout(id) {

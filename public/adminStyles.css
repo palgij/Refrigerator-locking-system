@@ -12,6 +12,10 @@ td {
     font-size: 20px;
 }
 
+.tds {
+    font-size: 15px;
+}
+
 .table > tbody > tr > td {
      vertical-align: middle;
 }
@@ -127,7 +131,7 @@ thead tr {
 }
 
 input:checked + .slider {
-  background-color: #2b882b;
+  background-color: #003b00;
 }
 
 input:focus + .slider {

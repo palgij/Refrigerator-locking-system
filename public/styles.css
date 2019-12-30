@@ -16,13 +16,13 @@
     font-size: 20px;
 }
 
-.tableId tr:nth-child(odd) {
-    background: #DFDCE3;
-}
+#.tableId tr:nth-child(odd) {
+#    background: #DFDCE3;
+#}
 
-.tableId tr:nth-child(even) {
-    background: #BEBEBE;
-}
+#.tableId tr:nth-child(even) {
+#    background: #BEBEBE;
+#}
 
 .trId {
     background: #BEBEBE;
@@ -32,8 +32,8 @@
     width: 75px; 
     height: 75px;
     margin: 2px;
-    color: #000080;
-    border: 1px solid #000080;
+    color: black;
+    border: 1px solid black;
     border-radius: 5px;
     background: white;
     transition-duration: 0.05s;
@@ -41,7 +41,7 @@
 }
 
 .btnTable:active {
-    background-color: #000080;
+    background-color: black;
     color: white;
     transform: translateY(2px);
 }
@@ -64,8 +64,8 @@
     font-size: 30px;
     text-align: center;
     width: 237px;
-    color: #000080;
-    border: 2px solid #000080;
+    color: black;
+    border: 2px solid black;
     border-radius: 5px;
     margin-top: 25px;
 }

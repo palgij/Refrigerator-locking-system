@@ -175,8 +175,12 @@ app.use((err, req, res, next) => {
         case errorCodes.KASUTAJA_NIME_ERROR.code:
         case errorCodes.KINNITA_KASUTAJA_ERROR.code:
         case errorCodes.GET_KASUTAJA_KAART_ERROR.code:
+	case errorCodes.NO_CARD_ERROR.code:
             req.flash("ERROR", err.message, "/");
             break;
+	case errorCodes.WRONG_PASSWORD_KINNITAMINE.code:
+	    req.flash("ERROR", err.message, err.url);
+	    break;
         default:
             res.status(err.statusCode).send(err.message);
     }

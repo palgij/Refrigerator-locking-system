@@ -351,7 +351,10 @@ let voladToCsv = arr => {
     let csv = [];
 
     for (i = 0; i < arr.length; i++) {
-    	if (i === 0) csv.push(Object.keys(arr[i]).join(","));
+    	if (i === 0) {
+	    csv.push("sep=,")
+	    csv.push(Object.keys(arr[i]).join(","));
+	}
     	csv.push(Object.values(arr[i]).join(","));
     }
     return csv.join("\n");

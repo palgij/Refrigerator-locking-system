@@ -157,7 +157,7 @@ module.exports.getKasutajateMuutused = async (req, next) => {
 };
 module.exports.updateKasutaja = async (next, kasutaja, muutused) => {
     // Update kasutaja
-    let nim;
+    let nimetus;
     let sql = mysql.format(sqlString.updateKasutaja, [kasutaja.seisus, kasutaja.staatus, kasutaja.eesnimi, kasutaja.perenimi, kasutaja.volg, kasutaja.kinnitatud, kasutaja.id]);
     let result = await makeSqlQuery(sql,
         errorCodes.UPDATE_KASUTAJA_ERROR.code, 
@@ -172,9 +172,9 @@ module.exports.updateKasutaja = async (next, kasutaja, muutused) => {
             errorCodes.GET_STAATUS_ERROR.message, 
             next);
 
-            muutused.length === 6 ? nim = "kõik" : nim = muutused.join(", ");
 	if (nim !== -1) {
-    	    sql = mysql.format(sqlString.insertKasutajaMuutus, [`${nim[0].staatuse_nimetus} ${kasutaja.eesnimi} ${kasutaja.perenimi}`, "muutmine", nim]);
+	    muutused.length === 6 ? nimetus = "kõik" : nimetus = muutused.join(", ");
+    	    sql = mysql.format(sqlString.insertKasutajaMuutus, [`${nim[0].staatuse_nimetus} ${kasutaja.eesnimi} ${kasutaja.perenimi}`, "muutmine", nimetus]);
     	    result = await makeSqlQuery(sql,
             	errorCodes.INSERT_KASUTAJA_MUUTUS_ERROR.code, 
             	errorCodes.INSERT_KASUTAJA_MUUTUS_ERROR.message, 
@@ -254,6 +254,14 @@ module.exports.kasutajaKaardiLugemisel = async (next, serial) => {
         errorCodes.GET_KASUTAJA_KAART_ERROR.message, 
         next);
 };
+module.exports.kasutajaCardID = async (next, id) => {
+    let sql = mysql.format(sqlString.kasutajaInfID, [id]);
+
+    return await makeSqlQuery(sql,
+        errorCodes.KASUTAJA_NIME_ERROR.code, 
+        errorCodes.KASUTAJA_NIME_ERROR.message, 
+        next);
+};
 module.exports.kinnitaKasutaja = async (id, next) => {
     let sql = mysql.format(sqlString.updateKinnitatudKAARDIID, [id]);
 
@@ -304,7 +312,7 @@ module.exports.registreeriKasutaja = async (uusKasutaja, next) => {
 	}
     }
     if (result !== -1 && staatus !== -1)
-    	return staatus[0].nimetus;
+    	return staatus[0].staatuse_nimetus;
     else return -1;
 };
 

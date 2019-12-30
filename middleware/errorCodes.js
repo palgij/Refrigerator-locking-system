@@ -165,7 +165,14 @@ module.exports.MAIL_ALREADY_CONFIRMED = {
     code: 649,
     message: "Kasutaja on juba kinnitatud!"
 };
-
+module.exports.WRONG_PASSWORD_KINNITAMINE = {
+    code: 653,
+    message: "Vale salasõna."
+};
+module.exports.NO_CARD_ERROR = {
+    code: 654,
+    message: "10s jooksul ei tuvastatud kaarti."
+};
 
 // ostmine.js
 module.exports.KAARDI_SESSIOON_AEGUNUD = {
