@@ -27,7 +27,7 @@ module.exports.sendMail = (subject, html, id) => {
         let index = needToSendMail.findIndex(elem => elem[1] === mailOptions.html)
         if (err) {
             if (index !== -1 && needToSendMail[index][3] < 3) {
-                setTimeout(this.sendMail.bind(null, needToSendMail[index][0], needToSendMail[index][1], needToSendMail[index][2]), 360000);
+                setTimeout(this.sendMail.bind(null, needToSendMail[index][0], needToSendMail[index][1], needToSendMail[index][2]), 300000);
             }
             
             if (index !== -1 && needToSendMail[index][3]++ > 2) {
