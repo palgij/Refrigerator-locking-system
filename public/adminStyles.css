@@ -172,9 +172,3 @@ input:checked + .slider:before {
     background-color: #D85452;
     border-color: #D85452;
 }
-
-.alert-warningg {
-    color: #FFF;
-    background-color: #FFBB33;
-    border-color: #FFBB33;
-}

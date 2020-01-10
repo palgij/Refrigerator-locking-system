@@ -61,14 +61,14 @@ module.exports.getVolad = async (next) =>
         errorCodes.GET_VOLAD_ERROR.code, 
         errorCodes.GET_VOLAD_ERROR.message, 
         next);
-module.exports.nulliVolad = async (next) => {
+module.exports.nulliVolad = async (next, text) => {
     let result = await makeSqlQuery(sqlString.nulliVolad,
         errorCodes.NULLI_VOLAD_ERROR.code, 
         errorCodes.NULLI_VOLAD_ERROR.message, 
         next);
     if (result !== -1) {
     	// Salvesta tegevus kasutajate muutustesse
-    	let sql = mysql.format(sqlString.insertKasutajaMuutus, ["Kõik kasutajad", "võlgade nullimine", "võlg"]);
+    	let sql = mysql.format(sqlString.insertKasutajaMuutus, ["Kõik kasutajad", text, "võlg"]);
     	result = await makeSqlQuery(sql,
             errorCodes.INSERT_KASUTAJA_MUUTUS_ERROR.code, 
             errorCodes.INSERT_KASUTAJA_MUUTUS_ERROR.message, 

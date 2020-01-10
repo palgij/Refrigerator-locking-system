@@ -58,7 +58,7 @@ router.get("/kasutajad", middleware.checkIpSessionValid, async (req, res, next) 
 
 // Nulli võlad
 router.put("/kasutajad", middleware.checkIpSessionValid, async (req, res, next) => {
-    if (await sqlFun.nulliVolad(next) !== -1) {
+    if (await sqlFun.nulliVolad(next, "võlgade nullimine") !== -1) {
 	if (req.headers.referer.split("3000")[1].includes("kodu")) req.flash("SUCCESS2", "Võlad said nullitud.", req.headers.referer.split("3000")[1]);
         else req.flash("SUCCESS3", "Võlad said nullitud.", req.headers.referer.split("3000")[1]);
     }
@@ -295,7 +295,7 @@ router.put("/kuuLopp", middleware.checkIpSessionValid, async (req, res, next) =>
 		next(err);
 	    }
 	    if (!!result) {
-		if (await sqlFun.nulliVolad(next) !== -1)
+		if (await sqlFun.nulliVolad(next, "võlad kuulõpp") !== -1)
 	            req.flash("SUCCESS2", "Kuulõpu esitamine oli edukas.", req.headers.referer.split("3000")[1]);
 	    }
 	} else {

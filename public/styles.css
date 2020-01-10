@@ -16,13 +16,14 @@
     font-size: 20px;
 }
 
-#.tableId tr:nth-child(odd) {
-#    background: #DFDCE3;
-#}
+/*
+.tableId tr:nth-child(odd) {
+    background: #DFDCE3;
+}
 
-#.tableId tr:nth-child(even) {
-#    background: #BEBEBE;
-#}
+.tableId tr:nth-child(even) {
+    background: #BEBEBE;
+}*/
 
 .trId {
     background: #BEBEBE;
@@ -88,10 +89,4 @@
     color: #FFF;
     background-color: #D85452;
     border-color: #D85452;
-}
-
-.alert-warningg {
-    color: #FFF;
-    background-color: #FFBB33;
-    border-color: #FFBB33;
 }
