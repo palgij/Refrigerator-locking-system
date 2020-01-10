@@ -32,12 +32,10 @@ module.exports.lockOpen = () => {
 // Luku avamine/sulgemine adminsist
 module.exports.toggleLock = () => {
     if (!opened) {
-	rpio.open(7, rpio.OUTPUT, rpio.LOW);
-	opened = true;
-	console.log("========== LUKK AVATUD ==========");
+        rpio.open(7, rpio.OUTPUT, rpio.LOW);
+        opened = true;
     } else {
-	rpio.close(7);
-	opened = false;
-	console.log("========== LUKK SULETUD ==========");
+        rpio.close(7);
+        opened = false;
     }
 };

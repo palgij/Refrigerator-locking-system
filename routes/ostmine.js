@@ -84,34 +84,34 @@ router.post("/:toode", middleware.checkUserSessionValid, async (req, res, next) 
 	if (result !== -1) {
     	    kategooria = result[0].toote_kategooria_id;
 	    ost.oma = result[0].oma_hind * ost.kogus;
-    	    console.log("========== LISA SUMMA KASUTAJA VÕLGA ==========");
+    	    //console.log("========== LISA SUMMA KASUTAJA VÕLGA ==========");
     	    if (!!middleware.getUsers(ost.id).reb) result = await sqlFun.volgStaatusID(middleware.getUsers(ost.id).newId, next);
     	    else result = await sqlFun.volgStaatusID(ost.id, next);
     	    
 	    if (result !== -1) {
-	    	console.log(`Kogus: ${ost.kogus} | hind: ${hind} | kokku: ${ost.summa} | (1 == reb!) ${result[0].kasutaja_staatuse_id}`);
-    	    	console.log(`Võlg enne: ${parseFloat(result[0].volg)}`);
+	    	//console.log(`Kogus: ${ost.kogus} | hind: ${hind} | kokku: ${ost.summa} | (1 == reb!) ${result[0].kasutaja_staatuse_id}`);
+    	    //console.log(`Võlg enne: ${parseFloat(result[0].volg)}`);
     		volg = parseFloat(result[0].volg);
 		// Kui ei ole rebane lisa summa kasutaja võlga
     		if (result[0].kasutaja_staatuse_id === 1 && (kategooria === 1 || kategooria === 2)) {
         	    ost.tasuta = true;
-        	    console.log("Võlg sama mis enne - !reb");
+        	    //console.log("Võlg sama mis enne - !reb");
     		} else {
         	    volg += ost.summa;
-        	    console.log(`Võlg uus: ${volg}`);
+        	    //console.log(`Võlg uus: ${volg}`);
     		    if (!!middleware.getUsers(ost.id).reb) result = await sqlFun.updateVolgID(middleware.getUsers(ost.id).newId, volg, next);
         	    else result = await sqlFun.updateVolgID(ost.id, volg, next);
     		}
 		if (result !== -1) {
-    		    console.log("========== MUUDA TOOTE KOGUST ==========");
+    		    //console.log("========== MUUDA TOOTE KOGUST ==========");
     		    result = await sqlFun.hetkeKogusNimetus(ost.toode, next);
 		    if (result !== -1) {
 			let total = parseFloat(result[0].hetke_kogus) - ost.kogus;
-    			console.log(`Vana kogus: ${result[0].hetke_kogus} | Uus kogus: ${total}`);
+    			//console.log(`Vana kogus: ${result[0].hetke_kogus} | Uus kogus: ${total}`);
     			if (await sqlFun.updateKogusNimetus(total, ost.toode, next) !== -1) {
-    			    console.log("========== LISA OST ANDMEBAASI ==========");
-    			    if (!!middleware.getUsers(ost.id).reb) console.log(`Toode: ${ost.toode} | Ostja: reb! -> ${ost.nimi}`);
-    			    else console.log(`Toode: ${ost.toode} | Ostja: ${ost.nimi}`);
+    			    //console.log("========== LISA OST ANDMEBAASI ==========");
+    			    //if (!!middleware.getUsers(ost.id).reb) console.log(`Toode: ${ost.toode} | Ostja: reb! -> ${ost.nimi}`);
+    			    //else console.log(`Toode: ${ost.toode} | Ostja: ${ost.nimi}`);
     			    if (await sqlFun.lisaOst(ost, !!middleware.getUsers(ost.id).reb, next) !== -1) {
 				rpio.lockOpen();
     				middleware.removeUser(ost.id);

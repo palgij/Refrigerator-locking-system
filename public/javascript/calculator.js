@@ -37,7 +37,6 @@ function remove() {
 } 
 
 function setButtonDisability() {
-    console.log(parseFloat($('#result').val()));
     if (parseFloat($('#result').val()) >= 1.00 && parseFloat($('#result').val()) <= 99.99) {
 		$('.btnBuy').prop("disabled", false);
     }

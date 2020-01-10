@@ -93,7 +93,6 @@ app.get("*", function(req, res, next) {
 
 app.use((err, req, res, next) => {
     console.error(`ERROR: "${err.message}"`);
-    //console.log(err);
     if (!err.statusCode) err.statusCode = 500;
 
     // Igal erroril on oma handling, et kuhu suunab kasutaja vms ja kuidas.

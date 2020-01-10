@@ -60,7 +60,7 @@ function addIpWithTimeout(ip, log) {
 	timeout: setTimeout(removeAndLog.bind(null, ip, true), 300000)
     });
     if (log) {
-	console.log("Timeout added for " + String(ip));
+        //console.log("Timeout added for " + String(ip));
     }
 }
 

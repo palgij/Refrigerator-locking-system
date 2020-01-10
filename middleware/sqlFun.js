@@ -190,7 +190,6 @@ module.exports.updateToode = async (next, toode) => {
         errorCodes.UPDATE_TOODE_ERROR.code, 
         errorCodes.UPDATE_TOODE_ERROR.message, 
         next);
-    console.log(`========== TOOTE ${toode.toote_nimetus} ANDMEID MUUDETUD ==========`);
 
     if (result !== -1) {
     // Sisesta koguse muutus lattu kui vaja
