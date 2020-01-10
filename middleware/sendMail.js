@@ -2,11 +2,14 @@ let nodemailer	= require("nodemailer"),
     errorCodes  = require("./errorCodes");
 
 let userIds = [];
-let monthNames = ["Jaanuarikuu", "Veebruarikuu", "Märtsikuu", "Aprillikuu", "Maikuu", "Juunikuu", "Juulikuu", "Augustikuu", "Septembrikuu", "Oktoobrikuu", "Novembrikuu", "Detsembrikuu"];
 module.exports.userIds = userIds;
+let monthNames = ["Jaanuarikuu", "Veebruarikuu", "Märtsikuu", "Aprillikuu", "Maikuu", "Juunikuu", "Juulikuu", "Augustikuu", "Septembrikuu", "Oktoobrikuu", "Novembrikuu", "Detsembrikuu"];
+let needToSendMail = [];
 
 // Uus kasutaja vajab kinnitamist meil
 module.exports.sendMail = (subject, html, id) => {
+    needToSendMail.push([subject, html, id, 1]);
+
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -21,12 +24,25 @@ module.exports.sendMail = (subject, html, id) => {
         html: html
     };
     transporter.sendMail(mailOptions, (err) => {
+        let index = needToSendMail.findIndex(elem => elem[1] === mailOptions.html)
         if (err) {
-	    console.log(errorCodes.MAIL_ERROR.message);
+            if (index !== -1 && needToSendMail[index][3] < 3) {
+                setTimeout(this.sendMail.bind(null, needToSendMail[index][0], needToSendMail[index][1], needToSendMail[index][2]), 360000);
+            }
+            
+            if (index !== -1 && needToSendMail[index][3]++ > 2) {
+                needToSendMail.splice(index, 1);
+                console.log("Meili uuesti saatmine lõpetati pärast 3 korda.")
+            }
+            console.log(errorCodes.MAIL_ERROR.message);
             console.log(`SEND MAILI OMA ERROR:\n${err}\n`);
         } else {
+            if (index !== -1) {
+                needToSendMail.splice(index, 1);
+            }
+
             console.log("Meili saatmine õnnestus!");
-	    userIds.push(id);
+            userIds.push(id);
         }
     });
 };
