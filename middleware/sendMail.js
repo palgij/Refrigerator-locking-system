@@ -2,7 +2,6 @@ let nodemailer	    = require("nodemailer"),
     mysql           = require('mysql'),
     errorCodes      = require("./errorCodes"),
     makeSqlQuery    = require('./sqlFun').makeSqlQuery,
-    errorCodes      = require('./errorCodes'),
     sqlString       = require('./sqlString');
 
 let userIds = [];
@@ -11,20 +10,24 @@ let monthNames = ["Jaanuarikuu", "Veebruarikuu", "Märtsikuu", "Aprillikuu", "Ma
 let needToSendMail = [];
 
 // Transporteriks fetchi credentials
-let sql = mysql.format(sqlString.getCredentials, ['email']);
-let credentials = await makeSqlQuery(
-    sql,
-    errorCodes.EMAIL_CREDENTIALS_FAILED.code,
-    errorCodes.EMAIL_CREDENTIALS_FAILED.message,
-    console.log);
-
-let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: credentials[0].kasutaja_nimi,
-        pass: credentials[0].salasona
-    }
-});
+let transporter;
+let getCredentials = async () => {
+    let sql = mysql.format(sqlString.getCredentials, ['email']);
+    let credentials = await makeSqlQuery(
+    	sql,
+    	errorCodes.EMAIL_CREDENTIALS_FAILED.code,
+    	errorCodes.EMAIL_CREDENTIALS_FAILED.message,
+    	console.log);
+    
+    transporter = nodemailer.createTransport({
+    	service: 'gmail',
+    	auth: {
+            user: credentials[0].kasutaja_nimi,
+            pass: credentials[0].salasona
+    	}
+    });
+}
+getCredentials();
 
 // Uus kasutaja vajab kinnitamist meil
 module.exports.sendMail = (subject, html, id) => {
