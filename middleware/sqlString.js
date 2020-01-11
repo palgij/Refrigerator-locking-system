@@ -1,3 +1,6 @@
+// passid
+module.exports.getCredentials = "SELECT kasutaja_nimi, salasona FROM Autentimine WHERE nimetus = ?"
+
 // regularCardRead.js
 module.exports.kasutajaSeisKinn = "SELECT kasutaja_seisu_id, kasutaja_staatuse_id, admin_on_kinnitanud FROM Kasutaja WHERE kaardi_id = ?";
 module.exports.insertKasutaja = "INSERT INTO Kasutaja (kasutaja_staatuse_id, kaardi_id, eesnimi, perenimi, coetus) VALUES (?, ?, ?, ?, ?)";

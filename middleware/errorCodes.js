@@ -1,3 +1,9 @@
+// passid
+module.exports.BASIC_CREDENTIALS_FAILED = {
+    code: 655,
+    message: "Basic auth credentials fetch failed."
+};
+
 // admin
 module.exports.NO_SUCH_PAGE_IN_OSTUD =  {
     code: 600,
