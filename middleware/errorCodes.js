@@ -3,6 +3,10 @@ module.exports.BASIC_CREDENTIALS_FAILED = {
     code: 655,
     message: "Basic auth credentials fetch failed."
 };
+module.exports.EMAIL_CREDENTIALS_FAILED = {
+    code: 656,
+    message: "Email credentials fetch failed."
+};
 
 // admin
 module.exports.NO_SUCH_PAGE_IN_OSTUD =  {

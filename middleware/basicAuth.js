@@ -6,6 +6,7 @@ let basicAuth       = require('basic-auth'),
 
 module.exports = async (req, res, next) => {
   let user = basicAuth(req);
+
   let sql = mysql.format(sqlString.getCredentials, ['basicAuth']);
   let credentials = await makeSqlQuery(
       sql, 

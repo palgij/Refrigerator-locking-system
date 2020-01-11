@@ -1,22 +1,35 @@
-let nodemailer	= require("nodemailer"),
-    errorCodes  = require("./errorCodes");
+let nodemailer	    = require("nodemailer"),
+    mysql           = require('mysql'),
+    errorCodes      = require("./errorCodes"),
+    makeSqlQuery    = require('./sqlFun').makeSqlQuery,
+    errorCodes      = require('./errorCodes'),
+    sqlString       = require('./sqlString');
 
 let userIds = [];
 module.exports.userIds = userIds;
 let monthNames = ["Jaanuarikuu", "Veebruarikuu", "Märtsikuu", "Aprillikuu", "Maikuu", "Juunikuu", "Juulikuu", "Augustikuu", "Septembrikuu", "Oktoobrikuu", "Novembrikuu", "Detsembrikuu"];
 let needToSendMail = [];
 
+// Transporteriks fetchi credentials
+let sql = mysql.format(sqlString.getCredentials, ['email']);
+let credentials = await makeSqlQuery(
+    sql,
+    errorCodes.EMAIL_CREDENTIALS_FAILED.code,
+    errorCodes.EMAIL_CREDENTIALS_FAILED.message,
+    console.log);
+
+let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: credentials[0].kasutaja_nimi,
+        pass: credentials[0].salasona
+    }
+});
+
 // Uus kasutaja vajab kinnitamist meil
 module.exports.sendMail = (subject, html, id) => {
     needToSendMail.push([subject, html, id, 1]);
 
-    let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: "ollesusteem@gmail.com",
-            pass: "vironialukutaha19"
-        }
-    });
     const mailOptions = {
         from: "ollesusteem@gmail.com",
         to: "palgijoel@gmail.com",
@@ -51,14 +64,6 @@ module.exports.sendMail = (subject, html, id) => {
 module.exports.bibendileMeil = (csv, olleSumma) => {
     // Tee arrayst tekst fail -> csv
     let html = getHtml(csv, olleSumma);
-
-    let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: "ollesusteem@gmail.com",
-            pass: "vironialukutaha19"
-        }
-    });
 
     // Meili sisu ja liited
     const mailOptions = getMailOptions(csv, html);
