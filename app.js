@@ -12,7 +12,7 @@ let bodyParser		= require("body-parser"),
     app         	= express();
 
 //This line add the authentication requirement to all pages starting with localhost:3000/
-//app.all("/*", auth);
+app.all("/*", auth);
 
 //app.use(morgan('tiny'));
 app.use(requestIp.mw());
