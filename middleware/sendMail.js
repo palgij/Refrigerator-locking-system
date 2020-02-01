@@ -5,13 +5,13 @@ let nodemailer	    = require("nodemailer"),
     sqlString       = require('./sqlString');
 
 let userIds = [];
-module.exports.userIds = userIds;
 let monthNames = ["Jaanuarikuu", "Veebruarikuu", "Märtsikuu", "Aprillikuu", "Maikuu", "Juunikuu", "Juulikuu", "Augustikuu", "Septembrikuu", "Oktoobrikuu", "Novembrikuu", "Detsembrikuu"];
 let needToSendMail = [];
 
+module.exports.userIds = userIds;
+
 // Transporteriks fetchi credentials
-let transporter;
-let getCredentials = async () => {
+let getTransporter = async () => {
     let sql = mysql.format(sqlString.getCredentials, ['email']);
     let credentials = await makeSqlQuery(
     	sql,
@@ -19,7 +19,7 @@ let getCredentials = async () => {
     	errorCodes.EMAIL_CREDENTIALS_FAILED.message,
     	console.log);
     
-    transporter = nodemailer.createTransport({
+    return nodemailer.createTransport({
     	service: 'gmail',
     	auth: {
             user: credentials[0].kasutaja_nimi,
@@ -27,12 +27,12 @@ let getCredentials = async () => {
     	}
     });
 }
-getCredentials();
 
 // Uus kasutaja vajab kinnitamist meil
 module.exports.sendMail = (subject, html, id) => {
     needToSendMail.push([subject, html, id, 1]);
-
+    
+    let transporter = getTransporter();
     const mailOptions = {
         from: "ollesusteem@gmail.com",
         to: "palgijoel@gmail.com",
@@ -67,6 +67,8 @@ module.exports.sendMail = (subject, html, id) => {
 module.exports.bibendileMeil = (csv, olleSumma) => {
     // Tee arrayst tekst fail -> csv
     let html = getHtml(csv, olleSumma);
+
+    let transporter = getTransporter();
 
     // Meili sisu ja liited
     const mailOptions = getMailOptions(csv, html);
