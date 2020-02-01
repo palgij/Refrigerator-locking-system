@@ -7,7 +7,10 @@ let express     = require("express"),
     email       = require("../middleware/sendMail"),
     router      = express.Router();
 
-let password = "admin";
+let password = async () => {
+    let credentials = await sqlFun.getCredentials('admin', console.log);
+    return credentials[0].salasona
+};
 
 // Viipa kaarti
 router.get("/", (req, res) => {
@@ -87,7 +90,7 @@ router.get("/kinnitaKasutaja/:id", async (req, res, next) => {
 router.put("/kinnitaKasutaja/:id", async (req, res, next) => {
     // Kinnita kasutaja ainult siis kui leidub kaardi id arrayst
     if (removeUserId(req.params.id)) {
-	if (req.body.password === password) {
+	if (req.body.password === password()) {
 	    if (await sqlFun.kinnitaKasutaja(req.params.id, next) !== -1) {
 	    	req.flash("SUCCESS2", "Kasutaja on kinnitatud!", "/");
 	    }

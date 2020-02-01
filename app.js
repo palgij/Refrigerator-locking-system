@@ -180,7 +180,8 @@ app.use((err, req, res, next) => {
 	case errorCodes.WRONG_PASSWORD_KINNITAMINE.code:
 	    req.flash("ERROR", err.message, err.url);
         break;
-    case errorCodes.BASIC_CREDENTIALS_FAILED.code:
+    case errorCodes.CREDENTIALS_FAILED.code:
+        req.flash("WARN", err.message, req.headers.referer.split("3000")[1]);
         break;
         default:
             res.status(err.statusCode).send(err.message);

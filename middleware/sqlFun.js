@@ -431,6 +431,20 @@ module.exports.lisaOst = async (ost, reb, next) => {
         next);
 };
 
+// =====================================================
+// =====================================================
+// ================== SENDMAIL SQL FUN ==================
+// =====================================================
+// =====================================================
+module.exports.getCredentials = async (name, next) => {
+    let sql = mysql.format(sqlString.getCredentials, [name]);
+    return await makeSqlQuery(
+    	sql,
+    	errorCodes.CREDENTIALS_FAILED.code,
+    	`${errorCodes.CREDENTIALS_FAILED.message} ${name}`,
+    	next);
+};
+
 async function makeSqlQuery (sql, errCode, message, next) {
     let result;
     try {

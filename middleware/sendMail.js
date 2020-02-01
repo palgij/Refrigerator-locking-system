@@ -1,8 +1,6 @@
 let nodemailer	    = require("nodemailer"),
-    mysql           = require('mysql'),
     errorCodes      = require("./errorCodes"),
-    makeSqlQuery    = require('./sqlFun').makeSqlQuery,
-    sqlString       = require('./sqlString');
+    sqlFun          = require('./sqlFun');
 
 let userIds = [];
 let monthNames = ["Jaanuarikuu", "Veebruarikuu", "Märtsikuu", "Aprillikuu", "Maikuu", "Juunikuu", "Juulikuu", "Augustikuu", "Septembrikuu", "Oktoobrikuu", "Novembrikuu", "Detsembrikuu"];
@@ -12,13 +10,8 @@ module.exports.userIds = userIds;
 
 // Transporteriks fetchi credentials
 let getTransporter = async () => {
-    let sql = mysql.format(sqlString.getCredentials, ['email']);
-    let credentials = await makeSqlQuery(
-    	sql,
-    	errorCodes.EMAIL_CREDENTIALS_FAILED.code,
-    	errorCodes.EMAIL_CREDENTIALS_FAILED.message,
-    	console.log);
-    
+    let credentials = await sqlFun.getCredentials('email', console.log);
+
     return nodemailer.createTransport({
     	service: 'gmail',
     	auth: {
@@ -26,7 +19,7 @@ let getTransporter = async () => {
             pass: credentials[0].salasona
     	}
     });
-}
+};
 
 // Uus kasutaja vajab kinnitamist meil
 module.exports.sendMail = (subject, html, id) => {

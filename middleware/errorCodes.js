@@ -1,11 +1,7 @@
 // passid
-module.exports.BASIC_CREDENTIALS_FAILED = {
+module.exports.CREDENTIALS_FAILED = {
     code: 655,
-    message: "Basic auth credentials fetch failed."
-};
-module.exports.EMAIL_CREDENTIALS_FAILED = {
-    code: 656,
-    message: "Email credentials fetch failed."
+    message: "Credentials fetch failed for"
 };
 
 // admin

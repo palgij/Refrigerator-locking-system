@@ -7,7 +7,10 @@ let express     = require("express"),
     email	= require("../middleware/sendMail"),
     router      = express.Router();
 
-let password = "admin";
+let password = async () => {
+	let credentials = await sqlFun.getCredentials('admin', console.log);
+    return credentials[0].salasona
+};
 let ostudeArv;
 let muutusteArvKasutajad;
 let muutusteArvLadu;
@@ -20,7 +23,7 @@ router.get("/", middleware.removeIp, (req, res) => {
 
 // Parooli kontroll
 router.post("/", (req, res, next) => {
-    if (req.body.password === password) {
+    if (req.body.password === password()) {
         middleware.addIp(req.clientIp);
 	    res.redirect("/admin/kodu");
     } else {
