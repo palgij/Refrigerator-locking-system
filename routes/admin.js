@@ -16,7 +16,7 @@ let muutusteArvKasutajad;
 let muutusteArvLadu;
 let lockClosed = async (next) => {
 	let lockState = await sqlFun.getLockState(next);
-    return lockState[0].lukk_kinni
+    return lockState[0].lukk_kinni === 1
 };
 
 // Sisesta parool
@@ -38,17 +38,16 @@ router.post("/", async (req, res, next) => {
 
 // Ava/sulge lukk
 router.put("/toggleLukk", middleware.checkIpSessionValid, async (req, res, next) => {
-	// TODO tee loogika uuesti kui läheb päriselt laivi!
 	let isLockClosed = await lockClosed(next);
 	if (isLockClosed !== -1) {
 		gpio.toggleLock(isLockClosed);
-		
-		// Luku staatuse tekst andmebaasis muutmiseks 
-		let state = isLockClosed ? "true" : "false";
+
+		// Luku uus staatus andmebaasis muutmiseks
+		let state = isLockClosed ? false : true;
 		if (await sqlFun.setLockState(state, console.log) === -1) {
-			setTimeout(sqlFun.setLockState.bind(null, state, console.log), 5000);
+			setTimeout(sqlFun.setLockState.bind(null, state, console.log), 2000);
 		}
-		let text = isLockClosed ? "Kapp on suletud." : "Kapp on avatud.";
+		let text = isLockClosed ? "Kapp on avatud." : "Kapp on suletud.";
 		let requestedAddress = req.headers.referer.split("3000")[1];
 		if (requestedAddress.includes("kodu")) req.flash("SUCCESS2", text, requestedAddress);
 		else req.flash("SUCCESS3", text, requestedAddress);

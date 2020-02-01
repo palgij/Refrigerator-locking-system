@@ -15,10 +15,10 @@
     
     	<div class="row justify-content-around text-center mt-5 mb-5">
 		<div class="col">
-			<h5>Terve lao väärtus müügi hinnas: <strong><%= parseFloat(sumAll[0]).toFixed(2) %>€</strong></h5>
+			<h5>Terve lao väärtus müügihinnas: <strong><%= parseFloat(sumAll[0]).toFixed(2) %>€</strong></h5>
 		</div>
 		<div class="col">
-			<h5>Terve lao väärtus oma hinnas: <strong><%= parseFloat(sumAll[1]).toFixed(2) %>€</strong></h5>
+			<h5>Terve lao väärtus omahinnas: <strong><%= parseFloat(sumAll[1]).toFixed(2) %>€</strong></h5>
 		</div>
 	</div>
 
@@ -33,10 +33,10 @@
             	    	    <tr> 
 		    	    	<th scope="col" class="tds">Toode</th>
                     	    	<th scope="col" class="tds">Kogus</th>
-                    	    	<th scope="col" class="tds">Müügi hind</th>
-                    	    	<th scope="col" class="tds">Summa müügi hinnas</th>
-		    	    	<th scope="col" class="tds">Oma hind</th>
-                    	    	<th scope="col" class="tds">Summa oma hinnas</th>
+                    	    	<th scope="col" class="tds">Müügihind</th>
+                    	    	<th scope="col" class="tds">Summa müügihinnas</th>
+		    	    	<th scope="col" class="tds">Omahind</th>
+                    	    	<th scope="col" class="tds">Summa omahinnas</th>
 	    	    	    </tr>
         	    	</thead>
         	    	<tbody>
@@ -52,8 +52,8 @@
 	    	    	    <% }) %>
         	    	</tbody>
     		    </table>
-    		    <p class="mr-3" style="display: inline;">Müügi hinna kogusumma: <strong><%= parseFloat(sum[i][0]).toFixed(2) %>€</strong></p>
-    		    <p class="ml-5" style="display: inline;">Oma hinna kogusumma: <strong><%= parseFloat(sum[i][1]).toFixed(2) %>€</strong></p>
+    		    <p class="mr-3" style="display: inline;">Müügihinna kogusumma: <strong><%= parseFloat(sum[i][0]).toFixed(2) %>€</strong></p>
+    		    <p class="ml-5" style="display: inline;">Omahinna kogusumma: <strong><%= parseFloat(sum[i][1]).toFixed(2) %>€</strong></p>
     		</div>
     	        <% if (i !== tooted.length - 1) { %>
         	    <div class="border-top mt-5 mb-5"></div>
