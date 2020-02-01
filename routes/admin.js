@@ -25,7 +25,7 @@ router.get("/", middleware.removeIp, (req, res) => {
 });
 
 // Parooli kontroll
-router.post("/", (req, res, next) => {
+router.post("/", async (req, res, next) => {
     if (req.body.password === await password()) {
         middleware.addIp(req.clientIp);
 	    res.redirect("/admin/kodu");
