@@ -59,18 +59,20 @@
 			</li>
                     </ul>
                     <ul class="navbar-nav mr-right">
+				<% if (lockClosed !== -1) { %>
 		    	<li class="nav-item mr-4">
 			    <a class="nav-link" href="#" id="lukk">
 			        <form action="/admin/toggleLukk?_method=PUT" method="POST" id="lukkForm">
-			    	    <% if (lockOpen) { %>
-				    	<i class="fas fa-lock-open"></i>
-			    	    <%} else { %>
-				    	<i class="fas fa-lock"></i>
+						<% if (lockClosed) { %>
+						<i class="fas fa-lock"></i>
+						<%} else { %>
+						<i class="fas fa-lock-open"></i>
 				    <% } %>
 				    Lukk
 			    	</form>
 			    </a>
-		    	</li>
+				</li>
+				<% } %>
                     	<li class="nav-item">
                     	    <a class="nav-link" href="/admin">
                             	Välju

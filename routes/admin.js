@@ -14,7 +14,10 @@ let password = async () => {
 let ostudeArv;
 let muutusteArvKasutajad;
 let muutusteArvLadu;
-let lockOpen = false;
+let lockClosed = async (next) => {
+	let lockState = await sqlFun.getLockState(next);
+    return lockState[0].lukk_kinni
+};
 
 // Sisesta parool
 router.get("/", middleware.removeIp, (req, res) => {
@@ -23,7 +26,7 @@ router.get("/", middleware.removeIp, (req, res) => {
 
 // Parooli kontroll
 router.post("/", (req, res, next) => {
-    if (req.body.password === password()) {
+    if (req.body.password === await password()) {
         middleware.addIp(req.clientIp);
 	    res.redirect("/admin/kodu");
     } else {
@@ -34,14 +37,22 @@ router.post("/", (req, res, next) => {
 });
 
 // Ava/sulge lukk
-router.put("/toggleLukk", middleware.checkIpSessionValid, (req, res) => {
-    // TODO tee loogika uuesti kui läheb päriselt laivi!
-    gpio.toggleLock();
-    lockOpen = !lockOpen;
-    let text = lockOpen ? "Kapp on avatud." : "Kapp on suletud."
-    let requestedAddress = req.headers.referer.split("3000")[1];
-    if (requestedAddress.includes("kodu")) req.flash("SUCCESS2", text, requestedAddress);
-    else req.flash("SUCCESS3", text, requestedAddress);
+router.put("/toggleLukk", middleware.checkIpSessionValid, async (req, res, next) => {
+	// TODO tee loogika uuesti kui läheb päriselt laivi!
+	let isLockClosed = await lockClosed(next);
+	if (isLockClosed !== -1) {
+		gpio.toggleLock(isLockClosed);
+		
+		// Luku staatuse tekst andmebaasis muutmiseks 
+		let state = isLockClosed ? "true" : "false";
+		if (await sqlFun.setLockState(state, console.log) === -1) {
+			setTimeout(sqlFun.setLockState.bind(null, state, console.log), 5000);
+		}
+		let text = isLockClosed ? "Kapp on suletud." : "Kapp on avatud.";
+		let requestedAddress = req.headers.referer.split("3000")[1];
+		if (requestedAddress.includes("kodu")) req.flash("SUCCESS2", text, requestedAddress);
+		else req.flash("SUCCESS3", text, requestedAddress);
+	}
 });
 
 // Top ostjad ja tooted
@@ -49,14 +60,14 @@ router.get("/kodu", middleware.checkIpSessionValid, async (req, res, next) => {
     let ostjad = await sqlFun.getOstjadTop(next);
     let tooted = await sqlFun.getTootedTop(next);
     if (ostjad !== -1 && tooted !== -1)
-    	res.render("admin/kodu", {tooted: tooted, ostjad: ostjad, lockOpen: lockOpen})
+    	res.render("admin/kodu", {tooted: tooted, ostjad: ostjad, lockClosed: await lockClosed(console.log)})
 });
 
 // Kasutajate tabel
 router.get("/kasutajad", middleware.checkIpSessionValid, async (req, res, next) => {
     let kasutajad = await sqlFun.getKasutajad(next);
     if (kasutajad !== -1)
-	res.render("admin/kasutajad", {kasutajad: kasutajad, lockOpen: lockOpen});
+	res.render("admin/kasutajad", {kasutajad: kasutajad, lockClosed: await lockClosed(console.log)});
 });
 
 // Nulli võlad
@@ -102,7 +113,7 @@ router.put("/kasutajad/:id", middleware.checkIpSessionValid, async (req, res, ne
 router.get("/kasutajad/:id", middleware.checkIpSessionValid, async (req, res, next) => {
     let kasutaja = await sqlFun.getKasutaja(req.params.id, next);
     if (kasutaja !== -1)
-	res.render("admin/muuda", {kasutaja: kasutaja[0], lockOpen: lockOpen});
+	res.render("admin/muuda", {kasutaja: kasutaja[0], lockClosed: await lockClosed(console.log)});
 });
 
 // Kustuta kasutaja
@@ -116,7 +127,7 @@ router.get("/tooted", middleware.checkIpSessionValid, async (req, res, next) => 
     let joogid = await sqlFun.getJoogid(next);
     let soogid = await sqlFun.getSoogid(next);
     if (soogid !== -1 && joogid !== -1)
-	res.render("admin/tooted", {joogid: joogid, soogid: soogid, lockOpen: lockOpen});
+	res.render("admin/tooted", {joogid: joogid, soogid: soogid, lockClosed: await lockClosed(console.log)});
 });
 
 // Muuda toodet
@@ -153,12 +164,12 @@ router.put("/tooted/:id", middleware.checkIpSessionValid, async (req, res, next)
 router.get("/tooted/:id", middleware.checkIpSessionValid, async (req, res, next) => {
     let toode = await sqlFun.getToode(req.params.id, next);
     if (toode !== -1)
-	res.render("admin/muudaToode", {toode: toode[0], lockOpen: lockOpen});
+	res.render("admin/muudaToode", {toode: toode[0], lockClosed: await lockClosed(console.log)});
 });
 
 // Lisa toode vaade
 router.get("/uusToode", middleware.checkIpSessionValid, (req, res) => {
-    res.render("admin/uusToode", {lockOpen: lockOpen});
+    res.render("admin/uusToode", {lockClosed: await lockClosed(console.log)});
 });
 
 // Lisa toode
@@ -186,7 +197,7 @@ router.get("/ostud", middleware.checkIpSessionValid, async (req, res, next) => {
     let ostud = await sqlFun.getOstud(req, next);
     if (ostud !== -1) {
     	ostudeArv = getLength(ostud);
-    	res.render("admin/ostudeNimekiri", {ostud: ostud.slice(0, 100), numberOfPages: Math.ceil(ostudeArv / 100), currentPage: 1, lockOpen: lockOpen});
+    	res.render("admin/ostudeNimekiri", {ostud: ostud.slice(0, 100), numberOfPages: Math.ceil(ostudeArv / 100), currentPage: 1, lockClosed: await lockClosed(console.log)});
     }
 });
 
@@ -200,7 +211,7 @@ router.get("/ostud/:page", middleware.checkIpSessionValid, async (req, res, next
   	    err.statusCode = errorCodes.NO_SUCH_PAGE_IN_OSTUD.code; 
     	    next(err);
     	} else {
-    	    res.render("admin/ostudeNimekiri", {ostud: ostud, numberOfPages: Math.ceil(ostudeArv / 100), currentPage: page, lockOpen: lockOpen});
+    	    res.render("admin/ostudeNimekiri", {ostud: ostud, numberOfPages: Math.ceil(ostudeArv / 100), currentPage: page, lockClosed: await lockClosed(console.log)});
     	}
     }
 });
@@ -243,7 +254,7 @@ router.get("/muutused/ladu", middleware.checkIpSessionValid, async (req, res, ne
     let muutused = await sqlFun.getToodeteMuutused(req, next);
     if (muutused !== -1) {
     	muutusteArvLadu = getLength(muutused);
-	res.render("admin/laoMuutused", {muutused: muutused.slice(0, 100), numberOfPages: Math.ceil(muutusteArvLadu / 100), currentPage: 1, lockOpen: lockOpen});
+	res.render("admin/laoMuutused", {muutused: muutused.slice(0, 100), numberOfPages: Math.ceil(muutusteArvLadu / 100), currentPage: 1, lockClosed: await lockClosed(console.log)});
     }
 });
 
@@ -257,7 +268,7 @@ router.get("/muutused/ladu/:page", middleware.checkIpSessionValid, async (req, r
     	    err.statusCode = errorCodes.NO_SUCH_PAGE_IN_LAO_MUUTUSED.code;
   	    next(err);
     	} else {
-    	    res.render("admin/laoMuutused", {muutused: muutused, numberOfPages: Math.ceil(muutusteArvLadu / 100), currentPage: page, lockOpen: lockOpen});
+    	    res.render("admin/laoMuutused", {muutused: muutused, numberOfPages: Math.ceil(muutusteArvLadu / 100), currentPage: page, lockClosed: await lockClosed(console.log)});
     	}
     }
 });
@@ -267,7 +278,7 @@ router.get("/muutused/kasutajad", middleware.checkIpSessionValid, async (req, re
     let muutused = await sqlFun.getKasutajateMuutused(req, next);
     if (muutused !== -1) {
     	muutusteArvKasutajad = getLength(muutused);
-    	res.render("admin/kasutajateMuutused", {muutused: muutused.slice(0, 100), numberOfPages: Math.ceil(muutusteArvKasutajad / 100), currentPage: 1, lockOpen: lockOpen});
+    	res.render("admin/kasutajateMuutused", {muutused: muutused.slice(0, 100), numberOfPages: Math.ceil(muutusteArvKasutajad / 100), currentPage: 1, lockClosed: await lockClosed(console.log)});
     }
 });
 
@@ -281,7 +292,7 @@ router.get("/muutused/kasutajad/:page", middleware.checkIpSessionValid, async (r
     	    err.statusCode = errorCodes.NO_SUCH_PAGE_IN_KASUTAJATE_MUUTUSED.code;
   	    next(err);
     	} else {
-    	    res.render("admin/kasutajateMuutused", {muutused: muutused, numberOfPages: Math.ceil(muutusteArvKasutajad / 100), currentPage: page, lockOpen: lockOpen});
+    	    res.render("admin/kasutajateMuutused", {muutused: muutused, numberOfPages: Math.ceil(muutusteArvKasutajad / 100), currentPage: page, lockClosed: await lockClosed(console.log)});
     	}
     }
 });
@@ -335,7 +346,7 @@ router.get("/inventuur", middleware.checkIpSessionValid, async (req, res, next) 
 		sumAll[1] += toode.oma_hind * toode.hetke_kogus;
 	    uuedTooted[num].push(toode);
 	});
-	res.render("admin/inventuur", {tooted: uuedTooted, lockOpen: lockOpen, sum: sum, sumAll: sumAll});
+	res.render("admin/inventuur", {tooted: uuedTooted, lockClosed: await lockClosed(console.log), sum: sum, sumAll: sumAll});
     }
 });
 

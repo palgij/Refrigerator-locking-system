@@ -148,6 +148,7 @@ app.use((err, req, res, next) => {
         case errorCodes.GET_KASUTAJATE_MUUTUSED_ERROR.code:
         case errorCodes.GET_TOODETE_MUUTUSED_ERROR.code:
 	case errorCodes.GET_KOIK_TOOTED_ERROR.code:
+    case errorCodes.LOCK_STATE_FETCH_FAILED.code:
             req.flash("WARN", err.message, req.headers.referer.split("3000")[1]);
             break;
         case errorCodes.KAARDI_SESSIOON_AEGUNUD.code:    

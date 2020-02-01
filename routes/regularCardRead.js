@@ -90,7 +90,7 @@ router.get("/kinnitaKasutaja/:id", async (req, res, next) => {
 router.put("/kinnitaKasutaja/:id", async (req, res, next) => {
     // Kinnita kasutaja ainult siis kui leidub kaardi id arrayst
     if (removeUserId(req.params.id)) {
-	if (req.body.password === password()) {
+	if (req.body.password === await password()) {
 	    if (await sqlFun.kinnitaKasutaja(req.params.id, next) !== -1) {
 	    	req.flash("SUCCESS2", "Kasutaja on kinnitatud!", "/");
 	    }

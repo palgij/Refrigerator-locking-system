@@ -1,6 +1,5 @@
 let rpio = require("rpio");
 
-let opened = false;
 let locked = undefined;
 
 // Kaardi viipe registreerimis heli mängmine
@@ -29,13 +28,11 @@ module.exports.lockOpen = () => {
     }
 };
 
-// Luku avamine/sulgemine adminsist
-module.exports.toggleLock = () => {
-    if (!opened) {
+// Luku avamine/sulgemine administ
+module.exports.toggleLock = (locked) => {
+    if (locked) {
         rpio.open(7, rpio.OUTPUT, rpio.LOW);
-        opened = true;
     } else {
         rpio.close(7);
-        opened = false;
     }
 };

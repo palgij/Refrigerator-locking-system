@@ -1,7 +1,7 @@
 // passid
 module.exports.CREDENTIALS_FAILED = {
     code: 655,
-    message: "Credentials fetch failed for"
+    message: "Tekkis viga andmebaasist andmete saamisega järgnevaks:"
 };
 
 // admin
@@ -128,6 +128,14 @@ module.exports.REBASTE_OLLED_ERROR = {
 module.exports.GET_KOIK_TOOTED_ERROR = {
     code: 652,
     message: "Andmebaasist kõikide toodete saamisega tekkis viga."
+};
+module.exports.LOCK_STATE_FETCH_FAILED = {
+    code: 656,
+    message: "Andmebaasist luku oleku saamisega tekkis viga."
+};
+module.exports.LOCK_STATE_CHANGE_FAILED = {
+    code: 657,
+    message: "Andmebaasis luku oleku määramisga tekkis viga."
 };
 
 // regularCardRead.js

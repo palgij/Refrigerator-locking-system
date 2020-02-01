@@ -431,6 +431,20 @@ module.exports.lisaOst = async (ost, reb, next) => {
         next);
 };
 
+module.exports.getLockState = async (next) => 
+    await makeSqlQuery(sqlString.getLatestLockState,
+        errorCodes.LOCK_STATE_FETCH_FAILED.code,
+        errorCodes.LOCK_STATE_FETCH_FAILED.message,
+        next);
+
+module.exports.setLockState = async (isLocked, next) => {
+    let sql = mysql.format(sqlString.setLockState, [isLocked]);
+    return await makeSqlQuery(sql,
+        errorCodes.INSERT_OST_ERROR.code, 
+        errorCodes.INSERT_OST_ERROR.message, 
+        next);
+};
+
 // =====================================================
 // =====================================================
 // ================== SENDMAIL SQL FUN ==================
