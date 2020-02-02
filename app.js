@@ -2,12 +2,12 @@ let bodyParser		= require("body-parser"),
     express     	= require("express"),
     flash       	= require("express-flash-notification"),
     session     	= require("express-session"),
-    database    	= require("./middleware/database"),
-    auth        	= require("./middleware/basicAuth"),
+    database    	= require("./middleware/database/databaseConnection"),
+    auth        	= require("./middleware/auth/basicAuth"),
     errorCodes  	= require("./middleware/errorCodes"),
     morgan      	= require("morgan"),
     requestIp   	= require("request-ip"),
-    helmet		= require("helmet"),
+    helmet		    = require("helmet"),
     methodOverride 	= require('method-override'),
     app         	= express();
 
@@ -21,9 +21,11 @@ app.use(methodOverride('_method'));
 
 // ============ ROUTES ============
 
-let ostmineRoutes = require("./routes/ostmine"),
-    regularCardRead   = require("./routes/regularCardRead"),
-    adminRoutes   = require("./routes/admin");
+let ostmineRoutes   = require("./routes/ostmine"),
+    regularCardRead = require("./routes/regularCardRead"),
+    adminRoutes     = require("./routes/admin/admin"),
+    adminKasutajad  = require("./routes/admin/adminKasutajad"),
+    adminTooted     = require("./routes/admin/adminTooted");
 
 // ============ APP USE ============
 
@@ -52,7 +54,7 @@ const flashNotificationOptions = {
                     item.type = 'TopMargin';
                     item.alertClass = 'alert-successs';
                     break;
-		case 'SUCCESS3': // mb-4
+		        case 'SUCCESS3': // mb-4
                     item.type = 'BottomMargin';
                     item.alertClass = 'alert-successs';
                     break;
@@ -78,6 +80,8 @@ app.use(flash(app, flashNotificationOptions));
 app.use("/tooted/:id", ostmineRoutes);
 app.use(regularCardRead);
 app.use("/admin", adminRoutes);
+app.use("/admin/kasutajad", adminKasutajad);
+app.use("/admin/tooted", adminTooted)
 
 let server = app.listen(3000, function(){
     console.log("Server is listening to port 3000! (ip:3000)");
@@ -108,10 +112,10 @@ app.use((err, req, res, next) => {
             req.flash("WARN", err.message, "/admin/muutused/kasutajad");
             break;
         case errorCodes.NO_SUCH_PAGE.code:
-	    if (req.url.includes("admin"))
-		req.flash("ERROR", err.message, "/admin/kodu");
-	    else
-		req.flash("ERROR", err.message, "/");
+	        if (req.url.includes("admin"))
+		        req.flash("ERROR", err.message, "/admin/kodu");
+	        else
+		        req.flash("ERROR", err.message, "/");
             break;
         case errorCodes.IP_SESSIOON_AEGUNUD.code:
         case errorCodes.WRONG_PASSWORD.code:
@@ -119,8 +123,8 @@ app.use((err, req, res, next) => {
             break;
         case errorCodes.TOODETE_TOP_ERROR.code:
         case errorCodes.KASUTAJATE_TOP_ERROR.code:
-	case errorCodes.BIBENDI_MAIL_ERROR.code:
-	case errorCodes.REBASTE_OLLED_ERROR.code:
+	    case errorCodes.BIBENDI_MAIL_ERROR.code:
+	    case errorCodes.REBASTE_OLLED_ERROR.code:
             req.flash("ERROR", err.message, "/admin/kodu");
             break;
         case errorCodes.GET_KASUTAJAD_ERROR.code:
@@ -138,18 +142,18 @@ app.use((err, req, res, next) => {
         case errorCodes.INSERT_TOODE_ERROR.code:
             req.flash("WARN", err.message, "/admin/tooted");
             break;
-	case errorCodes.ER_DUP_ENTRY_TOODE.code:
-	    req.flash("WARN", errorCodes.ER_DUP_ENTRY_TOODE.message, "/admin/tooted");
+	    case errorCodes.ER_DUP_ENTRY_TOODE.code:
+	        req.flash("WARN", errorCodes.ER_DUP_ENTRY_TOODE.message, "/admin/tooted");
             break;
-	case errorCodes.NULLI_VOLAD_ERROR.code:
+	    case errorCodes.NULLI_VOLAD_ERROR.code:
         case errorCodes.INSERT_KASUTAJA_MUUTUS_ERROR.code:
         case errorCodes.INSERT_TOOTE_MUUTUS_ERROR.code:
         case errorCodes.GET_OSTUD_ERROR.code:
         case errorCodes.GET_KASUTAJATE_MUUTUSED_ERROR.code:
         case errorCodes.GET_TOODETE_MUUTUSED_ERROR.code:
-	case errorCodes.GET_KOIK_TOOTED_ERROR.code:
-	case errorCodes.LOCK_STATE_FETCH_FAILED.code:
-	case errorCodes.INSERT_KUU_LOPP_ERROR.code:
+	    case errorCodes.GET_KOIK_TOOTED_ERROR.code:
+	    case errorCodes.LOCK_STATE_FETCH_FAILED.code:
+	    case errorCodes.INSERT_KUU_LOPP_ERROR.code:
             req.flash("WARN", err.message, req.headers.referer.split("3000")[1]);
             break;
         case errorCodes.KAARDI_SESSIOON_AEGUNUD.code:    
@@ -168,34 +172,23 @@ app.use((err, req, res, next) => {
         case errorCodes.TOOTE_KOGUS_ERROR.code:
         case errorCodes.UPDATE_KOGUS_ERROR.code:
         case errorCodes.INSERT_OST_ERROR.code:
-        //case errorCodes.MAIL_ERROR.code:
-	case errorCodes.MAIL_ALREADY_CONFIRMED.code:
+	    case errorCodes.MAIL_ALREADY_CONFIRMED.code:
         case errorCodes.GET_STAATUS_REGISTREERIMINE_ERROR.code:
         case errorCodes.INSERT_KASUTAJA_ERROR.code:
         case errorCodes.REGISTREERIMINE_INSERT_KASUTAJA_MUUTUS_ERROR.code:
         case errorCodes.KASUTAJA_NIME_ERROR.code:
         case errorCodes.KINNITA_KASUTAJA_ERROR.code:
         case errorCodes.GET_KASUTAJA_KAART_ERROR.code:
-	case errorCodes.NO_CARD_ERROR.code:
+	    case errorCodes.NO_CARD_ERROR.code:
             req.flash("ERROR", err.message, "/");
             break;
-	case errorCodes.WRONG_PASSWORD_KINNITAMINE.code:
-	    req.flash("ERROR", err.message, err.url);
-	    break;
-	case errorCodes.CREDENTIALS_FAILED.code:
+	    case errorCodes.WRONG_PASSWORD_KINNITAMINE.code:
+	        req.flash("ERROR", err.message, err.url);
+	        break;
+	    case errorCodes.CREDENTIALS_FAILED.code:
             req.flash("WARN", err.message, req.headers.referer.split("3000")[1]);
             break;
         default:
             res.status(err.statusCode).send(err.message);
     }
 });
-/* //
-process
-  .on('unhandledRejection', (reason, p) => {
-    console.error(reason, 'Unhandled Rejection at Promise', p);
-  })
-  .on('uncaughtException', err => {
-    console.error(err, 'Uncaught Exception thrown');
-    process.exit(1);
-  });
-*/

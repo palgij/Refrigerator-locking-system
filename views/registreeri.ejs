@@ -4,17 +4,17 @@
     <h1 style="text-align: center;"> Registreeri ennast kasutajaks! </h1>
     <form class="needs-validation mt-5" action="/registreeri/<%= id %>" method="POST" novalidate>
         <div class="form-row justify-content-center mb-3">
-                <div class="col-5 form-group">
-                    <select id="staatus" name="staatuse_id" class="form-control form-control-lg" required="required">
-                        <option value="">Vali Staatus</option>
-                    </select>
+            <div class="col-5 form-group">
+                <select id="staatus" name="staatuse_id" class="form-control form-control-lg" required="required">
+                    <option value="">Vali Staatus</option>
+                </select>
+            </div>
+            <div class="col-5 form-group">
+                <input type="text" pattern=".{6,7}" class="form-control form-control-lg" name="coetus" placeholder="Sisesta coetus" required>
+                <div class="invalid-feedback">
+                    Palun sisesta coetus, tähemärke maksimaalselt 7 ja minimaalselt 6
                 </div>
-                <div class="col-5 form-group">
-                    <input type="text" pattern=".{6,7}" class="form-control form-control-lg" name="coetus" placeholder="Sisesta coetus" required>
-                    <div class="invalid-feedback">
-                        Palun sisesta coetus, tähemärke maksimaalselt 7 ja minimaalselt 6
-                    </div>
-                </div>
+            </div>
         </div>
         <div class="form-row justify-content-center">
             <div class="col-5 form-group">

@@ -2,78 +2,78 @@
 
 <div class="container text-center mt-5">
 
-	<% if (locals.flash) { %>
-		<%- locals.flash %>
-		<script>
-			setTimeout(() => {
-				$('.alert').fadeOut("fast")				
-			}, 5000)
-		</script>
-	<% } %>
+    <% if (locals.flash) { %>
+        <%- locals.flash %>
+        <script>
+            setTimeout(() => {
+                $('.alert').fadeOut("fast")				
+            }, 5000)
+        </script>
+    <% } %>
 
     <h2> Ostud </h2>
 
     <form class="mt-4 mb-4" id="ostudeCSV" action="/admin/ostudeCSV" method="POST">
-	<div class="form-row justify-content-center">
-	    <div class="col-2">
-		<div class="row justify-content-end mr-3 mt-1">
-		    <div class="col-1">
-			<button type="button" class="btn btn-sm" data-toggle="tooltip" data-placement="top" id="pops" title="Kuupäeva formaat yyyy/mm/dd - Lõpukuupäev väljaarvatud">
-			    <i class="fas fa-info-circle"></i>
-			</button>
-		    </div>
-		</div>
-	    </div>
-       	    <div class="col-2">
-		<input type="text" class="form-control shadow-sm" name="start" id="start" placeholder="Alguse kuupäev" />
-	    </div>
-	    <div class="col-2">
-    		<input type="text" class="form-control shadow-sm" name="end" id="end" placeholder="Lõpu kuupäev" />
-	    </div>
-	    <div class="col-2">
-		<div class="row">
-		    <div class="col-8">
-	    	    	<button type="button" onClick="checkDate()" class="btn btn-outline-primary btn-md shadow-sm">Ostud CSV</button>
-		    </div>
-		</div>
-	    </div>
-    	</div>
+        <div class="form-row justify-content-center">
+            <div class="col-2">
+                <div class="row justify-content-end mr-3 mt-1">
+                    <div class="col-1">
+                        <button type="button" class="btn btn-sm" data-toggle="tooltip" data-placement="top" id="pops" title="Kuupäeva formaat yyyy/mm/dd - Lõpukuupäev väljaarvatud">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <input type="text" class="form-control shadow-sm" name="start" id="start" placeholder="Alguse kuupäev" />
+            </div>
+             <div class="col-2">
+                <input type="text" class="form-control shadow-sm" name="end" id="end" placeholder="Lõpu kuupäev" />
+            </div>
+            <div class="col-2">
+                <div class="row">
+                    <div class="col-8">
+                        <button type="button" onClick="checkDate()" class="btn btn-outline-primary btn-md shadow-sm">Ostud CSV</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
 
     <% let num = 1 %>
     <% if (numberOfPages > 1) { %>
-	<form id="pageForm" action="" method="GET">
-	    <button type="button" class="btn btn-sm mt-3 mb-3 mr-3" onClick="submitForm('<%= currentPage - 1 %>')" <% if (currentPage === 1) { %>style="visibility: hidden"<% } %>>
-		<i class="fas fa-angle-double-left"></i>
-	    </button>
-    	    <div class="btn-group shadow" role="group">
-		<% let index = 0 %>
-		<% if (currentPage < 7) { %>
-		    <% var i = 0 %>
-		<% } else { %>
-		    <% if (numberOfPages - currentPage <= 5) { %>
-			<% var i = numberOfPages - 11 %>
-		    <% } else { %>
-		    	<% var i = currentPage - 6 %>
-		    <% } %>
-		<% } %>
-		<% if (numberOfPages < 11) { %>
-		    <% var end = numberOfPages %>
-		<% } else { %>
-		    <% var end = 11 %>
-		<% } %>
-	    	<% for (i; index < end; index++) { %>
-		    <% if (i + 1 === currentPage) {%>
-		    	<button type="button" onClick="submitForm('<%= i + 1 %>')" class="btn btn-secondary" style="background: #596269;"><%= i + 1 %></button>
-		    <% } else { %>
-		    	<button type="button" onClick="submitForm('<%= i + 1 %>')" class="btn btn-secondary"><%= i + 1 %></button>
-		    <% } i++ %>
-	    	<% } %>
-    	    </div>
-	    <button type="button" class="btn btn-sm mt-3 mb-3 ml-3" onClick="submitForm('<%= currentPage + 1 %>')" <% if (currentPage === numberOfPages) { %>style="visibility: hidden"<% } %>>
-		<i class="fas fa-angle-double-right"></i>
-	    </button>
-	</form>
+        <form id="pageForm" action="" method="GET">
+            <button type="button" class="btn btn-sm mt-3 mb-3 mr-3" onClick="submitForm('<%= currentPage - 1 %>')" <% if (currentPage === 1) { %>style="visibility: hidden"<% } %>>
+                <i class="fas fa-angle-double-left"></i>
+            </button>
+            <div class="btn-group shadow" role="group">
+                <% let index = 0 %>
+                <% if (currentPage < 7) { %>
+                    <% var i = 0 %>
+                <% } else { %>
+                    <% if (numberOfPages - currentPage <= 5) { %>
+                        <% var i = numberOfPages - 11 %>
+                    <% } else { %>
+                        <% var i = currentPage - 6 %>
+                    <% } %>
+                <% } %>
+                <% if (numberOfPages < 11) { %>
+                    <% var end = numberOfPages %>
+                <% } else { %>
+                    <% var end = 11 %>
+                <% } %>
+                <% for (i; index < end; index++) { %>
+                    <% if (i + 1 === currentPage) {%>
+                        <button type="button" onClick="submitForm('<%= i + 1 %>')" class="btn btn-secondary" style="background: #596269;"><%= i + 1 %></button>
+                    <% } else { %>
+                        <button type="button" onClick="submitForm('<%= i + 1 %>')" class="btn btn-secondary"><%= i + 1 %></button>
+                    <% } i++ %>
+                <% } %>
+            </div>
+            <button type="button" class="btn btn-sm mt-3 mb-3 ml-3" onClick="submitForm('<%= currentPage + 1 %>')" <% if (currentPage === numberOfPages) { %>style="visibility: hidden"<% } %>>
+                <i class="fas fa-angle-double-right"></i>
+            </button>
+        </form>
     <% } %>
 
     <table class="table table-hover table-bordered mt-3 mb-5 shadow">
@@ -85,7 +85,7 @@
                 <th scope="col">Kogus</th>
                 <th scope="col">Summa</th>
                 <th scope="col">Tasuta</th>
-		<th scope="col">Teise ost</th>
+                <th scope="col">Teise ost</th>
             </tr>
         </thead>
         <tbody>
@@ -97,12 +97,12 @@
                     <td> <%= ost.kogus %> </td>
                     <td> <%= ost.summa.toFixed(2) %>€ </td>
                     <td>
-			<% if (ost.on_tasuta) {%> <img src="/checkedMark.png" style="height: 17px; width: 17px;"> <% } else { %>
-			<img src="/uncheckedMark.png" style="height: 17px; width: 17px;"><% } %>
+                        <% if (ost.on_tasuta) {%> <img src="/checkedMark.png" style="height: 17px; width: 17px;"> <% } else { %>
+                        <img src="/uncheckedMark.png" style="height: 17px; width: 17px;"><% } %>
                     </td>
-		    <td>
-			<% if (ost.rebane_ostis) {%> <img src="/checkedMark.png" style="height: 17px; width: 17px;"> <% } else { %>
-			<img src="/uncheckedMark.png" style="height: 17px; width: 17px;"><% } %>
+                    <td>
+                        <% if (ost.rebane_ostis) {%> <img src="/checkedMark.png" style="height: 17px; width: 17px;"> <% } else { %>
+                        <img src="/uncheckedMark.png" style="height: 17px; width: 17px;"><% } %>
                     </td>
                 </tr>
             <% }) %>
@@ -113,24 +113,24 @@
 <script>
 
     function submitForm(page) {
-	$("#pageForm").attr("action", "/admin/ostud/" + page);
-	$("#pageForm").submit();
+        $("#pageForm").attr("action", "/admin/ostud/" + page);
+        $("#pageForm").submit();
     }
 
     $(function () {
-  	$('#pops').tooltip({
-    	container: 'body'
+        $('#pops').tooltip({
+            container: 'body'
         });
     });
 
     function checkDate() {
-	let splittedStart = $('#start').val().split('/');
-	let splittedEnd = $('#end').val().split('/');
-	if (splittedStart.length === 3 && (splittedStart[0].length === 4 && splittedStart[1].length === 2 && splittedStart[2].length === 2) && (splittedEnd.length === 3 && (splittedEnd[0].length === 4 && splittedEnd[1].length === 2 && splittedEnd[2].length === 2))) {
-	    $("#ostudeCSV").submit();
-	    $('#pops').tooltip('hide');
-	}
-	else $('#pops').tooltip('show');
+        let splittedStart = $('#start').val().split('/');
+        let splittedEnd = $('#end').val().split('/');
+        if (splittedStart.length === 3 && (splittedStart[0].length === 4 && splittedStart[1].length === 2 && splittedStart[2].length === 2) && (splittedEnd.length === 3 && (splittedEnd[0].length === 4 && splittedEnd[1].length === 2 && splittedEnd[2].length === 2))) {
+            $("#ostudeCSV").submit();
+            $('#pops').tooltip('hide');
+        }
+        else $('#pops').tooltip('show');
     }
 
 </script>

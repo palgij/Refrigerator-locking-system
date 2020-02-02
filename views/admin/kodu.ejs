@@ -4,28 +4,28 @@
 
     <div class="row justify-content-around text-center">
         <div class="col-5 pt-3 pb-3"> <strong style="font-size: 20px;"> TOP 10 Ostjad </strong>
-	    <ul class="list-group pt-2 text-left mt-3">
-		<% ostjad.forEach((ostja, i) => { %>
-		    <li class="list-group-item" id="ostja"> <%= i + 1 %>. <%= ostja.staatuse_nimetus %> <%= ostja.eesnimi %> <%= ostja.perenimi %> - <%= ostja.volg.toFixed(2) %>€  </li>
-		<% }) %>
-	    </ul>
-    	</div>
-    	<div class="col-5 pt-3 pb-3"> <strong style="font-size: 20px;"> TOP 10 Populaarsed tooted </strong>
-	    <ul class="list-group pt-2 text-left mt-3">
-		<% tooted.forEach((toode, i) => { %>
-		    <li class="list-group-item" id="toode"> <%= i + 1 %>. <%= toode.toote_nimi %> - <%= toode.arv %>x </li>
-		<% }) %>
-	    </ul>
-	</div>
-	</div>
-	<% if (locals.flash) { %>
-	    <%- locals.flash %>
-	    <script>
-		setTimeout(() => {
-		    $('.alert').fadeOut("fast")
-		}, 5000)
-	    </script>
-	<% } %>
+            <ul class="list-group pt-2 text-left mt-3">
+                <% ostjad.forEach((ostja, i) => { %>
+                    <li class="list-group-item" id="ostja"> <%= i + 1 %>. <%= ostja.staatuse_nimetus %> <%= ostja.eesnimi %> <%= ostja.perenimi %> - <%= ostja.volg.toFixed(2) %>€  </li>
+                <% }) %>
+            </ul>
+        </div>
+        <div class="col-5 pt-3 pb-3"> <strong style="font-size: 20px;"> TOP 10 Populaarsed tooted </strong>
+            <ul class="list-group pt-2 text-left mt-3">
+                <% tooted.forEach((toode, i) => { %>
+                    <li class="list-group-item" id="toode"> <%= i + 1 %>. <%= toode.toote_nimi %> - <%= toode.arv %>x </li>
+                <% }) %>
+            </ul>
+        </div>
+    </div>
+    <% if (locals.flash) { %>
+        <%- locals.flash %>
+        <script>
+            setTimeout(() => {
+                $('.alert').fadeOut("fast")
+            }, 5000)
+        </script>
+    <% } %>
 </div>
 
 <% include partials/footer %>

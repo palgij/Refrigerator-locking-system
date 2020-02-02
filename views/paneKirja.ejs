@@ -19,9 +19,9 @@
         </div>
 	<div class="col-4">
 	    <form id="osta" action="/tooted/<%=rebId%>" method="GET">
-                <div class="row justify-content-start">
-                    <button class="btn btn-outline-success btn-md shadow btnBuy">Osta endale &raquo;</button>
-                </div>
+            <div class="row justify-content-start">
+                <button class="btn btn-outline-success btn-md shadow btnBuy">Osta endale &raquo;</button>
+            </div>
 	    </form>
         </div>
     </div>
@@ -29,13 +29,13 @@
     <h2 class="mt-4">Osta sõbrale</h1>
     <% if (viimane12h.length > 0) { %>
     	<h4>Viimase 12h jooksul ostnud</h3>
-	<table class="table-bordered mt-3 shadow mb-4" style="width: 50%;" align="center">
-	    <tbody class="tableId">
-		<% viimane12h.forEach((kasutaja, i) => { %>
-		    <tr onclick="clicked('<%= kasutaja.kaardi_id %>')" style="height: 45px;">
-		    	<td class="tdId"><%= kasutaja.ostja_nimi %></td>
-		    </tr>
-		<% }) %>
+		<table class="table-bordered mt-3 shadow mb-4" style="width: 50%;" align="center">
+	    	<tbody class="tableId">
+				<% viimane12h.forEach((kasutaja, i) => { %>
+		    		<tr onclick="clicked('<%= kasutaja.kaardi_id %>')" style="height: 45px;">
+		    			<td class="tdId"><%= kasutaja.ostja_nimi %></td>
+		    		</tr>
+				<% }) %>
            </tbody>
     	</table>
     <% } %>
@@ -45,45 +45,45 @@
     <div class="row justify-content-center">
     	<div class="col">
 	    <% kasutajad.forEach((kasutajad2, i) => { %>
-		<% if (i % 2 == 0) { %>
-      	     	    <% kasutajad2.forEach((kasutaja, i) => { %>
-			<% if (kasutaja.coetus !== str) { %>
-	    		    <h5><%= kasutaja.coetus %></h4>
-	    		    <table class="table-hover table-bordered mt-3 shadow-sm mb-4" style="width:100%">
-	   		    <tbody class="tableId">
-	    		    <% str = kasutaja.coetus %>
+			<% if (i % 2 == 0) { %>
+				<% kasutajad2.forEach((kasutaja, i) => { %>
+					<% if (kasutaja.coetus !== str) { %>
+						<h5><%= kasutaja.coetus %></h4>
+						<table class="table-hover table-bordered mt-3 shadow-sm mb-4" style="width:100%">
+							<tbody class="tableId">
+								<% str = kasutaja.coetus %>
+					<% } %>
+								<tr onclick="clicked('<%= kasutaja.kaardi_id %>')" style="height: 45px;">
+									<td class="tdId"><%= kasutaja.staatuse_nimetus %> <%= kasutaja.eesnimi %> <%= kasutaja.perenimi %></td>
+								</tr>
+					<% if (kasutajad2[i + 1] === undefined || (kasutajad2[i + 1] !== undefined && kasutaja.coetus !== kasutajad2[i + 1].coetus)) { %>
+							</tbody>
+						</table>
+					<% } %> 
+				<% }) %>
 			<% } %>
-			<tr onclick="clicked('<%= kasutaja.kaardi_id %>')" style="height: 45px;">
-	    		    <td class="tdId"><%= kasutaja.staatuse_nimetus %> <%= kasutaja.eesnimi %> <%= kasutaja.perenimi %></td>
-			</tr>
-			<% if (kasutajad2[i + 1] === undefined || (kasutajad2[i + 1] !== undefined && kasutaja.coetus !== kasutajad2[i + 1].coetus)) { %>
-            		    </tbody>
-    	    		    </table>
-			<% } %> 
-    		    <% }) %>
-		<% } %>
 	    <% }) %>
     	</div>
-	<% str = "" %>
+		<% str = "" %>
     	<div class="col">
 	    <% kasutajad.forEach((kasutajad2, i) => { %>
-		<% if (i % 2 != 0) { %>
-      	    	    <% kasutajad2.forEach((kasutaja, i) => { %>
-			<% if (kasutaja.coetus !== str) { %>
-	    		    <h5><%= kasutaja.coetus %></h4>
-	    	  	    <table class="table-bordered mt-3 shadow-sm mb-4" style="width:100%">
-	   		    <tbody class="tableId">
-	    		    <% str = kasutaja.coetus %>
+			<% if (i % 2 != 0) { %>
+				<% kasutajad2.forEach((kasutaja, i) => { %>
+					<% if (kasutaja.coetus !== str) { %>
+						<h5><%= kasutaja.coetus %></h4>
+						<table class="table-bordered mt-3 shadow-sm mb-4" style="width:100%">
+							<tbody class="tableId">
+								<% str = kasutaja.coetus %>
+					<% } %>
+								<tr onclick="clicked('<%= kasutaja.kaardi_id %>')" style="height: 45px;">
+									<td class="tdId"><%= kasutaja.staatuse_nimetus %> <%= kasutaja.eesnimi %> <%= kasutaja.perenimi %></td>
+								</tr>
+					<% if (kasutajad2[i + 2] === undefined || (kasutajad2[i + 2] !== undefined && kasutaja.coetus !== kasutajad2[i + 2].coetus)) { %>
+							</tbody>
+						</table>
+					<% } %> 
+				<% }) %>
 			<% } %>
-			<tr onclick="clicked('<%= kasutaja.kaardi_id %>')" style="height: 45px;">
-	    		    <td class="tdId"><%= kasutaja.staatuse_nimetus %> <%= kasutaja.eesnimi %> <%= kasutaja.perenimi %></td>
-			</tr>
-			<% if (kasutajad2[i + 2] === undefined || (kasutajad2[i + 2] !== undefined && kasutaja.coetus !== kasutajad2[i + 2].coetus)) { %>
-            		    </tbody>
-    	    		    </table>
-			<% } %> 
-    		    <% }) %>
-		<% } %>
 	    <% }) %>
     	</div>
     </div>
@@ -93,8 +93,8 @@
 <script>
 
     function clicked(id) {
-	$('#osta').attr('action', '/tooted/' + '<%= rebId %>"' + id);
-	$("#osta").submit();
+		$('#osta').attr('action', '/tooted/' + '<%= rebId %>"' + id);
+		$("#osta").submit();
     }
 
 </script>

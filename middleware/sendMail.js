@@ -1,6 +1,6 @@
 let nodemailer	    = require("nodemailer"),
     errorCodes      = require("./errorCodes"),
-    sqlFun          = require('./sqlFun');
+    sqlFun          = require('./database/sqlFun/adminSqlFun');
 
 let userIds = [];
 let monthNames = ["Jaanuarikuu", "Veebruarikuu", "Märtsikuu", "Aprillikuu", "Maikuu", "Juunikuu", "Juulikuu", "Augustikuu", "Septembrikuu", "Oktoobrikuu", "Novembrikuu", "Detsembrikuu"];
@@ -13,11 +13,11 @@ let getTransporter = async () => {
     let credentials = await sqlFun.getCredentials('email', console.log);
 
     return nodemailer.createTransport({
-    	service: 'gmail',
-    	auth: {
+        service: 'gmail',
+        auth: {
             user: credentials[0].kasutaja_nimi,
             pass: credentials[0].salasona
-    	}
+        }
     });
 };
 
@@ -67,55 +67,55 @@ module.exports.bibendileMeil = async (csv, olleSumma) => {
     const mailOptions = getMailOptions(csv, html);
 
     return new Promise((resolve, reject) => { 
-    	transporter.sendMail(mailOptions, (err) => {
+        transporter.sendMail(mailOptions, (err) => {
             if (err) {
-	    	console.log(`SEND MAILI OMA ERROR:\n${err}\n`);
-	    	let err2 = new Error(errorCodes.BIBENDI_MAIL_ERROR.message);
-  	    	err2.statusCode = errorCodes.BIBENDI_MAIL_ERROR.code;
-  	    	reject(err2);
+                console.log(`SEND MAILI OMA ERROR:\n${err}\n`);
+                let err2 = new Error(errorCodes.BIBENDI_MAIL_ERROR.message);
+                err2.statusCode = errorCodes.BIBENDI_MAIL_ERROR.code;
+                reject(err2);
             } else {
-            	console.log("Meili saatmine õnnestus!");
-		resolve(true);
+                console.log("Meili saatmine õnnestus!");
+                resolve(true);
             }
-    	});
+        });
     });
 };
 
 let getHtml = (csv, olleSumma) => {
     if (csv.length === 0) {
-	return `<p>Hei Laekur<br><br>
-		Rebaste tasuta joodud joogid (õlu/alkovaba) eelmisest kuulõpu tehingust tänaseni (tänane väljaarvatud): <strong>${olleSumma}€</strong><br>
-		Võlad puuduvad!<br><br>
-		Parimat soovides<br>
-		Sinu Õllesüsteem</p>`;
+        return `<p>Hei Laekur<br><br>
+            Rebaste tasuta joodud joogid (õlu/alkovaba) eelmisest kuulõpu tehingust tänaseni (tänane väljaarvatud): <strong>${olleSumma}€</strong><br>
+            Võlad puuduvad!<br><br>
+            Parimat soovides<br>
+            Sinu Õllesüsteem</p>`;
     } else {
-	return `<p>Hei Laekur<br><br>
-		Rebaste tasuta joodud joogid (õlu/alkovaba) eelmisest kuulõpu tehingust tänaseni (tänane väljaarvatud): <strong>${olleSumma}€</strong><br>
-		Manuses on eelmisest kuulõpu tehingust tänaseni (otsupunktid kaasaarvatud) võlglaste väljund.<br><br>
-		Parimat soovides<br>
-		Sinu Õllesüsteem</p>`;
+        return `<p>Hei Laekur<br><br>
+            Rebaste tasuta joodud joogid (õlu/alkovaba) eelmisest kuulõpu tehingust tänaseni (tänane väljaarvatud): <strong>${olleSumma}€</strong><br>
+            Manuses on eelmisest kuulõpu tehingust tänaseni (otsupunktid kaasaarvatud) võlglaste väljund.<br><br>
+            Parimat soovides<br>
+            Sinu Õllesüsteem</p>`;
     }
 };
 
 let getMailOptions = (csv, html) => {
     if (csv.length === 0) {
-	return {
-            from: "ollesusteem@gmail.com",
-            to: "palgijoel@gmail.com",
-            subject: `Bibendi ${monthNames[new Date().getMonth() - 1]} numbrid`,
-            html: html
+        return {
+            from    : "ollesusteem@gmail.com",
+            to      : "palgijoel@gmail.com",
+            subject : `Bibendi ${monthNames[new Date().getMonth() - 1]} numbrid`,
+            html    : html
         };
     } else {
-	return {
-            from: "ollesusteem@gmail.com",
-            to: "palgijoel@gmail.com",
-            subject: `Bibendi ${monthNames[new Date().getMonth() - 1]} numbrid`,
-            html: html,
-	    attachments: [{
-    		    filename: 'volglased.csv',
-    		    contentType: 'text/csv',
-    		    content: csv
-  	    }]
+        return {
+            from        : "ollesusteem@gmail.com",
+            to          : "palgijoel@gmail.com",
+            subject     : `Bibendi ${monthNames[new Date().getMonth() - 1]} numbrid`,
+            html        : html,
+            attachments : [{
+                filename    : 'volglased.csv',
+                contentType : 'text/csv',
+                content     : csv
+            }]
         };
     }
 };

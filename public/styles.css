@@ -16,15 +16,6 @@
     font-size: 20px;
 }
 
-/*
-.tableId tr:nth-child(odd) {
-    background: #DFDCE3;
-}
-
-.tableId tr:nth-child(even) {
-    background: #BEBEBE;
-}*/
-
 .trId {
     background: #BEBEBE;
 }

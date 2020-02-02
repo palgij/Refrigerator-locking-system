@@ -3,64 +3,64 @@
 <div class="container text-center mt-5">
 
     <% if (locals.flash) { %>
-	<%- locals.flash %>
-	<script>
-	    setTimeout(() => {
-		$('.alert').fadeOut("fast")				
-		}, 5000)
-	</script>
+        <%- locals.flash %>
+        <script>
+            setTimeout(() => {
+                $('.alert').fadeOut("fast")				
+            }, 5000)
+        </script>
     <% } %>
 
     <h2> Lao väärtus </h2>
     
-    	<div class="row justify-content-around text-center mt-5 mb-5">
-		<div class="col">
-			<h5>Terve lao väärtus müügihinnas: <strong><%= parseFloat(sumAll[0]).toFixed(2) %>€</strong></h5>
-		</div>
-		<div class="col">
-			<h5>Terve lao väärtus omahinnas: <strong><%= parseFloat(sumAll[1]).toFixed(2) %>€</strong></h5>
-		</div>
-	</div>
+    <div class="row justify-content-around text-center mt-5 mb-5">
+        <div class="col">
+            <h5>Terve lao väärtus müügihinnas: <strong><%= parseFloat(sumAll[0]).toFixed(2) %>€</strong></h5>
+        </div>
+        <div class="col">
+            <h5>Terve lao väärtus omahinnas: <strong><%= parseFloat(sumAll[1]).toFixed(2) %>€</strong></h5>
+        </div>
+    </div>
 
     <% let nimed = ["Õlu", "Alkoholivaba", "Kange alkohol", "Muu", "Snäk", "Valmistoit"] %>
     <% if (tooted.length !== 0) { %>
-	<% tooted.forEach((tooted2, i) => { %>
-	    <% if (tooted2.length !== 0) { %>
-    	    	<div class="mb-5">
-    		    <h5 class="mt-4 mb-4 text-left"> <%= nimed[tooted2[0].toote_kategooria_id - 1] %></h5>
-    		    <table class="table table-bordered table-hover shadow mt-3 mb-4">
-        	    	<thead>
-            	    	    <tr> 
-		    	    	<th scope="col" class="tds">Toode</th>
-                    	    	<th scope="col" class="tds">Kogus</th>
-                    	    	<th scope="col" class="tds">Müügihind</th>
-                    	    	<th scope="col" class="tds">Summa müügihinnas</th>
-		    	    	<th scope="col" class="tds">Omahind</th>
-                    	    	<th scope="col" class="tds">Summa omahinnas</th>
-	    	    	    </tr>
-        	    	</thead>
-        	    	<tbody>
-	    	    	    <% tooted2.forEach((toode) => { %>
-			    	<tr>
-		    	    	    <td class="tds"><%= toode.toote_nimetus %></td>
-		    	    	    <td class="tds"><%= parseFloat(toode.hetke_kogus).toFixed(2) %></td>
-		    	    	    <td class="tds"><%= parseFloat(toode.myygi_hind).toFixed(2) %>€</td>
-		    	    	    <td class="tds"><%= parseFloat(toode.hetke_kogus * toode.myygi_hind).toFixed(2) %>€</td>
-		    	    	    <td class="tds"><%= parseFloat(toode.oma_hind).toFixed(2) %>€</td>
-		    	    	    <td class="tds"><%= parseFloat(toode.hetke_kogus * toode.oma_hind).toFixed(2) %>€</td>
-			    	</tr>
-	    	    	    <% }) %>
-        	    	</tbody>
-    		    </table>
-    		    <p class="mr-3" style="display: inline;">Müügihinna kogusumma: <strong><%= parseFloat(sum[i][0]).toFixed(2) %>€</strong></p>
-    		    <p class="ml-5" style="display: inline;">Omahinna kogusumma: <strong><%= parseFloat(sum[i][1]).toFixed(2) %>€</strong></p>
-    		</div>
-    	        <% if (i !== tooted.length - 1) { %>
-        	    <div class="border-top mt-5 mb-5"></div>
-    	        <% } %>
-    	    <% } %>
-    	<% }) %>
-	<% } %>
+        <% tooted.forEach((tooted2, i) => { %>
+            <% if (tooted2.length !== 0) { %>
+                <div class="mb-5">
+                    <h5 class="mt-4 mb-4 text-left"> <%= nimed[tooted2[0].toote_kategooria_id - 1] %></h5>
+                    <table class="table table-bordered table-hover shadow mt-3 mb-4">
+                        <thead>
+                            <tr> 
+                                <th scope="col" class="tds">Toode</th>
+                                <th scope="col" class="tds">Kogus</th>
+                                <th scope="col" class="tds">Müügihind</th>
+                                <th scope="col" class="tds">Summa müügihinnas</th>
+                                <th scope="col" class="tds">Omahind</th>
+                                <th scope="col" class="tds">Summa omahinnas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% tooted2.forEach((toode) => { %>
+                                <tr>
+                                    <td class="tds"><%= toode.toote_nimetus %></td>
+                                    <td class="tds"><%= parseFloat(toode.hetke_kogus).toFixed(2) %></td>
+                                    <td class="tds"><%= parseFloat(toode.myygi_hind).toFixed(2) %>€</td>
+                                    <td class="tds"><%= parseFloat(toode.hetke_kogus * toode.myygi_hind).toFixed(2) %>€</td>
+                                    <td class="tds"><%= parseFloat(toode.oma_hind).toFixed(2) %>€</td>
+                                    <td class="tds"><%= parseFloat(toode.hetke_kogus * toode.oma_hind).toFixed(2) %>€</td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                    <p class="mr-3" style="display: inline;">Müügihinna kogusumma: <strong><%= parseFloat(sum[i][0]).toFixed(2) %>€</strong></p>
+                    <p class="ml-5" style="display: inline;">Omahinna kogusumma: <strong><%= parseFloat(sum[i][1]).toFixed(2) %>€</strong></p>
+                </div>
+                <% if (i !== tooted.length - 1) { %>
+                    <div class="border-top mt-5 mb-5"></div>
+                <% } %>
+            <% } %>
+        <% }) %>
+    <% } %>
 </div>
 
 <% include partials/footer %>

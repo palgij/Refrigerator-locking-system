@@ -15,16 +15,16 @@ module.exports.ring = () => {
 module.exports.lockOpen = () => {
     rpio.open(7, rpio.OUTPUT, rpio.LOW);
     if (locked === undefined) {
-    	locked = setTimeout(() => {
+        locked = setTimeout(() => {
             rpio.close(7);
-	    locked = undefined;
-    	}, 10000);
+            locked = undefined;
+        }, 10000);
     } else {
-	clearTimeout(locked);
-	locked = setTimeout(() => {
+        clearTimeout(locked);
+        locked = setTimeout(() => {
             rpio.close(7);
-	    locked = undefined;
-    	}, 10000);
+            locked = undefined;
+        }, 10000);
     }
 };
 

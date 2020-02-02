@@ -1,22 +1,20 @@
-let errorCodes = require("./errorCodes");
+let errorCodes = require("../errorCodes");
 
 var middlewareObj = {};
 
 middlewareObj.users = [];
 
-middlewareObj.getUsers = id => {
-    return middlewareObj.users[getIndexOfId(id)];
-};
+middlewareObj.getUsers = id => middlewareObj.users[getIndexOfId(id)];
 
 // Lisa kasutaja kaardi id arraysse
 middlewareObj.addUserCard = id => {
     let pos = getIndexOfId(id);
     if (pos === -1) {
-	addUserWithTimeout(id);
+        addUserWithTimeout(id);
     } else {
-	clearTimeout(middlewareObj.users[pos].timeout);
-	removeAndLog(id);
-	addUserWithTimeout(id);
+        clearTimeout(middlewareObj.users[pos].timeout);
+        removeAndLog(id);
+        addUserWithTimeout(id);
     }
 };
 
@@ -24,8 +22,8 @@ middlewareObj.addUserCard = id => {
 middlewareObj.checkUserSessionValid = (req, res, next) => {
     let id;
     if (req.params.id.includes('"')) {
-	let arr = req.params.id.split('"');
-	id = arr[0];
+        let arr = req.params.id.split('"');
+        id = arr[0];
     } else id = req.params.id;
 
     if (getIndexOfId(id) === -1) {
@@ -33,7 +31,7 @@ middlewareObj.checkUserSessionValid = (req, res, next) => {
         err.statusCode = errorCodes.KAARDI_SESSIOON_AEGUNUD.code;
         next(err);
     } else {
-	next();
+        next();
     }
 };
 
@@ -41,8 +39,8 @@ middlewareObj.checkUserSessionValid = (req, res, next) => {
 middlewareObj.removeUser = id => {
     let pos = getIndexOfId(id);
     if (pos !== -1) {
-    	clearTimeout(middlewareObj.users[pos].timeout);
-    	removeAndLog(id);
+        clearTimeout(middlewareObj.users[pos].timeout);
+        removeAndLog(id);
     }
 };
 
@@ -53,13 +51,12 @@ module.exports = middlewareObj;
 function removeAndLog(id) {
     let pos = getIndexOfId(id);
     middlewareObj.users.splice(pos, 1);
-    //console.log("Timeout removed for " + String(id));
 }
 
 function addUserWithTimeout(id) {
     middlewareObj.users.push({
-	id: id,
-	timeout: setTimeout(removeAndLog.bind(null, id), 180000)
+        id      : id,
+        timeout : setTimeout(removeAndLog.bind(null, id), 180000)
     });
 }
 

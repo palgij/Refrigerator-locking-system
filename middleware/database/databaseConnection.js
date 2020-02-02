@@ -3,12 +3,12 @@ let mysql   = require("mysql"),
 
 // Andmebaasi avamine
 let pool = mysql.createPool({
-    connectionLimit: 10,
-    host: 'localhost',
-    user: 'root',
-    password: '8kti6c',
-    database: "mydb",
-    timezone: 'EET'
+    connectionLimit : 10,
+    host            : 'localhost',
+    user            : 'root',
+    password        : '8kti6c',
+    database        : "mydb",
+    timezone        : 'EET'
 });
 
 pool.getConnection((err, connection) => {
@@ -24,7 +24,6 @@ pool.getConnection((err, connection) => {
         }
     }
     if (connection) connection.release();
-    // võtsin returni ära
 });
 
 // Promisify for Node.js async/await.
