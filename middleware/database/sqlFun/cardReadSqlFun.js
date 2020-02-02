@@ -1,7 +1,7 @@
 let errorCodes      = require("../../errorCodes"),
     mysql           = require("mysql"),
     sqlString       = require("../../database/sqlString/cardReadSqlString"),
-    makeSqlQuery    = require("../sqlQuery");
+    makeSqlQuery    = require("../sqlQuery").makeSqlQuery;
 
 module.exports.kasutajaKaardiLugemisel = async (next, serial) => {
     let sql = mysql.format(sqlString.kasutajaSeisKinn, [serial]);

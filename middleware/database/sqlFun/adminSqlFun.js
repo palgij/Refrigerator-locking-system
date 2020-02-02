@@ -1,7 +1,7 @@
 let errorCodes      = require("../../errorCodes"),
     mysql           = require("mysql"),
     sqlString       = require("../sqlString/adminSqlString"),
-    makeSqlQuery    = require("../sqlQuery");
+    makeSqlQuery    = require("../sqlQuery").makeSqlQuery;
 
 module.exports.getOstjadTop = async (next) =>
     await makeSqlQuery(sqlString.topOstjad,

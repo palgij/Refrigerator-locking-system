@@ -1,7 +1,7 @@
 let database    = require("./databaseConnection"),
     errorCodes  = require("../errorCodes");
 
-async function makeSqlQuery (sql, errCode, message, next) {
+module.exports.makeSqlQuery = async (sql, errCode, message, next) => {
     let result;
     try {
         result = await database.query(sql);
@@ -15,5 +15,3 @@ async function makeSqlQuery (sql, errCode, message, next) {
     }
     return -1;
 }
-
-module.exports.makeSqlQuery = makeSqlQuery;

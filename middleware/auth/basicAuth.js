@@ -1,5 +1,5 @@
 let basicAuth   = require('basic-auth'),
-    sqlFun      = require('./sqlFun');
+    sqlFun      = require('../database/sqlFun/adminSqlFun');
 
 module.exports = async (req, res, next) => {
     let user = basicAuth(req);

@@ -1,7 +1,7 @@
 let errorCodes      = require("../../errorCodes"),
     mysql           = require("mysql"),
     sqlString       = require("../sqlString/ostmineSqlString"),
-    makeSqlQuery    = require("../sqlQuery");
+    makeSqlQuery    = require("../sqlQuery").makeSqlQuery;
 
 module.exports.getTootedJaKasutaja = async (id, next) => {
     let arr = [];

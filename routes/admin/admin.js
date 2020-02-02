@@ -4,7 +4,7 @@ let express     = require("express"),
     errorCodes	= require("../../middleware/errorCodes"),
     stringify   = require("csv-stringify"),
     gpio        = require("../../middleware/gpio"),
-    email		= require("../../middleware/sendMail"),
+    email       = require("../../middleware/sendMail"),
     router      = express.Router();
 
 let ostudeArv;

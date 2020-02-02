@@ -2,13 +2,14 @@ let express     = require("express"),
     rc522       = require("rc522"),
     middleware  = require("../middleware/auth/regularAuth"),
     sqlFun      = require("../middleware/database/sqlFun/cardReadSqlFun"),
+    pass	= require("../middleware/database/sqlFun/adminSqlFun"),
     errorCodes  = require("../middleware/errorCodes"),
     buzzer      = require("../middleware/gpio"),
     email       = require("../middleware/sendMail"),
     router      = express.Router();
 
 let password = async () => {
-    let credentials = await sqlFun.getCredentials('admin', console.log);
+    let credentials = await pass.getCredentials('admin', console.log);
     return credentials[0].salasona
 };
 
