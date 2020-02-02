@@ -56,3 +56,4 @@ module.exports.viimase12hKasutajad = "SELECT ostja_nimi, kaardi_id FROM Ost INNE
 module.exports.getToodeID = "SELECT * FROM Toode WHERE toote_id = ?";
 module.exports.rebasteJoodudOlled = "SELECT COALESCE(SUM(summa_oma_hind), 0) AS olledSumma FROM Ost WHERE aeg >= (SELECT teostatud FROM Kuu_Lopp ORDER BY teostatud DESC LIMIT 1) AND aeg < CURDATE() AND ostja_nimi LIKE 'reb! %' AND on_tasuta = 1";
 module.exports.getTooted = "SELECT toote_kategooria_id, toote_nimetus, myygi_hind, oma_hind, hetke_kogus FROM Toode ORDER BY toote_kategooria_id";
+module.exports.insertKuuLopp = "INSERT INTO Kuu_Lopp (rebaste_joogid, volad_kokku) VALUES (?, ?)";

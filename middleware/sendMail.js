@@ -22,10 +22,10 @@ let getTransporter = async () => {
 };
 
 // Uus kasutaja vajab kinnitamist meil
-module.exports.sendMail = (subject, html, id) => {
+module.exports.sendMail = async (subject, html, id) => {
     needToSendMail.push([subject, html, id, 1]);
     
-    let transporter = getTransporter();
+    let transporter = await getTransporter();
     const mailOptions = {
         from: "ollesusteem@gmail.com",
         to: "palgijoel@gmail.com",
@@ -57,11 +57,11 @@ module.exports.sendMail = (subject, html, id) => {
 };
 
 // Kuu lõpu operatsiooni meil
-module.exports.bibendileMeil = (csv, olleSumma) => {
+module.exports.bibendileMeil = async (csv, olleSumma) => {
     // Tee arrayst tekst fail -> csv
     let html = getHtml(csv, olleSumma);
 
-    let transporter = getTransporter();
+    let transporter = await getTransporter();
 
     // Meili sisu ja liited
     const mailOptions = getMailOptions(csv, html);
@@ -84,14 +84,14 @@ module.exports.bibendileMeil = (csv, olleSumma) => {
 let getHtml = (csv, olleSumma) => {
     if (csv.length === 0) {
 	return `<p>Hei Laekur<br><br>
-		Rebaste tasuta joodud joogid (õlu/alkovaba) ${monthNames[new Date().getMonth() - 1]}s: <strong>${olleSumma}€</strong><br>
-		Võlad ${monthNames[new Date().getMonth() - 1]}s puuduvad!<br><br>
+		Rebaste tasuta joodud joogid (õlu/alkovaba) eelmisest kuulõpu tehingust tänaseni (tänane väljaarvatud): <strong>${olleSumma}€</strong><br>
+		Võlad puuduvad!<br><br>
 		Parimat soovides<br>
 		Sinu Õllesüsteem</p>`;
     } else {
 	return `<p>Hei Laekur<br><br>
-		Rebaste tasuta joodud joogid (õlu/alkovaba) ${monthNames[new Date().getMonth() - 1]}s: <strong>${olleSumma}€</strong><br>
-		Manuses on ${monthNames[new Date().getMonth() - 1]} võlglaste väljund.<br><br>
+		Rebaste tasuta joodud joogid (õlu/alkovaba) eelmisest kuulõpu tehingust tänaseni (tänane väljaarvatud): <strong>${olleSumma}€</strong><br>
+		Manuses on eelmisest kuulõpu tehingust tänaseni (otsupunktid kaasaarvatud) võlglaste väljund.<br><br>
 		Parimat soovides<br>
 		Sinu Õllesüsteem</p>`;
     }

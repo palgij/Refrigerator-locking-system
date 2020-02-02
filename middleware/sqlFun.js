@@ -238,6 +238,13 @@ module.exports.getTooted = async (next) =>
 	errorCodes.GET_KOIK_TOOTED_ERROR.code,
 	errorCodes.GET_KOIK_TOOTED_ERROR.message,
     	next);
+module.exports.insertKuuLopp = async (rebasteOlled, sumOfVolad, next) => {
+    let sql = mysql.format(sqlString.insertKuuLopp, [rebasteOlled, sumOfVolad]);
+    return await makeSqlQuery(sql,
+	errorCodes.INSERT_KUU_LOPP_ERROR.code,
+	errorCodes.INSERT_KUU_LOPP_ERROR.message,
+	next);
+};
 
 
 // ===============================================================

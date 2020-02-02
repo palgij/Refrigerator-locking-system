@@ -137,6 +137,10 @@ module.exports.LOCK_STATE_CHANGE_FAILED = {
     code: 657,
     message: "Andmebaasis luku oleku määramisga tekkis viga."
 };
+module.exports.INSERT_KUU_LOPP_ERROR = {
+    code: 658,
+    message: "Andmebaasi kuulõpu kuupäeva sisestamisega tekkis viga. Meil on siiski saadetud ja võlad nullitud, võta ühendust Bibendiga."
+};
 
 // regularCardRead.js
 module.exports.GET_KASUTAJA_KAART_ERROR = {

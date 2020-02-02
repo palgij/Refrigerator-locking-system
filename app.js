@@ -148,7 +148,8 @@ app.use((err, req, res, next) => {
         case errorCodes.GET_KASUTAJATE_MUUTUSED_ERROR.code:
         case errorCodes.GET_TOODETE_MUUTUSED_ERROR.code:
 	case errorCodes.GET_KOIK_TOOTED_ERROR.code:
-    case errorCodes.LOCK_STATE_FETCH_FAILED.code:
+	case errorCodes.LOCK_STATE_FETCH_FAILED.code:
+	case errorCodes.INSERT_KUU_LOPP_ERROR.code:
             req.flash("WARN", err.message, req.headers.referer.split("3000")[1]);
             break;
         case errorCodes.KAARDI_SESSIOON_AEGUNUD.code:    
@@ -180,10 +181,10 @@ app.use((err, req, res, next) => {
             break;
 	case errorCodes.WRONG_PASSWORD_KINNITAMINE.code:
 	    req.flash("ERROR", err.message, err.url);
-        break;
-    case errorCodes.CREDENTIALS_FAILED.code:
-        req.flash("WARN", err.message, req.headers.referer.split("3000")[1]);
-        break;
+	    break;
+	case errorCodes.CREDENTIALS_FAILED.code:
+            req.flash("WARN", err.message, req.headers.referer.split("3000")[1]);
+            break;
         default:
             res.status(err.statusCode).send(err.message);
     }

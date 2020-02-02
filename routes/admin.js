@@ -308,8 +308,10 @@ router.put("/kuuLopp", middleware.checkIpSessionValid, async (req, res, next) =>
 		next(err);
 	    }
 	    if (!!result) {
-		if (await sqlFun.nulliVolad(next, "võlad kuulõpp") !== -1)
-	            req.flash("SUCCESS2", "Kuulõpu esitamine oli edukas.", req.headers.referer.split("3000")[1]);
+		if (await sqlFun.nulliVolad(next, "võlad kuulõpp") !== -1) {
+		    if (await sqlFun.insertKuuLopp(olledSumma[0].olledSumma, parseFloat(volad.reduce(getSumOfVolad, 0)).toFixed(2), next) !== -1)
+	            	req.flash("SUCCESS2", "Kuulõpu esitamine oli edukas.", req.headers.referer.split("3000")[1]);
+		}
 	    }
 	} else {
 	    if (volad !== -1)
@@ -358,6 +360,8 @@ let getLength = (obj) => {
     }
     return i;
 };
+
+let getSumOfVolad = (total, user) => total + user.volg;
 
 // Muuda võlgade array CSVks
 let voladToCsv = arr => {
