@@ -54,12 +54,12 @@ router.put("/:id", middleware.checkIpSessionValid, async (req, res, next) => {
 router.get("/:id", middleware.checkIpSessionValid, async (req, res, next) => {
     let toode = await sqlFun.getToode(req.params.id, next);
     if (toode === -1) return;
-    
+
     res.render("admin/muudaToode", {toode: toode[0], lockClosed: await lockClosed(console.log)});
 });
 
 // Lisa toode vaade
-router.get("/uusToode", middleware.checkIpSessionValid, async (req, res) => {
+router.get("/uusToode/lisa", middleware.checkIpSessionValid, async (req, res) => {
     res.render("admin/uusToode", {lockClosed: await lockClosed(console.log)});
 });
 
