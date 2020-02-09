@@ -30,9 +30,13 @@ module.exports.lockOpen = () => {
 
 // Luku avamine/sulgemine administ
 module.exports.toggleLock = (locked) => {
-    if (locked) {
-        rpio.open(7, rpio.OUTPUT, rpio.LOW);
-    } else {
-        rpio.close(7);
+    try {
+        if (locked) {
+            rpio.open(7, rpio.OUTPUT, rpio.LOW);
+        } else {
+            rpio.close(7);
+        }
+    } catch (err) {
+        console.log(`TOGGLE LOCK ERROR -> ${err}`);
     }
 };

@@ -9,6 +9,7 @@
   "author": "Joel Palgi",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.8",
     "csv-stringify": "^5.3.6",
     "ejs": "^3.0.1",
     "ejs-lint": "^1.0.1",

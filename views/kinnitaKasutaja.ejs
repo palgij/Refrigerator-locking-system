@@ -1,14 +1,14 @@
 <%- include('partials/header'); %>
 
-<div class="container text-center mt-5">
+<div class="container text-center mt-4">
 
     <div class="jumbotron shadow">
         <h1 class="display-4">Sisesta salasõna kasutaja <br><strong><%= `${kasutaja.staatuse_nimetus} ${kasutaja.eesnimi} ${kasutaja.perenimi}` %></strong><br> kinnitamiseks!</h1>
         <hr class="my-4">
         <form action="/kinnitaKasutaja/<%= id %>?_method=PUT" method="POST">
             <div class="row justify-content-center">
-                <div class="col-5">
-                    <div class="form-group input-group input-group-lg form" style="width: 400px;">
+                <div class="col-md-5">
+                    <div class="form-group input-group input-group-lg form">
                         <div class="input-group-prepend">
                             <span class="input-group-text">Salasõna</span>
                         </div>

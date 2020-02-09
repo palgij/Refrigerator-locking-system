@@ -1,13 +1,15 @@
-let errorCodes = require("../errorCodes");
+let errorCodes = require("../errorCodes"),
+    crypto     = require("../crypto");
 
 var middlewareObj = {};
 
 middlewareObj.users = [];
 
-middlewareObj.getUsers = id => middlewareObj.users[getIndexOfId(id)];
+middlewareObj.getUsers = id => middlewareObj.users[getIndexOfId(crypto.decrypt(id))];
 
 // Lisa kasutaja kaardi id arraysse
 middlewareObj.addUserCard = id => {
+    id = crypto.decrypt(id);
     let pos = getIndexOfId(id);
     if (pos === -1) {
         addUserWithTimeout(id);
@@ -23,8 +25,8 @@ middlewareObj.checkUserSessionValid = (req, res, next) => {
     let id;
     if (req.params.id.includes('"')) {
         let arr = req.params.id.split('"');
-        id = arr[0];
-    } else id = req.params.id;
+        id = crypto.decrypt(arr[0]);
+    } else id = crypto.decrypt(req.params.id);    
 
     if (getIndexOfId(id) === -1) {
         let err = new Error(errorCodes.KAARDI_SESSIOON_AEGUNUD.message);
@@ -37,11 +39,13 @@ middlewareObj.checkUserSessionValid = (req, res, next) => {
 
 // Kustuta kasutaja kaardi id arrayst
 middlewareObj.removeUser = id => {
+    id = crypto.decrypt(id);
     let pos = getIndexOfId(id);
     if (pos !== -1) {
         clearTimeout(middlewareObj.users[pos].timeout);
         removeAndLog(id);
     }
+    crypto.clearCryptedTextTimeoutAndRemoveIt(id);
 };
 
 module.exports = middlewareObj;

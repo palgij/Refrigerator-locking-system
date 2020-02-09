@@ -1,6 +1,6 @@
 <%- include('partials/header'); %>
 
-<div class="container text-center shadow p-5">
+<div class="container text-center shadow p-4">
     <% if (locals.flash) { %>
         <%- locals.flash %>
         <script>
@@ -14,8 +14,8 @@
     	<h1> <%= toode %> - <%= hind %> €. Rebane sisesta kogus: </h1>
     <% } else { %> <h1> <%= toode %> - <%= hind %> €. <%= nimi %> sisesta kogus: </h1> <% } %>
 
-    <form action="/tooted/<%= id %>/<%= toode %>" method="POST">
-        <input id="result" data-container="body" data-toggle="popover" data-placement="right" data-content="Peab olema vahemikus 1.00 - 99.99" class="resultDisplay" name="kogus" value="1" readonly>
+    <form class="mb-4" action="/tooted/<%= id %>/<%= toode %>" method="POST">
+        <input id="result" data-container="body" data-toggle="popover" data-placement="top" data-content="Peab olema vahemikus 1.00 - 99.99" class="resultDisplay mt-5" name="kogus" value="1" readonly>
         <table class="calcTable">
             <tr>
                 <td><input class="btnTable" type="button" value="1" onclick="add('1')"/> </td>

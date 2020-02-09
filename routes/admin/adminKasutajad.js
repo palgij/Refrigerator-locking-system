@@ -19,11 +19,8 @@ router.get("/", middleware.checkIpSessionValid, async (req, res, next) => {
 // Nulli võlad
 router.put("/", middleware.checkIpSessionValid, async (req, res, next) => {
     if (await sqlFun.nulliVolad(next, "võlgade nullimine") === -1) return;
-    
-    if (req.headers.referer.split("3000")[1].includes("kodu"))
-        req.flash("SUCCESS2", "Võlad said nullitud.", req.headers.referer.split("3000")[1]);
-    else 
-        req.flash("SUCCESS3", "Võlad said nullitud.", req.headers.referer.split("3000")[1]);
+
+    req.flash("SUCCESS", "Võlad said nullitud.", req.headers.referer.split("3000")[1]);
 });
 
 // Muuda kasutajat
@@ -54,7 +51,7 @@ router.put("/:id", middleware.checkIpSessionValid, async (req, res, next) => {
     if (arr.length !== 0 && arr.length !== undefined) {
         if (await sqlFun.updateKasutaja(next, fields, arr) === -1) return;
         
-        req.flash("SUCCESS3", "Kasutaja andmed said muudetud.", "/admin/kasutajad");
+        req.flash("SUCCESS", "Kasutaja andmed said muudetud.", "/admin/kasutajad");
     } else 
         res.redirect("/admin/kasutajad"); 
 });
@@ -71,7 +68,7 @@ router.get("/:id", middleware.checkIpSessionValid, async (req, res, next) => {
 router.delete("/:id", middleware.checkIpSessionValid, async (req, res, next) => {
     if (await sqlFun.deleteKasutaja(req, next) === -1) return;
     
-    req.flash("SUCCESS3", "Kasutaja sai kustutatud.", "/admin/kasutajad");
+    req.flash("SUCCESS", "Kasutaja sai kustutatud.", "/admin/kasutajad");
 });
 
 module.exports = router;

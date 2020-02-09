@@ -5,6 +5,7 @@ let express     = require("express"),
     stringify   = require("csv-stringify"),
     gpio        = require("../../middleware/gpio"),
     email       = require("../../middleware/sendMail"),
+    bcrypt      = require("bcrypt"),
     router      = express.Router();
 
 let ostudeArv;
@@ -14,7 +15,7 @@ let lockClosed = async (next) => {
     let lockState = await sqlFun.getLockState(next);
     return lockState[0].lukk_kinni === 1
 };
-let password = async () => {
+let hashedPassword = async () => {
     let credentials = await sqlFun.getCredentials('admin', console.log);
     return credentials[0].salasona
 };
@@ -26,7 +27,7 @@ router.get("/", middleware.removeIp, (req, res) => {
 
 // Parooli kontroll
 router.post("/", async (req, res, next) => {
-    if (req.body.password === await password()) {
+    if (await bcrypt.compare(req.body.password, await hashedPassword())) {
         middleware.addIp(req.clientIp);
         res.redirect("/admin/kodu");
     } else {
@@ -49,9 +50,8 @@ router.put("/toggleLukk", middleware.checkIpSessionValid, async (req, res, next)
         setTimeout(sqlFun.setLockState.bind(null, state, console.log), 2000);
     }
     let text = isLockClosed ? "Kapp on avatud." : "Kapp on suletud.";
-    let requestedAddress = req.headers.referer.split("3000")[1];
-    if (requestedAddress.includes("kodu")) req.flash("SUCCESS2", text, requestedAddress);
-    else req.flash("SUCCESS3", text, requestedAddress);
+
+    req.flash("SUCCESS", text, req.headers.referer.split("3000")[1]);
 });
 
 // Top ostjad ja tooted
@@ -77,10 +77,7 @@ router.get("/csv", middleware.checkIpSessionValid, async (req, res, next) => {
         res.setHeader('Pragma', 'no-cache');
         stringify(volad, { header: true }).pipe(res);
     } else {
-        if (req.headers.referer.split("3000")[1].includes("kodu")) 
-            req.flash("ERROR", "Võlad on kõik nullid.", req.headers.referer.split("3000")[1]);
-        else 
-            req.flash("WARN", "Võlad on kõik nullid.", req.headers.referer.split("3000")[1]);
+        req.flash("ERROR", "Võlad on kõik nullid.", req.headers.referer.split("3000")[1]);
     }
 });
 
@@ -97,7 +94,7 @@ router.post("/ostudeCSV", middleware.checkIpSessionValid, async (req, res, next)
         res.setHeader('Pragma', 'no-cache');
         stringify(ostud, { header: true }).pipe(res);
     } else 
-        req.flash("WARN", "Ühtegi rida andmebaasist ei leitud.", req.headers.referer.split("3000")[1]);
+        req.flash("ERROR", "Ühtegi rida andmebaasist ei leitud.", req.headers.referer.split("3000")[1]);
 });
 
 // 100 viimast ostu
@@ -190,10 +187,10 @@ router.put("/kuuLopp", middleware.checkIpSessionValid, async (req, res, next) =>
             
             if (await sqlFun.insertKuuLopp(olledSumma[0].olledSumma, parseFloat(volad.reduce(getSumOfVolad, 0)).toFixed(2), next) === -1) return;
             
-            req.flash("SUCCESS2", "Kuulõpu esitamine oli edukas.", req.headers.referer.split("3000")[1]);
+            req.flash("SUCCESS", "Kuulõpu esitamine oli edukas.", req.headers.referer.split("3000")[1]);
         }
     } else {
-        req.flash("SUCCESS2", "Kuulõppu ei esitatud, kuna pole midagi esitada.", req.headers.referer.split("3000")[1]);
+        req.flash("SUCCESS", "Kuulõppu ei esitatud, kuna pole midagi esitada.", req.headers.referer.split("3000")[1]);
     }
 });
 

@@ -45,7 +45,7 @@ router.put("/:id", middleware.checkIpSessionValid, async (req, res, next) => {
     if (arr.length !== 0 && arr.length !== undefined) {
         if (await sqlFun.updateToode(next, fields) === -1) return;
         
-        req.flash("SUCCESS3", "Toote andmed said muudetud.", "/admin/tooted");
+        req.flash("SUCCESS", "Toote andmed said muudetud.", "/admin/tooted");
     } else 
         res.redirect("/admin/tooted");
 });
@@ -75,14 +75,14 @@ router.post("/", middleware.checkIpSessionValid, async (req, res, next) => {
     
     if (await sqlFun.insertToode(next, toode) === -1) return;
 
-    req.flash("SUCCESS3", "Uus toode sai lisatud.", "/admin/tooted");
+    req.flash("SUCCESS", "Uus toode sai lisatud.", "/admin/tooted");
 });
 
 // Kustuta toode
 router.delete("/:id", middleware.checkIpSessionValid, async (req, res, next) => {
     if (await sqlFun.deleteToode(req, next) === -1) return;
         
-    req.flash("SUCCESS3", "Toode sai kustutatud.", "/admin/tooted");
+    req.flash("SUCCESS", "Toode sai kustutatud.", "/admin/tooted");
 });
 
 module.exports = router;
