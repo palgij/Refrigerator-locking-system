@@ -52,12 +52,12 @@ module.exports = middlewareObj;
 
 // ====================================================================
 
-function removeAndLog(id) {
+let removeAndLog = id => {
     let pos = getIndexOfId(id);
     middlewareObj.users.splice(pos, 1);
 }
 
-function addUserWithTimeout(id) {
+let addUserWithTimeout = id => {
     middlewareObj.users.push({
         id      : id,
         timeout : setTimeout(removeAndLog.bind(null, id), 180000)

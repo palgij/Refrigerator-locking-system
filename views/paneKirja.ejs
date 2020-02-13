@@ -93,7 +93,7 @@
 
 <script>
 
-    function clicked(id) {
+    let clicked = id => {
 		$('#osta').attr('action', '/tooted/' + '<%= rebId %>"' + id);
 		$("#osta").submit();
     }

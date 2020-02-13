@@ -1,6 +1,6 @@
 let firstTime = true;
 
-function add(val) { 
+let add = val => { 
     if (val === "." && firstTime && $('#result').val().length !== 0) {
         $('#result').val($('#result').val() + val);
         firstTime = false ;
@@ -27,7 +27,7 @@ function add(val) {
 }
 
 //function that deletes one char from result
-function remove() {
+let remove = () => {
     $('#result').val($('#result').val().substring(0, $('#result').val().length - 1));
     if($('#result').val().length === 0) {
         $('#result').popover('show');
@@ -36,7 +36,7 @@ function remove() {
     setButtonDisability()
 } 
 
-function setButtonDisability() {
+let setButtonDisability = () => {
     if (parseFloat($('#result').val()) >= 1.00 && parseFloat($('#result').val()) <= 99.99) {
         $('.btnBuy').prop("disabled", false);
     }

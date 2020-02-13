@@ -11,7 +11,7 @@ checkPass(someOtherPlaintextPassword, hash);
 checkPass(myPlaintextPassword, hash);
 checkPass("nimda", hash);
 
-async function checkPass(checkPass, toPassHash) {
+let checkPass = async (checkPass, toPassHash) => {
 
 	const match = await bcrypt.compare(checkPass, toPassHash);
 
