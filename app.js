@@ -1,4 +1,5 @@
-let bodyParser		= require("body-parser"),
+let config		= require('dotenv').config(),
+    bodyParser		= require("body-parser"),
     express     	= require("express"),
     flash       	= require("express-flash-notification"),
     session     	= require("express-session"),
@@ -10,7 +11,7 @@ let bodyParser		= require("body-parser"),
     helmet		    = require("helmet"),
     methodOverride 	= require('method-override'),
     app         	= express();
-
+console.log(process.env);
 //This line add the authentication requirement to all pages starting with localhost:3000/
 app.all("/*", auth);
 
