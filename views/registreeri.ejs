@@ -1,8 +1,8 @@
 <%- include('partials/header'); %>
 
-<div class="container mt-4">
+<div class="container shadow pt-4 pb-3">
     <h1 style="text-align: center;"> Registreeri ennast kasutajaks! </h1>
-    <form class="needs-validation mt-5" action="/registreeri/<%= id %>" method="POST" novalidate>
+    <form class="needs-validation mt-5 mb-5" action="/registreeri/<%= id %>" method="POST" novalidate>
         <div class="form-row justify-content-center mb-3">
             <div class="col-md-5 form-group">
                 <select id="staatus" name="staatuse_id" class="form-control form-control-lg" required="required">
@@ -31,13 +31,13 @@
             </div>
         </div>
         <div class="form-row justify-content-around mt-4">
-            <div class="col-5" style="margin-right: 35px;">
-                <div class="row justify-content-end">
+            <div class="col-xs-6">
+                <div class="row justify-content-around">
                     <a href="/?id=<%= id %>" class="btn btn-lg btn-outline-primary shadow btnBack">&laquo; Tagasi</a>
                 </div>
             </div>
-            <div class="col-6" style="margin-right: 4px;">
-                <div class="row justify-content-start">
+            <div class="col-xs-6">
+                <div class="row justify-content-around">
                     <button class="btn btn-outline-success btn-lg shadow btnBuy"> Registreeri &raquo;</button>
                 </div>
             </div>

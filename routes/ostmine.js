@@ -53,6 +53,7 @@ router.get("/paneKirja", middleware.checkUserSessionValid, async (req, res, next
 	kasutaja.kaardi_id = crypto.encrypt(kasutaja.kaardi_id);
         uusKasutajad[num].push(kasutaja);
     });
+
     res.render("paneKirja", {kasutajad: uusKasutajad, rebId: crypto.encrypt(id), viimane12h: viimased12hKasutajad});
 });
 

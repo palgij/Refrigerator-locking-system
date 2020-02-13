@@ -41,16 +41,16 @@
         <br>
 
         <div class="row justify-content-around">
-            <div class="col-4">
-                <div class="row justify-content-end">
-		            <% if (reb) { %>
-    			        <h1> <a href='/tooted/<%= id %>"<%= newId %>' class="btn btn-lg btn-outline-primary shadow btnBack">&laquo; Tagasi</a>
-    		        <% } else { %> <a href="/tooted/<%= id %>" class="btn btn-lg btn-outline-primary shadow btnBack">&laquo; Tagasi</a> <% } %>
+            <div class="col-xs-4">
+                <div class="row justify-content-around">
+                    <% if (reb) { %>
+                        <h1> <a href='/tooted/<%= id %>"<%= newId %>' class="btn btn-lg btn-outline-primary shadow btnBack">&laquo; Tagasi</a>
+                    <% } else { %> <a href="/tooted/<%= id %>" class="btn btn-lg btn-outline-primary shadow btnBack">&laquo; Tagasi</a> <% } %>
                 </div>
             </div>
-            <div class="col-4">
-                <div class="row justify-content-start">
-                    <button class="btn btn-outline-success btn-lg shadow btnBuy">Teosta Ost &raquo;</button>
+            <div class="col-xs-4">
+                <div class="row justify-content-around">
+                    <button class="btn btn-lg btn-outline-success shadow btnBuy">Teosta Ost &raquo;</button>
                 </div>
             </div>
         </div>
