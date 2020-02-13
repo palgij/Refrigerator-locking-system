@@ -73,7 +73,7 @@
 
 <script>
 
-    function submitForm(page) {
+    let submitForm = page => {
         $("#pageForm").attr("action", "/admin/muutused/ladu/" + page);
         $("#pageForm").submit();
     }

@@ -96,15 +96,15 @@
 </div>
 
 <script>
-    window.onload = function() {
-    	$("td").each(function() {
+    window.onload = () => {
+    	$("td").each(() => {
             if(parseFloat($(this).text()) <= 0) { 
            	    $(this).parent().css("background-color","#eb7891");
             }
     	})  
     }
     
-    $(document).on("click", "#kustutaModal", function () {
+    $(document).on("click", "#kustutaModal", () => {
      	let id = $(this).data('id');
 
         let nimi = $(`#${id}`).html();

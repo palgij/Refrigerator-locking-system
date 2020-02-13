@@ -112,18 +112,18 @@
 
 <script>
 
-    function submitForm(page) {
+    let submitForm = page => {
         $("#pageForm").attr("action", "/admin/ostud/" + page);
         $("#pageForm").submit();
     }
 
-    $(function () {
+    $(() => {
         $('#pops').tooltip({
             container: 'body'
         });
     });
 
-    function checkDate() {
+    let checkDate = () => {
         let splittedStart = $('#start').val().split('/');
         let splittedEnd = $('#end').val().split('/');
         if (splittedStart.length === 3 && (splittedStart[0].length === 4 && splittedStart[1].length === 2 && splittedStart[2].length === 2) && (splittedEnd.length === 3 && (splittedEnd[0].length === 4 && splittedEnd[1].length === 2 && splittedEnd[2].length === 2))) {

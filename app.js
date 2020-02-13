@@ -43,7 +43,7 @@ app.use(session({
 // ============ FLASH ============
 
 const flashNotificationOptions = {
-    beforeSingleRender: function(item, callback) {
+    beforeSingleRender: (item, callback) => {
         if (item.type) {
             switch(item.type) {
                 case 'SUCCESS':
@@ -71,13 +71,13 @@ app.use("/admin", adminRoutes);
 app.use("/admin/kasutajad", adminKasutajad);
 app.use("/admin/tooted", adminTooted)
 
-let server = app.listen(3000, function(){
+let server = app.listen(3000, () => {
     console.log("Server is listening to port 3000! (ip:3000)");
 });
 
 // ============ ERRORS ============
 
-app.get("*", function(req, res, next) {
+app.get("*", (req, res, next) => {
     let err = new Error(`${errorCodes.NO_SUCH_PAGE.message} ${req.originalUrl}`);
     err.statusCode = errorCodes.NO_SUCH_PAGE.code;
     next(err);

@@ -46,12 +46,12 @@ module.exports = middlewareObj;
 
 // ====================================================================
 
-function removeAndLog(ip) {
+let removeAndLog = ip => {
     let pos = getIndexOfIp(ip);
     middlewareObj.IPs.splice(pos, 1);
 }
 
-function addIpWithTimeout(ip) {
+let addIpWithTimeout = ip => {
     middlewareObj.IPs.push({
         ip      : ip,
         timeout : setTimeout(removeAndLog.bind(null, ip, true), 300000)
